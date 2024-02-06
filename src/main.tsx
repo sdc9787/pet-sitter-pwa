@@ -1,10 +1,10 @@
-import "./styles/index.css";
-import * as ReactDOM from "react-dom/client";
+import "./Styles/index.css";
+import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
-import store from "./store/store.tsx";
+import store from "./Store/store.tsx";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
-import * as React from "react";
+import React from "react";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
