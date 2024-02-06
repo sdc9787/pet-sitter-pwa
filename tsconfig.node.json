@@ -3,8 +3,8 @@
     "composite": true,
     "skipLibCheck": true,
     "module": "ESNext",
-    "moduleResolution": "node", // 번들러가 아닌 node 모듈 해상도 사용
+    "moduleResolution": "bundler",
     "allowSyntheticDefaultImports": true
   },
-  "include": ["src"]
+  "include": ["vite.config.ts"]
 }
