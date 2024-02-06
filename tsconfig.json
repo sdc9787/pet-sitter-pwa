@@ -24,7 +24,7 @@
   "references": [{ "path": "./tsconfig.node.json" }],
   "paths": {
     "@app/*": ["./app/*"],
-    "@components/*": ["./components/*"],
+    "@components/*": ["./src/components/*"],
     "@styles/*": ["./styles/*"]
   }
 }
