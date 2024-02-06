@@ -1,4 +1,4 @@
-import "./CSS/index.css";
+import "./styles/index.css";
 import ReactDOM from "react-dom/client";
 import App from "./App.tsx";
 import store from "./store/store.tsx";

@@ -1,4 +1,4 @@
-import "../CSS/TabBar.css";
+import "../styles/TabBar.css";
 type TabBarProps = {
   tabState: number;
   setTabState: React.Dispatch<React.SetStateAction<number>>;
