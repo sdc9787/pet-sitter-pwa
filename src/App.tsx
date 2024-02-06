@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./CSS/App.css";
-import TabBar from "./Component/tabBar.tsx";
+import TabBar from "./Component/tabBar";
 
 function App() {
   let [tabState, setTabState] = useState(0);
