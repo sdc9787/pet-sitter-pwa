@@ -20,7 +20,7 @@
 }
 
 .setting-setting span {
-  transition: 0.3s all;
+  transition: 0.2s all;
 }
 
 .setting-setting-title-false {
@@ -84,13 +84,13 @@
 }
 
 .setting-menu-title {
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 900;
   margin-bottom: 15px;
 }
 
 .setting-menu-element {
-  font-size: 20px;
+  font-size: 16px;
   font-weight: 500;
   padding: 25px 0px;
 }
