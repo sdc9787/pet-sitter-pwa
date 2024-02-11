@@ -1,4 +1,10 @@
 body {
   position: relative;
-  height: 150vh;
+}
+
+.main-frame-routes {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
 }

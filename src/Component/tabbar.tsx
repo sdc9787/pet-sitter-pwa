@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import "../Styles/TabBar.css";
 type TabBarProps = {
   tabState: number;
@@ -5,43 +6,31 @@ type TabBarProps = {
 };
 
 function TabBar(props: TabBarProps) {
-  let tabbarIconFalse = ["xi-home-o", "xi-paper-o", "xi-map-o", "xi-forum-o", "xi-user-o"];
-  let tabbarIconTrue = ["xi-home", "xi-paper", "xi-map", "xi-forum", "xi-user"];
-  let tabbarIconName = ["홈", "산책", "지도", "커뮤니티", "설정"];
+  let tabbar = {
+    IconFalse: ["xi-home-o", "xi-paper-o", "xi-map-o", "xi-forum-o", "xi-user-o"],
+    IconTrue: ["xi-home", "xi-paper", "xi-map", "xi-forum", "xi-user"],
+    IconName: ["홈", "산책", "지도", "커뮤니티", "프로필"],
+    Link: ["", "pet", "map", "community", "setting"],
+  };
+  const navigate = useNavigate(); //페이지 이동
 
   return (
     <>
       <div className="tabbar">
-        {tabbarIconTrue.map((a, i) => {
+        {tabbar.IconTrue.map((a, i) => {
           return (
             <div
               key={i}
               onClick={() => {
                 props.setTabState(i);
+                navigate("/" + tabbar.Link[i]);
               }}
               className="tabbar-element">
-              <i className={props.tabState === i ? a + " xi-2x" : tabbarIconFalse[i] + " xi-2x"}></i>
-              <span className="tabbar-element-name">{tabbarIconName[i]}</span>
+              <i className={(props.tabState === i ? a : tabbar.IconFalse[i]) + " xi-2x"}></i>
+              <span className="tabbar-element-name">{tabbar.IconName[i]}</span>
             </div>
           );
         })}
-
-        {/* <div className="tabbar-element">
-          <i className="xi-paper-o xi-2x"></i>
-          <span className="tabbar-element-name">산책</span>
-        </div>
-        <div className="tabbar-element">
-          <i className="xi-map-o xi-2x"></i>
-          <span className="tabbar-element-name">지도</span>
-        </div>
-        <div className="tabbar-element">
-          <i className="xi-forum-o xi-2x"></i>
-          <span className="tabbar-element-name">커뮤니티</span>
-        </div>
-        <div className="tabbar-element">
-          <i className="xi-user-o xi-2x"></i>
-          <span className="tabbar-element-name">MY</span>
-        </div> */}
       </div>
     </>
   );
