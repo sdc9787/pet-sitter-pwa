@@ -1,7 +1,7 @@
 import "./routes-Styles/setting.css";
 
 function Setting() {
-  const profileImg: string = "/public/profile.png"; //프로필 이미지 주소
+  const profileImg: string = "profile.png"; //프로필 이미지 주소
   let profileName: string = "sdc9787";
   return (
     <>
