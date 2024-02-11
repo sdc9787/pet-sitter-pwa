@@ -12,7 +12,7 @@ function Setting() {
         <div className="setting-profile">
           <div className="setting-profile-icon-name">
             <img className="setting-profile-icon" src={profileImg} alt="프로필 아이콘" />
-            <span className="setting-profile-name">{profileName}</span>
+            <div className="setting-profile-name">{profileName}</div>
           </div>
           <button className="setting-profile-set">프로필 변경</button>
         </div>
