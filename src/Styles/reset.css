@@ -139,5 +139,13 @@ button {
   overflow: visible;
   cursor: pointer;
 }
+div,
+span {
+  -ms-user-select: none;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
 
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700;800;900&family=Roboto:wght@300;400;500;700;900&display=swap");
