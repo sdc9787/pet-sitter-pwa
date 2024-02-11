@@ -129,7 +129,7 @@ table {
 }
 button {
   font-family: Noto Sans KR, Roboto;
-  font-weight: 600;
+  font-weight: 800;
   color: #737373;
   background: inherit;
   border: none;
@@ -137,7 +137,6 @@ button {
   border-radius: 0;
   padding: 0;
   overflow: visible;
-  cursor: pointer;
 }
 div,
 span {

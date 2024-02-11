@@ -15,7 +15,6 @@ function App() {
     <>
       <div className="main-frame-routes">
         <Routes>
-          {/* <Route path="/" element={}></Route> */}
           <Route path="/" element={<Home></Home>}></Route>
           <Route path="/pet" element={<Pet></Pet>}></Route>
           <Route path="/map" element={<Map></Map>}></Route>

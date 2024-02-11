@@ -5,16 +5,41 @@
 }
 
 .setting-setting {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 15px;
+  box-sizing: border-box;
+  width: 100%;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  background-color: #ffffff;
+  transition: 0.4s all ease-out;
+}
+
+.setting-setting span {
+  transition: 0.3s all;
+}
+
+.setting-setting-title-false {
+  color: white;
+}
+
+.setting-setting-title-true {
+  color: #575759;
+}
+
+.setting-setting-shadow {
+  box-shadow: 0px 2px 6px -6px #666;
 }
 
 .setting-profile {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 50px;
 }
 
 .setting-profile-icon-name {
@@ -42,4 +67,40 @@
 
 .setting-profile-set:active {
   background-color: #e8e8ea;
+}
+
+.setting-menu {
+  margin: 20px 0px;
+  display: flex;
+  flex-direction: column;
+  justify-self: center;
+  align-items: flex-start;
+}
+
+.setting-menu-title-element {
+  width: 100%;
+  padding: 25px 0px;
+  border-bottom: 1px solid #f5f6f8;
+}
+
+.setting-menu-title {
+  font-size: 20px;
+  font-weight: 900;
+  margin-bottom: 15px;
+}
+
+.setting-menu-element {
+  font-size: 20px;
+  font-weight: 500;
+  padding: 25px 0px;
+}
+
+.setting-menu-element-icon {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.setting-menu-element-icon i {
+  margin-right: 10px;
 }
