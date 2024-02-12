@@ -1,6 +1,6 @@
 {
-  "name": "vite-pwa",
-  "short_name": "vite-pwa",
+  "name": "SWR",
+  "short_name": "SWR",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
