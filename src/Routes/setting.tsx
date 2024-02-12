@@ -33,8 +33,8 @@ function Setting() {
     });
   });
   count = 0;
-  const buttonRef1 = useRef<HTMLButtonElement>(null);
-  UseClickAnimation(buttonRef1, {
+  const buttonRefProfile = useRef<HTMLButtonElement>(null);
+  UseClickAnimation(buttonRefProfile, {
     color: "gray",
     size: 50,
     duration: 500,
@@ -61,7 +61,7 @@ function Setting() {
             <img className="setting-profile-icon" src={profileImg} alt="프로필 아이콘" />
             <span className="setting-profile-name">{profileName}</span>
           </div>
-          <button ref={buttonRef1} className="setting-profile-set">
+          <button ref={buttonRefProfile} className="setting-profile-set">
             프로필 변경
           </button>
         </div>

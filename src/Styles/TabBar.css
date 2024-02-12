@@ -10,7 +10,6 @@
 }
 
 .tabbar-element {
-  cursor: pointer;
   flex-grow: 1;
   padding: 10px 0px;
   text-align: center;
@@ -19,6 +18,11 @@
   justify-content: center;
   align-items: center;
 }
+
+.tabbar-element:active {
+  background-color: #ffffff;
+}
+
 .tabbar-element-name {
   font-size: 13px;
 }
