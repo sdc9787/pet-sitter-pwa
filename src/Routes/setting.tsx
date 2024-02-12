@@ -4,11 +4,10 @@ import "../Styles/useClickAnimation.css";
 import UseClickAnimation from "../Component/useClickAnimation";
 
 function Setting() {
-  //버튼 애니메이션
-
   const profileImg: string = "profile.png"; //프로필 이미지 주소 (백에서 받아오기)
   let profileName: string = "sdc9787"; //프로필 이름 (백에서 받아오기)
 
+  //설정 목록
   let setting_menu = [
     //백에서 elemnet 받아오기
     { title: "최근 방문 목록", element: ["최근 방문 테스트1", "최근 방문  테스트2", "최근 방문  테스트3"], elementIcon: ["xi-pen-o", "xi-label-o", "xi-mail-o"] },
@@ -18,8 +17,8 @@ function Setting() {
     { title: "나의 거래 목록", element: ["거래 테스트1", "거래 테스트2", "거래 테스트3"], elementIcon: ["xi-pen-o", "xi-label-o", "xi-mail-o"] },
   ];
 
+  //설정 버튼 애니메이션
   const buttonRef: any = [];
-
   let count = 0;
   setting_menu.forEach((i) => {
     i.element.forEach(() => {
@@ -33,6 +32,8 @@ function Setting() {
     });
   });
   count = 0;
+
+  //프로필 버튼 애니메이션
   const buttonRefProfile = useRef<HTMLButtonElement>(null);
   UseClickAnimation(buttonRefProfile, {
     color: "gray",
