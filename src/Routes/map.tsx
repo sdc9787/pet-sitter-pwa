@@ -10,7 +10,8 @@ function Map() {
       level: 3, //지도의 레벨(확대, 축소 정도)
     };
 
-    var map = new kakao.maps.Map(container, options); //지도 생성 및 객체 리턴
+    var map = new kakao.maps.Map(container as HTMLElement, options); //지도 생성 및 객체 리턴
+    map;
   });
   return (
     <>
