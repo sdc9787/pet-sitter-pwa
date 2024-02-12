@@ -1,17 +1,47 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./routes-Styles/setting.css";
+import "../Styles/useClickAnimation.css";
+import UseClickAnimation from "../Component/useClickAnimation";
 
 function Setting() {
+  //버튼 애니메이션
+
   const profileImg: string = "profile.png"; //프로필 이미지 주소 (백에서 받아오기)
   let profileName: string = "sdc9787"; //프로필 이름 (백에서 받아오기)
 
   let setting_menu = [
     //백에서 elemnet 받아오기
     { title: "최근 방문 목록", element: ["최근 방문 테스트1", "최근 방문  테스트2", "최근 방문  테스트3"], elementIcon: ["xi-pen-o", "xi-label-o", "xi-mail-o"] },
-    { title: "나의 계시글 목록", element: ["계시글 테스트1", "계시글 테스트2", "계시글 테스트3"], elementIcon: ["xi-pen-o", "xi-label-o", "xi-mail-o"] },
+    { title: "나의 게시글 목록", element: ["게시글 테스트1", "게시글 테스트2", "게시글 테스트3"], elementIcon: ["xi-pen-o", "xi-label-o", "xi-mail-o"] },
+    { title: "나의 거래 목록", element: ["거래 테스트1", "거래 테스트2", "거래 테스트3"], elementIcon: ["xi-pen-o", "xi-label-o", "xi-mail-o"] },
+    { title: "나의 거래 목록", element: ["거래 테스트1", "거래 테스트2", "거래 테스트3"], elementIcon: ["xi-pen-o", "xi-label-o", "xi-mail-o"] },
     { title: "나의 거래 목록", element: ["거래 테스트1", "거래 테스트2", "거래 테스트3"], elementIcon: ["xi-pen-o", "xi-label-o", "xi-mail-o"] },
   ];
 
+  const buttonRef: any = [];
+
+  let count = 0;
+  setting_menu.forEach((i) => {
+    i.element.forEach(() => {
+      buttonRef.push(useRef<HTMLButtonElement>(null));
+      UseClickAnimation(buttonRef[count++], {
+        color: "gray",
+        size: 50,
+        duration: 500,
+        effectName: "ripple",
+      });
+    });
+  });
+  count = 0;
+  const buttonRef1 = useRef<HTMLButtonElement>(null);
+  UseClickAnimation(buttonRef1, {
+    color: "gray",
+    size: 50,
+    duration: 500,
+    effectName: "ripple",
+  });
+
+  //스크롤 이벤트
   const [scrollPosition, setScrollPosition] = useState(0);
   const updateScroll = () => {
     setScrollPosition(window.scrollY || document.documentElement.scrollTop);
@@ -31,7 +61,9 @@ function Setting() {
             <img className="setting-profile-icon" src={profileImg} alt="프로필 아이콘" />
             <span className="setting-profile-name">{profileName}</span>
           </div>
-          <button className="setting-profile-set">프로필 변경</button>
+          <button ref={buttonRef1} className="setting-profile-set">
+            프로필 변경
+          </button>
         </div>
         <div className="setting-menu">
           {setting_menu.map((a, i) => {
@@ -40,10 +72,10 @@ function Setting() {
                 <div className="setting-menu-title">{a.title}</div>
                 {a.element.map((b, j) => {
                   return (
-                    <div key={j} className="setting-menu-element-icon">
+                    <button ref={buttonRef[count++]} key={j} className="setting-menu-element-icon">
                       <i className={a.elementIcon[j] + " xi-2x"}></i>
                       <div className="setting-menu-element">{b}</div>
-                    </div>
+                    </button>
                   );
                 })}
               </div>

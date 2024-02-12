@@ -1,10 +1,11 @@
 .setting {
   width: 100%;
   height: 100%;
-  padding: 15px;
+  padding-bottom: 25px;
 }
 
 .setting-setting {
+  z-index: 100;
   position: fixed;
   top: 0;
   left: 0;
@@ -37,6 +38,7 @@
 }
 
 .setting-profile {
+  padding: 15px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -80,11 +82,12 @@
 
 .setting-menu-title-element {
   width: 100%;
-  padding: 25px 0px;
+  padding: 20px 0px;
   border-bottom: 1px solid #f5f6f8;
 }
 
 .setting-menu-title {
+  padding: 0px 15px;
   font-size: 18px;
   font-weight: 900;
   margin-bottom: 15px;
@@ -93,13 +96,18 @@
 .setting-menu-element {
   font-size: 16px;
   font-weight: 500;
-  padding: 25px 0px;
 }
 
 .setting-menu-element-icon {
+  padding: 5px 15px;
+
+  width: 100%;
   display: flex;
   justify-content: flex-start;
   align-items: center;
+}
+.setting-menu-element-icon:active {
+  background-color: #f2f3f7;
 }
 
 .setting-menu-element-icon i {

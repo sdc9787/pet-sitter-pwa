@@ -1,5 +1,9 @@
 @import "./reset.css";
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   font-family: Noto Sans KR, Roboto, sans-serif;
   background-color: white;
