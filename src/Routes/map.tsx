@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import "./routes-Styles/map.css";
 
 function Map() {
+  /* global kakao*/
   useEffect(() => {
     var container = document.getElementById("map"); //지도를 담을 영역의 DOM 레퍼런스
     var options = {
@@ -16,6 +17,7 @@ function Map() {
   return (
     <>
       <div id="map" className="kakao-map"></div>
+      <input type="text" placeholder="검색어를 입력하세요" className="map-search"></input>
     </>
   );
 }
