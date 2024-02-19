@@ -10,7 +10,7 @@ function Home() {
   useEffect(() => {
     axios
       .post(
-        "https://port-0-test2-17xco2nlst1tgoh.sel5.cloudtype.app/api/user",
+        "https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app/api/user",
         { user_name: "문", user_age: 25, user_email: "john@example.com", is_korean: true },
         {
           headers: { "Content-Type": `application/json`, "Content-Encoding": `charset=utf-8` },

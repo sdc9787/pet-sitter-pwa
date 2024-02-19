@@ -95,12 +95,11 @@
 
 .setting-menu-element {
   font-size: 16px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .setting-menu-element-icon {
   padding: 5px 15px;
-
   width: 100%;
   display: flex;
   justify-content: flex-start;
