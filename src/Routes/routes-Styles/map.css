@@ -6,11 +6,53 @@
 
 .map-search {
   font-family: Noto Sans KR, Roboto, sans-serif;
+}
+
+.map-search-input {
+  z-index: 100;
   position: absolute;
   top: 20px;
   left: 20px;
   right: 20px;
   border-radius: 40px;
   border: 1px solid black;
-  padding: 10px 20px;
+  padding: 10px 35px;
+  box-shadow: 0px 0px 5px #444;
+}
+
+.map-search-input:focus {
+  outline: none;
+}
+
+.map-search-recent {
+  display: flex;
+  transition: 0.3s all;
+  position: absolute;
+  text-align: left;
+  padding: 0px 20px;
+  top: 0px;
+  left: 0;
+  right: 0;
+  height: 0;
+  opacity: 0;
+  background-color: white;
+}
+
+.map-search-recent-height {
+  z-index: 40;
+  opacity: 1;
+  height: 100vh;
+}
+
+.map-search-icon i {
+  z-index: 102;
+  position: absolute;
+  top: 23px;
+  left: 23px;
+}
+
+.map-search-recent-title {
+  font-size: 14px;
+  font-weight: 900;
+  margin-top: 70px;
 }
