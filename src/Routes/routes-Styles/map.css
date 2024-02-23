@@ -1,5 +1,4 @@
 .kakao-map {
-  z-index: 10;
   width: 100%;
   height: 100vh;
 }
@@ -9,7 +8,7 @@
 }
 
 .map-search-input {
-  z-index: 100;
+  z-index: 10;
   position: absolute;
   top: 20px;
   left: 20px;
@@ -21,7 +20,10 @@
 }
 
 .map-search-input:focus {
+  top: 19px;
+  left: 19px;
   outline: none;
+  border: 2px solid black;
 }
 
 .map-search-recent {
@@ -32,21 +34,25 @@
   text-align: left;
   padding: 0px 20px;
   top: 0px;
-  left: 0;
-  right: 0;
-  height: 0;
+  left: 0px;
+  right: 0px;
+  height: 0vh;
   opacity: 0;
   background-color: white;
 }
 
 .map-search-recent-height {
-  z-index: 40;
+  z-index: 3;
   opacity: 1;
   height: 100vh;
 }
 
+.map-search-icon {
+  z-index: 100;
+}
+
 .map-search-icon i {
-  z-index: 101;
+  z-index: 11;
   position: absolute;
   top: 23px;
   left: 23px;
