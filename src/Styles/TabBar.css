@@ -1,5 +1,5 @@
 .tabbar {
-  z-index: 100;
+  z-index: 30;
   position: fixed;
   bottom: 0px;
   display: flex;

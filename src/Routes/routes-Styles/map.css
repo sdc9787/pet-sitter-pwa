@@ -8,8 +8,8 @@
 }
 
 .map-search-input {
-  z-index: 10;
-  position: absolute;
+  z-index: 100;
+  position: fixed;
   top: 20px;
   left: 20px;
   right: 20px;
@@ -30,7 +30,7 @@
   z-index: 0;
   display: flex;
   transition: 0.3s all;
-  position: absolute;
+  position: fixed;
   text-align: left;
   padding: 0px 20px;
   top: 0px;
@@ -42,17 +42,13 @@
 }
 
 .map-search-recent-height {
-  z-index: 3;
+  z-index: 50;
   opacity: 1;
   height: 100vh;
 }
 
-.map-search-icon {
-  z-index: 100;
-}
-
 .map-search-icon i {
-  z-index: 11;
+  z-index: 101;
   position: absolute;
   top: 23px;
   left: 23px;
