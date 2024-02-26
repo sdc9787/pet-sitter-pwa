@@ -20,7 +20,7 @@ function Map() {
 
   return (
     <>
-      <div id="map" className="kakao-map"></div>
+      <div id="map"></div>
       <div className="map-search">
         <div className={"map-search-recent" + search}>
           <span className="map-search-recent-title">최근 검색</span>
