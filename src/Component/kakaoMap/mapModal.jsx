@@ -1,5 +1,5 @@
 import * as S from "./kakao.styled.js";
-const Modal = ({ search, openMarkerId, setOpenMarkerId, isModalOpen, moveLatLng, pagination, currentPage, setCurrentPage }) => {
+const Modal = ({ search, openMarkerId, setOpenMarkerId, ismodalopen, moveLatLng, pagination, currentPage, setCurrentPage }) => {
   // 카카오톡 공유 함수
   const shareKakao = (TITLE, ADDRESS, URL, PHONE, CATEGORY) => {
     console.log(URL);
@@ -28,7 +28,7 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, isModalOpen, moveLatLng,
   };
 
   return (
-    <S.ModalContainer isclosed={(!isModalOpen).toString()}>
+    <S.ModalContainer isclosed={!ismodalopen}>
       <S.List>
         {/* 검색된 장소들 목록으로 표시 */}
         {search.map((data) => (
