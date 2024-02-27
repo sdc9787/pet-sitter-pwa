@@ -1,7 +1,7 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./Styles/App.css";
 import TabBar from "./Component/tabbar";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import Setting from "./Routes/setting";
 import Home from "./Routes/home";
 import Pet from "./Routes/pet";
@@ -10,18 +10,13 @@ import Community from "./Routes/community";
 import Login from "./Routes/login";
 
 function App() {
-  let [tabState, setTabState] = useState(() => JSON.parse(window.localStorage.getItem("tabState") as string) || 0); //class 체크 저장
-  const navigate = useNavigate(); //페이지 이동
-  const tabStateNv = ["home", "pet", "map", "community", "setting"];
+  let [tabState, setTabState] = useState<number>(() => JSON.parse(window.localStorage.getItem("tabState") as string) || 0); //class 체크 저장
 
-  useEffect(() => {
-    navigate("/" + tabStateNv[tabState]);
-  }, [tabState]);
   return (
     <>
       <div className="main-frame-routes">
         <Routes>
-          <Route path="/" element={<Login></Login>}></Route>
+          <Route path="/" element={<Login tabState={tabState}></Login>}></Route>
           <Route path="/home" element={<Home></Home>}></Route>
           <Route path="/pet" element={<Pet></Pet>}></Route>
           <Route path="/map" element={<Map></Map>}></Route>

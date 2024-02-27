@@ -1,8 +1,10 @@
 import { useNavigate } from "react-router-dom";
 import "./routes-Styles/login.css";
 
-function Login() {
+function Login(props: { tabState: number }) {
   const navigate = useNavigate(); //페이지 이동
+  const tabStateNv = ["home", "pet", "map", "community", "setting"];
+
   return (
     <>
       <div className="login">
@@ -12,8 +14,7 @@ function Login() {
           <span className="login-center-title">다양한 서비스를 이용해보세요.</span>
           <img
             onClick={() => {
-              console.log(1);
-              navigate("/home");
+              navigate("/" + tabStateNv[props.tabState]);
             }}
             src="/kakao_login_medium_wide.png"
             className="kakao-login-img"></img>
