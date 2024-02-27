@@ -1,6 +1,4 @@
-import React from "react";
-import * as S from "./kakao.styled.ts";
-
+import * as S from "./kakao.styled.js";
 const Modal = ({ search, openMarkerId, setOpenMarkerId, isModalOpen, moveLatLng, pagination, currentPage, setCurrentPage }) => {
   // 카카오톡 공유 함수
   const shareKakao = (TITLE, ADDRESS, URL, PHONE, CATEGORY) => {
@@ -30,7 +28,7 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, isModalOpen, moveLatLng,
   };
 
   return (
-    <S.ModalContainer isClosed={!isModalOpen}>
+    <S.ModalContainer isclosed={(!isModalOpen).toString()}>
       <S.List>
         {/* 검색된 장소들 목록으로 표시 */}
         {search.map((data) => (
@@ -63,7 +61,7 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, isModalOpen, moveLatLng,
               onClick={() => {
                 shareKakao(data.place_name, data.address_name, data.place_url, data.phone, data.category_name);
               }}>
-              <i className="xi-share-alt-o xi-2x"></i>
+              <i className="xi-search xi-2x" />
             </S.ShareBtn>
           </S.Item>
         ))}

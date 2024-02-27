@@ -217,102 +217,100 @@ const Kakao = () => {
 
   return (
     <>
-      <S.MapContainer>
-        {/* 지도 컴포넌트 */}
-        <Map
-          center={state.center}
-          style={{ width: "100%", height: "calc(100vh - 109px)", marginTop: "48px" }}
-          level={3}
-          onCreate={setMap} // 지도가 생성될 때 setMap 함수를 호출해 지도 객체 업데이트 추가
-        >
-          {/* 현재 위치 마커 표시 */}
-          <MapMarker
-            position={state.center}
-            image={{
-              src: "https://cdn-icons-png.flaticon.com/128/7124/7124723.png",
-              size: {
-                width: 50,
-                height: 50,
-              },
-            }}
-          />
-          {/* 현재 내 위치로 돌아가는 버튼 */}
-          {isMouseOver && <S.GoBackTxt isModalOpen={isModalOpen}>접속위치</S.GoBackTxt>}
-          <S.GoBackButton onClick={goBack} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} isModalOpen={isModalOpen}></S.GoBackButton>
-          {/* 현 지도에서 키워드 재검색 버튼 */}
-          <S.ReSearch onClick={handleReSearch} isModalOpen={isModalOpen}>
-            <S.ReSearchImg className="xi-search xi-2x" />현 지도에서 검색
-          </S.ReSearch>
-          {/* 검색된 장소 마커 표시 */}
-          {search.map((data) => (
-            <React.Fragment key={data.id}>
-              <MapMarker
-                key={data.id}
-                position={{ lat: data.y, lng: data.x }}
-                image={{
-                  src: "https://cdn-icons-png.flaticon.com/128/2098/2098567.png",
-                  size: {
-                    width: 35,
-                    height: 35,
-                  },
-                }}
-                onClick={() => {
-                  if (data.id === openMarkerId) {
-                    setOpenMarkerId(null);
-                  } else {
-                    setOpenMarkerId(data.id);
-                    moveLatLng(data);
-                  }
-                }}
-              />
-              {/* 해당 마커에 커스텀 오버레이 표시 */}
-              {openMarkerId === data.id && (
-                <CustomOverlayMap yAnchor={2.1} position={{ lat: data.y, lng: data.x }} clickable>
-                  <S.Overlay>
-                    <S.Arrow />
-                    <S.PlaceName>{data.place_name}</S.PlaceName>
-                    {/* 상세 정보로 연결되는 링크 */}
-                    <S.DetailLink href={data.place_url} target="_blank">
-                      <i className="xi-angle-right-min xi-2x"></i>
-                    </S.DetailLink>
-                  </S.Overlay>
-                </CustomOverlayMap>
-              )}
-            </React.Fragment>
-          ))}
-        </Map>
-        {/* 검색 버튼들 */}
-        <S.SearchBtns>
-          {KEYWORD_LIST.map((item) => (
-            <S.KeywordBtn
-              key={item.id}
-              type="button"
-              selected={item.value === keyword}
-              // 키워드를 선택할 때 이동한 중심 좌표를 저장하도록 변경
-              onClick={() => handleKeywordSelect(item.value)}>
-              {item.value} {item.emoji}
-            </S.KeywordBtn>
-          ))}
-        </S.SearchBtns>
+      {/* 지도 컴포넌트 */}
+      <Map
+        center={state.center}
+        style={{ width: "100%", height: "calc(100vh - 61px)" }}
+        level={3}
+        onCreate={setMap} // 지도가 생성될 때 setMap 함수를 호출해 지도 객체 업데이트 추가
+      >
+        {/* 현재 위치 마커 표시 */}
+        <MapMarker
+          position={state.center}
+          image={{
+            src: "https://cdn-icons-png.flaticon.com/128/7124/7124723.png",
+            size: {
+              width: 50,
+              height: 50,
+            },
+          }}
+        />
+        {/* 현재 내 위치로 돌아가는 버튼 */}
+        {isMouseOver && <S.GoBackTxt ismodalopen={isModalOpen.toString()}>접속위치</S.GoBackTxt>}
+        <S.GoBackButton onClick={goBack} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} ismodalopen={isModalOpen.toString()}></S.GoBackButton>
+        {/* 현 지도에서 키워드 재검색 버튼 */}
+        <S.ReSearch onClick={handleReSearch} ismodalopen={isModalOpen.toString()}>
+          <S.ReSearchImg className="xi-search xi-2x" />현 지도에서 검색
+        </S.ReSearch>
+        {/* 검색된 장소 마커 표시 */}
+        {search.map((data) => (
+          <React.Fragment key={data.id}>
+            <MapMarker
+              key={data.id}
+              position={{ lat: data.y, lng: data.x }}
+              image={{
+                src: "https://cdn-icons-png.flaticon.com/128/2098/2098567.png",
+                size: {
+                  width: 35,
+                  height: 35,
+                },
+              }}
+              onClick={() => {
+                if (data.id === openMarkerId) {
+                  setOpenMarkerId(null);
+                } else {
+                  setOpenMarkerId(data.id);
+                  moveLatLng(data);
+                }
+              }}
+            />
+            {/* 해당 마커에 커스텀 오버레이 표시 */}
+            {openMarkerId === data.id && (
+              <CustomOverlayMap yAnchor={2.1} position={{ lat: data.y, lng: data.x }} clickable>
+                <S.Overlay>
+                  <S.Arrow />
+                  <S.PlaceName>{data.place_name}</S.PlaceName>
+                  {/* 상세 정보로 연결되는 링크 */}
+                  <S.DetailLink href={data.place_url} target="_blank">
+                    <i className="xi-angle-right-min xi-2x"></i>
+                  </S.DetailLink>
+                </S.Overlay>
+              </CustomOverlayMap>
+            )}
+          </React.Fragment>
+        ))}
+      </Map>
+      {/* 검색 버튼들 */}
+      <S.SearchBtns>
+        {KEYWORD_LIST.map((item) => (
+          <S.KeywordBtn
+            key={item.id}
+            type="button"
+            selected={item.value === keyword}
+            // 키워드를 선택할 때 이동한 중심 좌표를 저장하도록 변경
+            onClick={() => handleKeywordSelect(item.value)}>
+            {item.value} {item.emoji}
+          </S.KeywordBtn>
+        ))}
+      </S.SearchBtns>
 
-        {/* PC 화면일 경우, 검색 결과 목록 사이드바로 표시 */}
-        {!isMobile && (
-          <S.ListContainer isClosed={!isSidebarOpen}>
-            <Modal search={search} openMarkerId={openMarkerId} setOpenMarkerId={setOpenMarkerId} isModalOpen={isModalOpen} moveLatLng={moveLatLng} pagination={pagination} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-            {/* 사이드바 열고 다는 버튼 */}
-            <S.SideBarOpenBtn isClosed={!isSidebarOpen} onClick={() => setIsSidebarOpen((prev) => !prev)}>
-              {isSidebarOpen ? <i className="xi-angle-left-min xi-2x"></i> : <i className="xi-angle-right-min xi-2x"></i>}
-            </S.SideBarOpenBtn>
-          </S.ListContainer>
-        )}
-        {/* 모바일 화면일 경우 검색 결과 모달로 표시 */}
-        {isMobile && (
-          <S.Modal>
-            <S.ModalBtn onClick={() => setIsModalOpen((prev) => !prev)} />
-            <Modal search={search} openMarkerId={openMarkerId} setOpenMarkerId={setOpenMarkerId} isModalOpen={isModalOpen} moveLatLng={moveLatLng} pagination={pagination} currentPage={currentPage} setCurrentPage={setCurrentPage} />
-          </S.Modal>
-        )}
-      </S.MapContainer>
+      {/* PC 화면일 경우, 검색 결과 목록 사이드바로 표시 */}
+      {!isMobile && (
+        <S.ListContainer isClosed={!isSidebarOpen}>
+          <Modal search={search} openMarkerId={openMarkerId} setOpenMarkerId={setOpenMarkerId} ismodalopen={isModalOpen.toString()} moveLatLng={moveLatLng} pagination={pagination} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          {/* 사이드바 열고 다는 버튼 */}
+          <S.SideBarOpenBtn isClosed={!isSidebarOpen} onClick={() => setIsSidebarOpen((prev) => !prev)}>
+            {isSidebarOpen ? <i className="xi-angle-left-min xi-2x"></i> : <i className="xi-angle-right-min xi-2x"></i>}
+          </S.SideBarOpenBtn>
+        </S.ListContainer>
+      )}
+      {/* 모바일 화면일 경우 검색 결과 모달로 표시 */}
+      {isMobile && (
+        <S.Modal>
+          <S.ModalBtn onClick={() => setIsModalOpen((prev) => !prev)} />
+          <Modal search={search} openMarkerId={openMarkerId} setOpenMarkerId={setOpenMarkerId} ismodalopen={isModalOpen.toString()} moveLatLng={moveLatLng} pagination={pagination} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        </S.Modal>
+      )}
     </>
   );
 };
