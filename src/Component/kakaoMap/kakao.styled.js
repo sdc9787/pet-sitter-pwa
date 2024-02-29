@@ -267,7 +267,8 @@ export const ModalBtn = styled.button`
   height: 5px;
   background-color: ${theme.colors.gray};
   border-radius: 5px;
-  margin: 10px;
+  margin-top: 8px;
+  margin-bottom: 15px;
 `;
 
 export const ModalBtnDiv = styled.div`
