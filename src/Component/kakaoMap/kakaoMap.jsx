@@ -298,8 +298,8 @@ const Kakao = () => {
       )}
       {/* 모바일 화면일 경우 검색 결과 모달로 표시 */}
       {isMobile && (
-        <S.Modal onClick={() => setIsModalOpen((prev) => !prev)}>
-          <S.ModalBtn />
+        <S.Modal>
+          <S.ModalBtn onClick={() => setIsModalOpen((prev) => !prev)} />
           <Modal search={search} openMarkerId={openMarkerId} setOpenMarkerId={setOpenMarkerId} ismodalopen={ismodalopen} moveLatLng={moveLatLng} pagination={pagination} currentPage={currentPage} setCurrentPage={setCurrentPage} />
         </S.Modal>
       )}
