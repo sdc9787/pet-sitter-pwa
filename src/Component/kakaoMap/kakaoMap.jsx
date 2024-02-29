@@ -117,7 +117,6 @@ const Kakao = () => {
       options
     );
   };
-
   // 검색된 장소 표시하기
   const displayPlaces = (data) => {
     const bounds = new kakao.maps.LatLngBounds();
@@ -189,18 +188,15 @@ const Kakao = () => {
     // lastCenter 업데이트
     setLastCenter(newCenter);
   };
+
   // 재검색 후, 키워드를 선택할 때마다 검색하기
   const handleKeywordSelect = (selectedKeyword) => {
     setKeyword(selectedKeyword);
-
-    if (lastCenter) {
-      // 이미 이동한 지도의 중심 좌표가 있으면 해당 위치를 기반으로 검색
-      searchPlaces(lastCenter, 1);
-    } else {
-      // 처음 페이지 로딩 시 현재 위치를 기반으로 검색
-      searchPlaces(state.center, 1);
-    }
   };
+
+  useEffect(() => {
+    searchPlaces(state.center, 1);
+  }, [keyword]);
 
   // 카카오톡 공유 init 설정
   useEffect(() => {
