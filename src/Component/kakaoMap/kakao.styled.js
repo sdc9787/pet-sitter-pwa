@@ -263,12 +263,17 @@ export const Modal = styled.div`
 `;
 
 export const ModalBtn = styled.button`
-  display: block;
-  margin: 10px auto 13px;
   width: 50px;
   height: 5px;
   background-color: ${theme.colors.gray};
   border-radius: 5px;
+  margin: 10px;
+`;
+
+export const ModalBtnDiv = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 // 현재 내 위치로 돌아가는 버튼
