@@ -7,9 +7,9 @@ import { useMediaQuery } from "react-responsive";
 const { kakao } = window;
 
 const KEYWORD_LIST = [
-  { id: 1, value: "애견카페", emoji: "☕️" },
-  { id: 2, value: "동물병원", emoji: "🧑‍⚕️" },
-  { id: 3, value: "애견호텔", emoji: "🏨" },
+  { id: 1, value: "애견카페", emoji: "xi-cafe" },
+  { id: 2, value: "동물병원", emoji: "xi-hospital" },
+  { id: 3, value: "애견호텔", emoji: "xi-hotel" },
 ];
 
 const Kakao = () => {
@@ -39,7 +39,7 @@ const Kakao = () => {
   // 사이드바의 열림/닫힘 상태를 관리하는 상태 변수
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   // 모바일 환경에서 사용될 모달의 열림/닫힘 상태를 관리하는 상태 변수
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [ismodalopen, setIsModalOpen] = useState(false);
   // 미디어쿼리를 이용해 현재 화면이 모바일 크기인지 판단하는 변수
   const isMobile = useMediaQuery({ maxWidth: 768 });
   // 접속 위치 마우스오버 상태 변수
@@ -189,7 +189,6 @@ const Kakao = () => {
     // lastCenter 업데이트
     setLastCenter(newCenter);
   };
-
   // 재검색 후, 키워드를 선택할 때마다 검색하기
   const handleKeywordSelect = (selectedKeyword) => {
     setKeyword(selectedKeyword);
@@ -208,7 +207,7 @@ const Kakao = () => {
     if (window.Kakao) {
       const kakao = window.Kakao;
       if (!kakao.isInitialized()) {
-        kakao.init("발급받은 API 키");
+        kakao.init(import.meta.env.VITE_APP_KAKAOMAP_API_KEY);
       }
     }
   }, []);
@@ -236,11 +235,13 @@ const Kakao = () => {
           }}
         />
         {/* 현재 내 위치로 돌아가는 버튼 */}
-        {isMouseOver && <S.GoBackTxt ismodalopen={isModalOpen}>접속위치</S.GoBackTxt>}
-        <S.GoBackButton onClick={goBack} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} ismodalopen={isModalOpen.toString()}></S.GoBackButton>
+        <S.GoBackButton onClick={goBack} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} ismodalopen={ismodalopen}>
+          <i className="xi-my-location xi-2x"></i>
+        </S.GoBackButton>
         {/* 현 지도에서 키워드 재검색 버튼 */}
-        <S.ReSearch onClick={handleReSearch} ismodalopen={isModalOpen.toString()}>
-          <S.ReSearchImg className="xi-search xi-2x" />현 지도에서 검색
+        <S.ReSearch onClick={handleReSearch} ismodalopen={ismodalopen}>
+          <S.ReSearchImg className="xi-search xi-2x" />
+          현재 위치에서 재검색
         </S.ReSearch>
         {/* 검색된 장소 마커 표시 */}
         {search.map((data) => (
@@ -270,10 +271,6 @@ const Kakao = () => {
                 <S.Overlay>
                   <S.Arrow />
                   <S.PlaceName>{data.place_name}</S.PlaceName>
-                  {/* 상세 정보로 연결되는 링크 */}
-                  <S.DetailLink href={data.place_url} target="_blank">
-                    <i className="xi-angle-right-min xi-2x"></i>
-                  </S.DetailLink>
                 </S.Overlay>
               </CustomOverlayMap>
             )}
@@ -289,15 +286,14 @@ const Kakao = () => {
             selected={item.value === keyword}
             // 키워드를 선택할 때 이동한 중심 좌표를 저장하도록 변경
             onClick={() => handleKeywordSelect(item.value)}>
-            {item.value} {item.emoji}
+            <i className={item.emoji + " xi-2x"}></i>
           </S.KeywordBtn>
         ))}
       </S.SearchBtns>
-
       {/* PC 화면일 경우, 검색 결과 목록 사이드바로 표시 */}
       {!isMobile && (
         <S.ListContainer isClosed={!isSidebarOpen}>
-          <Modal search={search} openMarkerId={openMarkerId} setOpenMarkerId={setOpenMarkerId} ismodalopen={isModalOpen} moveLatLng={moveLatLng} pagination={pagination} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+          <Modal search={search} openMarkerId={openMarkerId} setOpenMarkerId={setOpenMarkerId} ismodalopen={ismodalopen} moveLatLng={moveLatLng} pagination={pagination} currentPage={currentPage} setCurrentPage={setCurrentPage} />
           {/* 사이드바 열고 다는 버튼 */}
           <S.SideBarOpenBtn isClosed={!isSidebarOpen} onClick={() => setIsSidebarOpen((prev) => !prev)}>
             {isSidebarOpen ? <i className="xi-angle-left-min xi-2x"></i> : <i className="xi-angle-right-min xi-2x"></i>}
@@ -306,9 +302,9 @@ const Kakao = () => {
       )}
       {/* 모바일 화면일 경우 검색 결과 모달로 표시 */}
       {isMobile && (
-        <S.Modal>
-          <S.ModalBtn onClick={() => setIsModalOpen((prev) => !prev)} />
-          <Modal search={search} openMarkerId={openMarkerId} setOpenMarkerId={setOpenMarkerId} ismodalopen={isModalOpen} moveLatLng={moveLatLng} pagination={pagination} currentPage={currentPage} setCurrentPage={setCurrentPage} />
+        <S.Modal onClick={() => setIsModalOpen((prev) => !prev)}>
+          <S.ModalBtn />
+          <Modal search={search} openMarkerId={openMarkerId} setOpenMarkerId={setOpenMarkerId} ismodalopen={ismodalopen} moveLatLng={moveLatLng} pagination={pagination} currentPage={currentPage} setCurrentPage={setCurrentPage} />
         </S.Modal>
       )}
     </>

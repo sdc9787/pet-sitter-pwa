@@ -40,8 +40,10 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, ismodalopen, moveLatLng,
             }}
             selected={data.id === openMarkerId}>
             {/* 검색된 장소 상세 정보 표시 */}
-            <S.Name>{data.place_name}</S.Name>
-            <S.Category>{data.category_name}</S.Category>
+            <S.NameCategory>
+              <S.Name>{data.place_name}</S.Name>
+              <S.Category>{data.category_name.split(" > ").pop()}</S.Category>
+            </S.NameCategory>
             <S.Address>{data.address_name}</S.Address>
             <S.RoadAddress>
               <img src="https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/places_jibun.png" alt="지번" />
@@ -61,7 +63,7 @@ const Modal = ({ search, openMarkerId, setOpenMarkerId, ismodalopen, moveLatLng,
               onClick={() => {
                 shareKakao(data.place_name, data.address_name, data.place_url, data.phone, data.category_name);
               }}>
-              <i className="xi-search xi-2x" />
+              <i className="xi-kakaotalk xi-2x" />
             </S.ShareBtn>
           </S.Item>
         ))}

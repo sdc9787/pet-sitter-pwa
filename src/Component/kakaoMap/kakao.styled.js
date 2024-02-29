@@ -5,8 +5,8 @@ const theme = {
   colors: {
     white: "#ffffff",
     warning: "#ff0000", // 변경 가능한 색상 값으로 대체하세요
-    primary: "#00ff00", // 변경 가능한 색상 값으로 대체하세요
-    gray: "#cccccc", // 변경 가능한 색상 값으로 대체하세요
+    primary: "#ffffff", // 변경 가능한 색상 값으로 대체하세요
+    gray: "#575759", // 변경 가능한 색상 값으로 대체하세요
     bgGray: "#f0f0f0", // 변경 가능한 색상 값으로 대체하세요
     blue: "#0000ff", // 변경 가능한 색상 값으로 대체하세요
     txtColor: "#000000", // 변경 가능한 색상 값으로 대체하세요
@@ -37,24 +37,12 @@ export const Arrow = styled.div`
   bottom: -10px;
   left: 50%;
   transform: translateX(-50%);
-
-  &::before {
-    content: "";
-    width: 12px;
-    height: 12px;
-    border: 1px solid #bbb;
-    background-color: ${theme.colors.white};
-    transform: rotate(45deg);
-    transform-origin: 0 0;
-    position: absolute;
-    bottom: 6px;
-    left: 50%;
-  }
 `;
 
 export const PlaceName = styled.p`
   font-size: 16px;
-  padding: 10px 5px 10px 10px;
+  font-weight: 900;
+  padding: 10px;
 `;
 
 export const DetailLink = styled.a`
@@ -81,19 +69,20 @@ export const SearchBtns = styled.div`
 `;
 
 export const KeywordBtn = styled.button`
-  width: 110px;
+  width: 40px;
+  height: 40px;
   padding: 10px;
   border-radius: 10px;
   font-size: 0.875rem;
-  color: ${theme.colors.white};
-  background-color: ${({ selected }) => (selected ? theme.colors.warning : theme.colors.primary)};
+  color: ${theme.colors.gray};
+  background-color: ${({ selected }) => (selected ? theme.colors.bgGray : theme.colors.primary)};
 
   &:hover {
-    background-color: ${theme.colors.warning};
+    background-color: ${theme.colors.bgGray};
   }
 
   @media (max-width: 768px) {
-    width: 90px;
+    width: 40px;
     font-size: 0.75rem;
     padding: 8px;
   }
@@ -161,11 +150,18 @@ export const Item = styled.li`
   }
 `;
 
+export const NameCategory = styled.div`
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-end;
+  margin-bottom: 5px;
+`;
+
 export const Name = styled.p`
   font-size: 18px;
-  color: ${theme.colors.blue};
+  color: black;
   font-weight: 700;
-  margin-bottom: 4px;
+
   max-width: 310px;
 
   @media (max-width: 768px) {
@@ -174,8 +170,9 @@ export const Name = styled.p`
 `;
 
 export const Category = styled.p`
-  color: ${theme.colors.txtColor};
-  margin-bottom: 13px;
+  color: ${theme.colors.gray};
+  font-size: 12px;
+  margin-left: 6px;
 `;
 
 export const Address = styled.p`
@@ -210,13 +207,15 @@ export const Division = styled.p`
 `;
 
 export const PhoneNumber = styled.p`
-  color: ${theme.colors.green};
+  color: #6797e7;
 `;
 
 export const ShareBtn = styled.button`
-  padding: 7px;
-  border-radius: 6px;
-  border: 1px solid ${theme.colors.secondary};
+  padding: 5px;
+  border-radius: 8px;
+  border: 1px solid ${theme.colors.bgGray};
+  background-color: yellow;
+  color: #2d1c1b;
   position: absolute;
   top: 20px;
   right: 20px;
@@ -256,7 +255,7 @@ export const Modal = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  border: 1px solid ${theme.colors.gray};
+  border: 1px solid ${theme.colors.bgGray};
   border-bottom: 0;
   background-color: ${theme.colors.white};
   border-radius: 10px 10px 0 0;
@@ -265,7 +264,7 @@ export const Modal = styled.div`
 
 export const ModalBtn = styled.button`
   display: block;
-  margin: 15px auto 10px;
+  margin: 10px auto 13px;
   width: 50px;
   height: 5px;
   background-color: ${theme.colors.gray};
@@ -274,108 +273,65 @@ export const ModalBtn = styled.button`
 
 // 현재 내 위치로 돌아가는 버튼
 export const GoBackButton = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: absolute;
+  background-color: ${theme.colors.white};
   bottom: 20px;
   right: 20px;
   z-index: 10;
   width: 55px;
   height: 55px;
-  background: no-repeat white url("https://cdn-icons-png.flaticon.com/128/406/406217.png") center/contain;
-  background-size: 70%;
-  border-radius: 10px;
-  border: 1px solid ${theme.colors.secondary};
-
+  border-radius: 100px;
+  border: 1px solid ${theme.colors.white};
+  transition: 0.3s;
   @media (max-width: 768px) {
-    width: 45px;
-    height: 45px;
-    right: 10px;
     bottom: 40px;
   }
 
   // Modal이 열릴 때만 아래 추가 스타일을 적용
-  ${({ ismodalOpen }) =>
-    ismodalOpen &&
+  ${({ ismodalopen }) =>
+    ismodalopen &&
     css`
       @media (max-width: 768px) {
         bottom: 340px;
-        transition: 0.3s;
-      }
-    `}
-`;
-
-// 접속위치 텍스트
-export const GoBackTxt = styled.span`
-  position: absolute;
-  bottom: 30px;
-  right: 80px;
-  z-index: 10;
-  width: 90px;
-  height: 30px;
-  line-height: 30px;
-  border-radius: 20px;
-  text-align: center;
-  color: white;
-  margin-top: 10px;
-  background-color: ${theme.colors.primary};
-
-  @media (max-width: 768px) {
-    font-size: 12px;
-    width: 70px;
-    height: 25px;
-    line-height: 25px;
-    right: 60px;
-    bottom: 50px;
-  }
-
-  // Modal이 열릴 때만 아래 추가 스타일을 적용
-  ${({ ismodalOpen }) =>
-    ismodalOpen &&
-    css`
-      @media (max-width: 768px) {
-        bottom: 350px;
       }
     `}
 `;
 
 // 현 지도에서 검색 버튼
 export const ReSearch = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0px 10px;
   position: fixed;
-  color: white;
   font-size: 14px;
   bottom: 80px;
   transform: translateX(-50%);
   left: 50%;
   z-index: 10;
-  width: 160px;
-  height: 40px;
-  line-height: 40px;
+  height: 35px;
   border-radius: 30px;
+  color: ${theme.colors.gray};
   background-color: ${theme.colors.primary};
+  transition: 0.3s;
 
   @media (max-width: 768px) {
     font-size: 12px;
-    bottom: 105px;
-    width: 130px;
-    height: 30px;
-    line-height: 30px;
+    bottom: 100px;
   }
 
   // Modal이 열릴 때만 아래 추가 스타일을 적용
-  ${({ ismodalOpen }) =>
-    ismodalOpen &&
+  ${({ ismodalopen }) =>
+    ismodalopen &&
     css`
       @media (max-width: 768px) {
         bottom: 405px;
-        transition: 0.3s;
       }
     `}
 `;
 
 // 현 지도에서 검색 이미지
-export const ReSearchImg = styled.i`
-  margin: 7px 1px 0px -4px;
-
-  @media (max-width: 768px) {
-    margin-top: 5px;
-  }
-`;
+export const ReSearchImg = styled.i``;

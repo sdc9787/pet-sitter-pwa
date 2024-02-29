@@ -5,8 +5,11 @@
 }
 
 html {
-  font-family: Noto Sans KR, Roboto, sans-serif;
   background-color: white;
   color: #575759;
   font-weight: 700;
+}
+
+body {
+  font-family: "Noto Sans KR", "Roboto", sans-serif;
 }
