@@ -231,12 +231,11 @@ const Kakao = () => {
           }}
         />
         {/* 현재 내 위치로 돌아가는 버튼 */}
-        <S.GoBackButton onClick={goBack} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} ismodalopen={ismodalopen}>
+        <S.GoBackButton className="button-shadow" onClick={goBack} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} ismodalopen={ismodalopen}>
           <i className="xi-my-location xi-2x"></i>
         </S.GoBackButton>
         {/* 현 지도에서 키워드 재검색 버튼 */}
-        <S.ReSearch onClick={handleReSearch} ismodalopen={ismodalopen}>
-          <S.ReSearchImg className="xi-search xi-2x" />
+        <S.ReSearch className="button-shadow" onClick={handleReSearch} ismodalopen={ismodalopen}>
           현재 위치에서 재검색
         </S.ReSearch>
         {/* 검색된 장소 마커 표시 */}
@@ -264,8 +263,7 @@ const Kakao = () => {
             {/* 해당 마커에 커스텀 오버레이 표시 */}
             {openMarkerId === data.id && (
               <CustomOverlayMap yAnchor={2.1} position={{ lat: data.y, lng: data.x }} clickable>
-                <S.Overlay>
-                  <S.Arrow />
+                <S.Overlay className="button-shadow">
                   <S.PlaceName>{data.place_name}</S.PlaceName>
                 </S.Overlay>
               </CustomOverlayMap>
@@ -277,6 +275,7 @@ const Kakao = () => {
       <S.SearchBtns>
         {KEYWORD_LIST.map((item) => (
           <S.KeywordBtn
+            className="button-shadow"
             key={item.id}
             type="button"
             selected={item.value === keyword}

@@ -21,22 +21,12 @@ export const MapContainer = styled.div`
 
 export const Overlay = styled.div`
   border: 1px solid #bbb;
-  border-radius: 8px;
+  border-radius: 30px;
   background-color: ${theme.colors.white};
   position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
-`;
-
-export const Arrow = styled.div`
-  width: 20px;
-  height: 10px;
-  overflow: hidden;
-  position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
 `;
 
 export const PlaceName = styled.p`
@@ -311,7 +301,7 @@ export const ReSearch = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 0px 10px;
+  padding: 0px 15px;
   position: fixed;
   font-size: 14px;
   bottom: 80px;
