@@ -138,7 +138,7 @@ const Kakao = () => {
   useEffect(() => {
     if (!map) return;
     setOpenMarkerId(null);
-    searchPlaces(currentPage);
+    searchPlaces(currentPage, 1);
   }, [map, keyword, currentPage]);
 
   // 마커 클릭 시 CustomOverlayMap를 열고 닫는 함수
