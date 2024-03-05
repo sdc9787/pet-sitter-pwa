@@ -2,9 +2,9 @@
   "name": "SWR",
   "short_name": "SWR",
   "start_url": "/",
-  "display": "fullscreen",
+  "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#485EEE",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "icons/icon-48x48.png",
