@@ -15,6 +15,7 @@ export default ({ mode }) => {
             kakaoappkey: env.VITE_APP_KAKAOMAP_API_KEY,
             cliendId: env.VITE_APP_CLIEND_ID,
             redirectUri: env.VITE_APP_REDIRECT_URI,
+            apiurl: env.VITE_APP_API_URL,
           },
         },
       }),
