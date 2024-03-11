@@ -208,6 +208,12 @@ const Kakao = () => {
     }
   }, []);
 
+  // 처음 실행 시, 현재 위치로 검색하기
+  useEffect(() => {
+    if (!map) return;
+    searchPlaces(state.center, 1);
+  }, [map]);
+
   if (state.isLoading) return <div>Loading...</div>;
 
   return (
