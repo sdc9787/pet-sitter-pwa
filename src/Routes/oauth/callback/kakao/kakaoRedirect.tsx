@@ -8,6 +8,7 @@ const Redirection = () => {
 
   useEffect(() => {
     console.log(import.meta.env.VITE_APP_API_URL);
+    console.log(`${import.meta.env.VITE_APP_API_URL}${code}`);
     axios.get(`${import.meta.env.VITE_APP_API_URL}${code}`).then((r) => {
       console.log(r.data);
 
