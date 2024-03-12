@@ -15,7 +15,7 @@ const Redirection = () => {
 
       window.localStorage.setItem("access_token", r.data.access_token); // 엑세스 토큰 저장
       window.localStorage.setItem("nick_name", r.data.nick_name); // 닉네임 저장
-      window.localStorage.setItem("expires_at_unix", r.expires_at_unix); // 만료 시간 저장
+      window.localStorage.setItem("expires_at_unix", r.data.expires_at_unix); // 만료 시간 저장
 
       navigate("/home");
     });
