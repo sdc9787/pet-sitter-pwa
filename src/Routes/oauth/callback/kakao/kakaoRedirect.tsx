@@ -5,8 +5,9 @@ import { useNavigate } from "react-router-dom";
 const Redirection = () => {
   const code = window.location.search;
   const navigate = useNavigate();
-
+  console.log(1);
   useEffect(() => {
+    console.log(1);
     console.log(import.meta.env.VITE_APP_API_URL);
     console.log(`${import.meta.env.VITE_APP_API_URL}${code}`);
     axios.get(`${import.meta.env.VITE_APP_API_URL}${code}`).then((r: any) => {
