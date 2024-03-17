@@ -3,6 +3,7 @@ body {
 }
 
 .main-frame-routes {
+  width: 100%;
   display: flex;
   justify-content: center;
   align-items: flex-start;

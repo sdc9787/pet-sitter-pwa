@@ -1,40 +1,96 @@
 import useClickAnimation from "../Component/useClickAnimation";
 import "../Styles/useClickAnimation.css";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./routes-Styles/home.css";
 import axios from "axios";
 
 function Home() {
   const buttonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    axios
-      .post(
-        "https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app/api/user",
-        { user_name: "문", user_age: 25, user_email: "john@example.com", is_korean: true },
-        {
-          headers: { "Content-Type": `application/json`, "Content-Encoding": `charset=utf-8` },
-        }
-      )
-      .then((response) => {
-        console.log("200", response.data);
+  /* backapi 요청 보내기 */
+  // useEffect(() => {
+  //   axios
+  //     .post(
+  //       "https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app/api/user",
+  //       { user_name: "문", user_age: 25, user_email: "john@example.com", is_korean: true },
+  //       {
+  //         headers: { "Content-Type": `application/json`, "Content-Encoding": `charset=utf-8` },
+  //       }
+  //     )
+  //     .then((response) => {
+  //       console.log("200", response.data);
 
-        if (response.status === 200) {
-          console.log("true");
-        }
-      })
-      .catch((error) => console.log(error.response));
-  });
-  useClickAnimation(buttonRef, {
-    color: "gray",
-    size: 50,
-    duration: 500,
-    effectName: "ripple",
+  //       if (response.status === 200) {
+  //         console.log("true");
+  //       }
+  //     })
+  //     .catch((error) => console.log(error.response));
+  // });
+
+  //스크롤 이벤트
+  const [scrollPosition, setScrollPosition] = useState(0);
+  const updateScroll = () => {
+    setScrollPosition(window.scrollY || document.documentElement.scrollTop);
+  };
+  useEffect(() => {
+    window.addEventListener("scroll", updateScroll);
   });
 
   return (
     <>
-      <div></div>
+      <div className="home">
+        <div className={(scrollPosition < 1 ? "" : "home-navbar-shadow ") + " home-navbar"}>
+          <div className="home-navbar-title">
+            <i className="xi-bars xi-2x"></i>
+          </div>
+          <span className="home-navbar-logo">SWR</span>
+        </div>
+        <div className="home-main">
+          <div className="home-main-service">
+            <div className="home-main-service-title">
+              <span>서비스 추천</span>
+              <i className="xi-help-o xi-2x"></i>
+            </div>
+            <div className="home-main-service-content">
+              <div className="home-main-service-content-item">
+                <i className="xi-apps xi-2x"></i>
+                <span>돌봄</span>
+              </div>
+              <div className="home-main-service-content-item">
+                <i className="xi-calendar xi-2x"></i>
+                <span>산책</span>
+              </div>
+              <div className="home-main-service-content-item">
+                <i className="xi-apps xi-2x"></i>
+                <span>미용</span>
+              </div>
+              <div className="home-main-service-content-item">
+                <i className="xi-calendar xi-2x"></i>
+                <span>숙소</span>
+              </div>
+            </div>
+          </div>
+          <div className="home-main-service">
+            <div className="home-main-service-menu-title">
+              <span>플레이스</span>
+            </div>
+            <div className="home-main-service-menu">
+              <div className="home-main-service-content-item">
+                <i className="xi-cafe xi-2x"></i>
+                <span>카페</span>
+              </div>
+              <div className="home-main-service-content-item">
+                <i className="xi-cloudy xi-2x"></i>
+                <span>식당</span>
+              </div>
+              <div className="home-main-service-content-item">
+                <i className="xi-hotel xi-2x"></i>
+                <span>호텔</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </>
   );
 }
