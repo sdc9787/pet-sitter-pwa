@@ -13,17 +13,17 @@ import KakaoRedirect from "./Routes/oauth/callback/kakao/kakaoRedirect";
 function App() {
   let [tabState, setTabState] = useState<number>(() => JSON.parse(window.localStorage.getItem("tabState") as string) || 0); //class 체크 저장
   const navigate = useNavigate(); //페이지 이동
-  useEffect(() => {
-    if (window.localStorage.getItem("access_token") === null) {
-      navigate("/login");
-    } else navigate("/home");
-  }, []);
+  // useEffect(() => {
+  //   if (window.localStorage.getItem("access_token") === null) {
+  //     navigate("/login");
+  //   } else navigate("/home");
+  // }, []);
 
   return (
     <>
       <div className="main-frame-routes">
         <Routes>
-          <Route path="/login" element={<Login tabState={tabState}></Login>}></Route>
+          <Route path="/" element={<Login tabState={tabState}></Login>}></Route>
           <Route path="/home" element={<Home></Home>}></Route>
           <Route path="/pet" element={<Pet></Pet>}></Route>
           <Route path="/map" element={<Map></Map>}></Route>
