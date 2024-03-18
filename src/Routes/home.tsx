@@ -83,7 +83,7 @@ function Home() {
                 <span>카페</span>
               </div>
               <div className="home-main-service-content-item">
-                <i className="xi-cloudy xi-2x"></i>
+                <i className="xi-shop xi-2x"></i>
                 <span>식당</span>
               </div>
               <div className="home-main-service-content-item">
