@@ -17,6 +17,7 @@ function App() {
     if (window.localStorage.getItem("access_token") === null) {
       navigate("/login");
     } else navigate("/home");
+    setTabState(0);
   }, []);
 
   return (
