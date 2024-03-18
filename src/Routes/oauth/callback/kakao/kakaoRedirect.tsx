@@ -3,8 +3,8 @@ import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const Redirection = () => {
-  const code = window.location.search;
-  const url = "/callback";
+  const code: string = window.location.search;
+  const url: string = "/callback";
   const navigate = useNavigate();
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_APP_API_URL}${url}${code}`).then((r: any) => {

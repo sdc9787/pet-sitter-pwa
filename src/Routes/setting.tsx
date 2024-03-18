@@ -5,19 +5,24 @@ import UseClickAnimation from "../Component/useClickAnimation";
 import axios from "axios";
 
 function Setting() {
-  const url = "/mypage";
-  axios
-    .get(`${import.meta.env.VITE_APP_API_URL}${url}`, {
-      headers: {
-        Authorization: `${window.localStorage.getItem("access_token")}`,
-      },
-    })
-    .then((r: any) => {
-      console.log(r.data);
-    });
+  const url: string = "/mypage";
+  const [profileName, setProfileName] = useState<string>(""); //프로필 이름
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_APP_API_URL}${url}`, {
+        headers: {
+          Authorization: `${window.localStorage.getItem("access_token")}`,
+        },
+      })
+      .then((r: any) => {
+        console.log(r.data);
+        window.localStorage.setItem("nickname", r.data.nickname); // 엑세스 토큰 저장
+        window.localStorage.setItem("email", r.data.email); // 엑세스 토큰 저장
+        setProfileName(r.data.nickname);
+      });
+  }, []);
 
   const profileImg: string = "/img/profile.png"; //프로필 이미지 주소 (백에서 받아오기)
-  let profileName: string = "sdc9787"; //프로필 이름 (백에서 받아오기)
 
   //설정 목록
   let setting_menu = [
