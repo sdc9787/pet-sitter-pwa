@@ -2,8 +2,20 @@ import { useEffect, useRef, useState } from "react";
 import "./routes-Styles/setting.css";
 import "../Styles/useClickAnimation.css";
 import UseClickAnimation from "../Component/useClickAnimation";
+import axios from "axios";
 
 function Setting() {
+  const url = "/mypage";
+  axios
+    .get(`${import.meta.env.VITE_APP_API_URL}${url}`, {
+      headers: {
+        Authorization: `${window.localStorage.getItem("access_token")}`,
+      },
+    })
+    .then((r: any) => {
+      console.log(r.data);
+    });
+
   const profileImg: string = "/img/profile.png"; //프로필 이미지 주소 (백에서 받아오기)
   let profileName: string = "sdc9787"; //프로필 이름 (백에서 받아오기)
 
