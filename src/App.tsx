@@ -16,8 +16,10 @@ function App() {
   useEffect(() => {
     if (window.localStorage.getItem("access_token") === null) {
       navigate("/login");
-    } else navigate("/home");
-    setTabState(0);
+    } else {
+      setTabState(0);
+      navigate("/home");
+    }
   }, []);
 
   return (
