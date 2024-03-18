@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./Styles/App.css";
 import TabBar from "./Component/tabbar";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import Setting from "./Routes/setting";
 import Home from "./Routes/home";
 import Pet from "./Routes/pet";
@@ -12,12 +12,18 @@ import KakaoRedirect from "./Routes/oauth/callback/kakao/kakaoRedirect";
 
 function App() {
   let [tabState, setTabState] = useState<number>(() => JSON.parse(window.localStorage.getItem("tabState") as string) || 0); //class 체크 저장
+  const navigate = useNavigate(); //페이지 이동
+  useEffect(() => {
+    if (window.localStorage.getItem("access_token") === null) {
+      navigate("/login");
+    } else navigate("/home");
+  }, []);
 
   return (
     <>
       <div className="main-frame-routes">
         <Routes>
-          <Route path="/" element={<Login tabState={tabState}></Login>}></Route>
+          <Route path="/login" element={<Login tabState={tabState}></Login>}></Route>
           <Route path="/home" element={<Home></Home>}></Route>
           <Route path="/pet" element={<Pet></Pet>}></Route>
           <Route path="/map" element={<Map></Map>}></Route>
