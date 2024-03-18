@@ -28,3 +28,7 @@
 .tabbar-element-name {
   font-size: 13px;
 }
+
+.tabbar-element-icon {
+  color: rgb(51, 51, 51);
+}

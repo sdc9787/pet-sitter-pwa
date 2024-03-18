@@ -89,6 +89,12 @@
   padding: 15px 0px;
 }
 
+.home-main-service-content-item span {
+  margin-top: 5px;
+  color: rgb(53, 53, 53);
+  font-weight: 800;
+}
+
 .home-main-service-menu-title {
   display: flex;
   justify-content: space-between;

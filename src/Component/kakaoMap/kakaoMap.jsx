@@ -281,6 +281,7 @@ const Kakao = () => {
       <S.SearchBtns>
         {KEYWORD_LIST.map((item) => (
           <S.KeywordBtn
+            style={item.value === keyword ? { color: "black" } : {}}
             className="button-shadow"
             key={item.id}
             type="button"

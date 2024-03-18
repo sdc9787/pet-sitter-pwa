@@ -27,8 +27,8 @@ function TabBar(props: TabBarProps) {
                 navigate("/" + tabbar.Link[i]);
               }}
               className="tabbar-element">
-              <i className={(props.tabState === i ? a : tabbar.IconFalse[i]) + " xi-2x"}></i>
-              <span className="tabbar-element-name">{tabbar.IconName[i]}</span>
+              <i className={(props.tabState === i ? a + " tabbar-element-icon" : tabbar.IconFalse[i]) + " xi-2x"}></i>
+              <span className={(props.tabState === i ? "tabbar-element-icon" : "") + " tabbar-element-name"}>{tabbar.IconName[i]}</span>
             </div>
           );
         })}

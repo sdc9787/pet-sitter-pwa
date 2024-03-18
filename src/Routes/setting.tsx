@@ -4,7 +4,7 @@ import "../Styles/useClickAnimation.css";
 import UseClickAnimation from "../Component/useClickAnimation";
 
 function Setting() {
-  const profileImg: string = "profile.png"; //프로필 이미지 주소 (백에서 받아오기)
+  const profileImg: string = "/img/profile.png"; //프로필 이미지 주소 (백에서 받아오기)
   let profileName: string = "sdc9787"; //프로필 이름 (백에서 받아오기)
 
   //설정 목록
@@ -54,7 +54,7 @@ function Setting() {
     <>
       <div className="setting">
         <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
-          <span className={scrollPosition < 1 ? "setting-setting-title-false" : "setting-setting-title"}>프로필</span>
+          <span className={scrollPosition < 1 ? "setting-setting-title-false" : "setting-setting-title-true"}>프로필</span>
           <i className="xi-cog xi-2x"></i>
         </div>
         <div className="setting-profile">

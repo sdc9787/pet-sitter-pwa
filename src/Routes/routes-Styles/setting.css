@@ -20,9 +20,14 @@
   transition: 0.4s all ease-out;
 }
 
+.setting-setting i {
+  color: rgb(51, 51, 51);
+}
+
 .setting-setting span {
   font-size: 20px;
   transition: 0.2s all;
+  font-weight: 900;
 }
 
 .setting-setting-title-false {
@@ -30,7 +35,7 @@
 }
 
 .setting-setting-title-true {
-  color: #575759;
+  color: rgb(51, 51, 51);
 }
 
 .setting-setting-shadow {
@@ -46,6 +51,7 @@
 }
 
 .setting-profile-icon-name {
+  color: rgb(51, 51, 51);
   display: flex;
   justify-self: center;
   align-items: center;
@@ -66,6 +72,11 @@
   background-color: #f2f3f7;
   border-radius: 5px;
   font-size: 14px;
+  transition: 0.25s all ease-in-out;
+}
+
+.setting-profile-set:active {
+  color: rgb(51, 51, 51);
 }
 
 .setting-profile-set:active {
@@ -91,6 +102,7 @@
   font-size: 18px;
   font-weight: 900;
   margin-bottom: 15px;
+  color: rgb(51, 51, 51);
 }
 
 .setting-menu-element {
@@ -104,8 +116,10 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+  transition: 0.25s all ease-in-out;
 }
 .setting-menu-element-icon:active {
+  color: rgb(51, 51, 51);
   background-color: #f2f3f7;
 }
 
