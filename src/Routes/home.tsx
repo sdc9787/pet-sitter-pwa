@@ -3,6 +3,8 @@ import "../Styles/useClickAnimation.css";
 import { useEffect, useRef, useState } from "react";
 import "./routes-Styles/home.css";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPaw, faDog, faScissors, faHotel } from "@fortawesome/free-solid-svg-icons";
 
 function Home() {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -53,19 +55,19 @@ function Home() {
             </div>
             <div className="home-main-service-content">
               <div className="home-main-service-content-item">
-                <i className="xi-apps xi-2x"></i>
+                <FontAwesomeIcon icon={faPaw} size="2x" />
                 <span>돌봄</span>
               </div>
               <div className="home-main-service-content-item">
-                <i className="xi-calendar xi-2x"></i>
+                <FontAwesomeIcon icon={faDog} size="2x" />
                 <span>산책</span>
               </div>
               <div className="home-main-service-content-item">
-                <i className="xi-apps xi-2x"></i>
+                <FontAwesomeIcon icon={faScissors} size="2x" />
                 <span>미용</span>
               </div>
               <div className="home-main-service-content-item">
-                <i className="xi-calendar xi-2x"></i>
+                <FontAwesomeIcon icon={faHotel} size="2x" />
                 <span>숙소</span>
               </div>
             </div>
@@ -73,6 +75,7 @@ function Home() {
           <div className="home-main-service">
             <div className="home-main-service-menu-title">
               <span>플레이스</span>
+              <i className="xi-help-o xi-2x"></i>
             </div>
             <div className="home-main-service-menu">
               <div className="home-main-service-content-item">
