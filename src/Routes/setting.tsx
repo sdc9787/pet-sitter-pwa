@@ -16,8 +16,8 @@ function Setting() {
       })
       .then((r: any) => {
         console.log(r.data);
-        window.localStorage.setItem("nickname", r.data.nickname); // 엑세스 토큰 저장
-        window.localStorage.setItem("email", r.data.email); // 엑세스 토큰 저장
+        window.localStorage.setItem("nickname", r.data.nickname); // 닉네임 저장
+        window.localStorage.setItem("email", r.data.email); // 이메일 저장
         setProfileName(r.data.nickname);
       });
   }, []);
