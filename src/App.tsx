@@ -10,6 +10,7 @@ import Community from "./Routes/community";
 import Login from "./Routes/login";
 import KakaoRedirect from "./Routes/oauth/callback/kakao/kakaoRedirect";
 import axios from "axios";
+import Signup from "./Routes/signup";
 
 function App() {
   let [tabState, setTabState] = useState<number>(() => JSON.parse(window.localStorage.getItem("tabState") as string) || 0); //class 체크 저장
@@ -60,7 +61,8 @@ function App() {
     <>
       <div className="main-frame-routes">
         <Routes>
-          <Route path="/login" element={<Login tabState={tabState}></Login>}></Route>
+          <Route path="/login" element={<Login></Login>}></Route>
+          <Route path="/signup" element={<Signup></Signup>}></Route>
           <Route path="/home" element={<Home></Home>}></Route>
           <Route path="/pet" element={<Pet></Pet>}></Route>
           <Route path="/map" element={<Map></Map>}></Route>

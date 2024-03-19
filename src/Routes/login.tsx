@@ -1,9 +1,8 @@
 import { useNavigate } from "react-router-dom";
 import "./routes-Styles/login.css";
 
-function Login(props: { tabState: number }) {
+function Login() {
   const navigate = useNavigate(); //페이지 이동
-  const tabStateNv = ["home", "pet", "map", "community", "setting"];
 
   return (
     <>
