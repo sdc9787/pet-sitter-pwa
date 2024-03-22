@@ -1,4 +1,7 @@
 .signup {
+  background-color: white;
+  width: 100%;
+  z-index: 40;
   height: 100vh;
   display: flex;
   flex-direction: column;
@@ -15,7 +18,7 @@
 }
 
 .signup-center-title {
-  font-size: 50px;
+  font-size: 30px;
   font-weight: 800;
   margin-top: 80px;
   margin-bottom: 20px;
@@ -30,11 +33,14 @@
 
 .signup-input-span {
   position: relative;
+  margin-bottom: 20px;
 }
 
 .signup-input-span input {
+  font-size: 16px;
+  font-family: "Noto Sans KR", "Roboto";
   width: 100%;
-  padding: 10px;
+  padding: 13px 10px;
   border-radius: 8px;
 }
 
@@ -46,9 +52,34 @@
   padding: 5px;
 }
 
-.signup-birthday {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.signup-input-box {
+  display: grid;
+  width: 300px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
   gap: 10px;
+}
+
+.signup-input-span:first-child {
+  grid-column: 1 / 4;
+}
+
+.signup-input-span:nth-child(5) {
+  grid-column: 1 / 4;
+}
+
+.signup-input-span:last-child {
+  grid-column: 1 / 4;
+}
+
+.signup button {
+  width: 150px;
+  height: 50px;
+  background-color: #569bf6;
+  border: none;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  cursor: pointer;
 }
