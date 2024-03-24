@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./routes-Styles/signup.css";
 
@@ -22,13 +22,14 @@ function Signup() {
     }
   }, [year, month, day]);
 
-  //핸드폰 번호 입력시 자동으로 '-' 추가
   const phoneNumberRef = useRef(null);
   const yearRef = useRef(null);
   const monthRef = useRef(null);
   const dayRef = useRef(null);
   const pinNumberRef = useRef(null);
-  const pinNumberCheckRef = useRef(null);
+  const pinNumberCheckRef = React.createRef<HTMLInputElement>();
+
+  //입력창이 가득 찼을 때 다음 입력창으로 포커스 이동
   const handleInputChange = (e: any, nextField: any) => {
     if (e.target.value.length >= e.target.maxLength) {
       nextField.current.focus();
@@ -137,7 +138,7 @@ function Signup() {
               value={year}
               onChange={(e) => {
                 handleYear(e);
-                handleInputChange(e, yearRef);
+                handleInputChange(e, monthRef);
               }}
             />
           </div>
@@ -152,7 +153,7 @@ function Signup() {
               value={month}
               onChange={(e) => {
                 handleMonth(e);
-                handleInputChange(e, yearRef);
+                handleInputChange(e, dayRef);
               }}
             />
           </div>
@@ -167,21 +168,41 @@ function Signup() {
               value={day}
               onChange={(e) => {
                 handleDay(e);
-                handleInputChange(e, yearRef);
+                handleInputChange(e, pinNumberRef);
               }}
             />
           </div>
           {error && <div>{error}</div>}
           <div className="signup-input-span">
             <span>핀 번호</span>
-            <input ref={pinNumberRef} type="password" value={pinNumber} maxLength={6} onChange={(e) => setPinNumber(e.target.value)} />
+            <input
+              ref={pinNumberRef}
+              type="password"
+              value={pinNumber}
+              maxLength={6}
+              onChange={(e) => {
+                setPinNumber(e.target.value);
+                handleInputChange(e, pinNumberCheckRef);
+              }}
+            />
           </div>
           <div className="signup-input-span">
             <span>핀 번호 확인</span>
-            <input ref={pinNumberCheckRef} type="password" value={pinNumberCheck} maxLength={6} onChange={(e) => setPinNumber(e.target.value)} />
+            <input
+              ref={pinNumberCheckRef}
+              type="password"
+              value={pinNumberCheck}
+              maxLength={6}
+              onChange={(e) => {
+                setPinNumberCheck(e.target.value);
+                if (e.target.value.length === 6 && pinNumberCheckRef.current) {
+                  pinNumberCheckRef.current.blur();
+                }
+              }}
+            />
           </div>
         </div>
-        <button onClick={handleSignup}>회원가입</button>
+        <button onClick={handleSignup}>시작하기</button>
       </div>
     </>
   );

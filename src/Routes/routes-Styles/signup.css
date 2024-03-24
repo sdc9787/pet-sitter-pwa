@@ -7,7 +7,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 50px;
+  gap: 30px;
 }
 
 .signup-center {
@@ -20,7 +20,7 @@
 .signup-center-title {
   font-size: 30px;
   font-weight: 800;
-  margin-top: 80px;
+  margin-top: 50px;
   margin-bottom: 20px;
   color: black;
 }
@@ -82,4 +82,5 @@
   font-weight: 800;
   color: white;
   cursor: pointer;
+  margin-bottom: 20px;
 }
