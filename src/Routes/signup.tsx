@@ -106,7 +106,9 @@ function Signup() {
   //연도, 월, 일이 모두 입력되면 생일을 설정
   useEffect(() => {
     if (year && month && day) {
-      setBirthday(`${year}${month}${day}`);
+      const formattedMonth = month.padStart(2, "0");
+      const formattedDay = day.padStart(2, "0");
+      setBirthday(`${year}${formattedMonth}${formattedDay}`);
     }
   }, [year, month, day]);
 
