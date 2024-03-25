@@ -10,22 +10,23 @@ import Community from "./Routes/community/community";
 import Login from "./Routes/login";
 import KakaoRedirect from "./Routes/oauth/callback/kakao/kakaoRedirect";
 import axios from "axios";
-import Signup from "./Routes/signup";
+import Signup from "./Routes/signup/signup";
 import PinCheck from "./Routes/setting/pincheck/pincheck";
 import EditInfo from "./Routes/setting/edit-info/edit-info";
+import SignUpPinNumber from "./Routes/signup/signup-pinnumber";
 
 function App() {
   let [tabState, setTabState] = useState<number>(() => JSON.parse(window.localStorage.getItem("tabState") as string) || 0); //class 체크 저장
   const navigate = useNavigate(); //페이지 이동
-  useEffect(() => {
-    checkTokenValidity();
-    if (window.localStorage.getItem("access_token") === null) {
-      navigate("/login");
-    } else {
-      setTabState(0);
-      navigate("/home");
-    }
-  }, []);
+  // useEffect(() => {
+  //   checkTokenValidity();
+  //   if (window.localStorage.getItem("access_token") === null) {
+  //     navigate("/login");
+  //   } else {
+  //     setTabState(0);
+  //     navigate("/home");
+  //   }
+  // }, []);
 
   //tabState가 바뀔때마다 토큰 유효성 검사
   const checkTokenValidity = async () => {
@@ -66,6 +67,7 @@ function App() {
         <Routes>
           <Route path="/login" element={<Login></Login>}></Route>
           <Route path="/signup" element={<Signup></Signup>}></Route>
+          <Route path="/signup/pin-number" element={<SignUpPinNumber></SignUpPinNumber>}></Route>
           <Route path="/home" element={<Home></Home>}></Route>
           <Route path="/pet" element={<Pet></Pet>}></Route>
           <Route path="/map" element={<Map></Map>}></Route>

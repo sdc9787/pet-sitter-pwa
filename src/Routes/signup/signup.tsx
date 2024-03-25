@@ -1,15 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "./routes-Styles/signup.css";
+import "../routes-Styles/signup.css";
 import axios from "axios";
 
 function Signup() {
   const navigate = useNavigate(); //페이지 이동
-
   const [phoneNumber, setPhoneNumber] = useState(""); //핸드폰 번호
-  const [pinNumber, setPinNumber] = useState(""); //핀 번호
-  const [pinNumberCheck, setPinNumberCheck] = useState(""); //핀 번호 확인
-
   const [year, setYear] = useState(""); //연도
   const [month, setMonth] = useState(""); //월
   const [day, setDay] = useState(""); //일
@@ -19,9 +15,7 @@ function Signup() {
   const phoneNumberRef = useRef(null);
   const yearRef = useRef(null);
   const monthRef = useRef(null);
-  const dayRef = useRef(null);
-  const pinNumberRef = useRef(null);
-  const pinNumberCheckRef = React.createRef<HTMLInputElement>();
+  const dayRef = React.createRef<HTMLInputElement>();
 
   //입력창이 가득 찼을 때 다음 입력창으로 포커스 이동
   const handleInputChange = (e: any, nextField: any) => {
@@ -62,45 +56,14 @@ function Signup() {
       setError("생년월일을 입력해 주세요.");
       return;
     }
-    if (pinNumber.length < 6) {
-      setError("핀 번호를 입력해 주세요.");
-      return;
-    }
-    if (pinNumber !== pinNumberCheck) {
-      setError("핀 번호가 일치하지 않습니다.");
-      return;
-    }
+
+    navigate("/signup/pin-number", { state: { phoneNumber: phoneNumber, birthday: birthday } });
     // if (checkbox === false) {
     //   setError("개인정보 수집 및 이용에 동의해 주세요.");
     //   return;
     // }
 
     // 회원가입 처리
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/signup`,
-        {
-          phone_number: phoneNumber,
-          birthday: birthday,
-          pin_number: pinNumber,
-        },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("access_token")}`,
-          },
-        }
-      )
-      .then((r: any) => {
-        if (r.data?.success) {
-          navigate("/home");
-        } else {
-          setError("회원가입에 실패했습니다.");
-        }
-      })
-      .catch((error: any) => {
-        console.error(error);
-        setError("회원가입에 실패했습니다.");
-      });
   };
 
   //연도, 월, 일이 모두 입력되면 생일을 설정
@@ -217,35 +180,8 @@ function Signup() {
               value={day}
               onChange={(e) => {
                 handleDay(e);
-                handleInputChange(e, pinNumberRef);
-              }}
-            />
-          </div>
-
-          <div className="signup-input-span">
-            <span>핀 번호</span>
-            <input
-              ref={pinNumberRef}
-              type="password"
-              value={pinNumber}
-              maxLength={6}
-              onChange={(e) => {
-                setPinNumber(e.target.value);
-                handleInputChange(e, pinNumberCheckRef);
-              }}
-            />
-          </div>
-          <div className="signup-input-span">
-            <span>핀 번호 확인</span>
-            <input
-              ref={pinNumberCheckRef}
-              type="password"
-              value={pinNumberCheck}
-              maxLength={6}
-              onChange={(e) => {
-                setPinNumberCheck(e.target.value);
-                if (e.target.value.length === 6 && pinNumberCheckRef.current) {
-                  pinNumberCheckRef.current.blur();
+                if (e.target.value.length === 2 && dayRef.current) {
+                  dayRef.current.blur();
                 }
               }}
             />
@@ -257,7 +193,7 @@ function Signup() {
           <input type="checkbox" id="agree" />
           <label htmlFor="agree">개인정보 수집 및 이용에 동의합니다.</label>
         </div>
-        <button onClick={handleSignup}>시작하기</button>
+        <button onClick={handleSignup}>다음</button>
       </div>
     </>
   );

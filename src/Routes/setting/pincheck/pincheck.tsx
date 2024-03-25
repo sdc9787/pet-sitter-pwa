@@ -7,6 +7,7 @@ const PinCheck = () => {
   const navigate = useNavigate(); //페이지 이동
   const [pin, setPin] = useState<string>("");
   const [keypadNumbers, setKeypadNumbers] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 0]);
+  const [error, setError] = useState(""); //에러 메시지
 
   useEffect(() => {
     console.log(pin);
@@ -29,13 +30,16 @@ const PinCheck = () => {
           console.log(r.data);
         })
         .catch((error: any) => {
+          keypadnumberRandom();
           setPin("");
+          setError("핀번호가 일치하지 않습니다.");
           console.error(error.response.data.bad);
         });
     }
   }, [pin]);
 
   const handlePinInput = (number: number) => {
+    setError("");
     if (pin.length < 6) {
       setPin((prevPin) => prevPin + number);
     }
@@ -49,7 +53,7 @@ const PinCheck = () => {
     setPin((prevPin) => prevPin.slice(0, -1));
   };
 
-  useEffect(() => {
+  const keypadnumberRandom = () => {
     setKeypadNumbers((prevNumbers) => {
       const numbers = [...prevNumbers];
       for (let i = numbers.length - 1; i > 0; i--) {
@@ -58,6 +62,10 @@ const PinCheck = () => {
       }
       return numbers;
     });
+  };
+
+  useEffect(() => {
+    keypadnumberRandom();
   }, []);
 
   const renderPinDisplay = () => {
@@ -74,6 +82,7 @@ const PinCheck = () => {
       <div>
         <div className="pincheck-title">PIN 비밀번호 입력</div>
         <div className="pincheck-display">{renderPinDisplay()}</div>
+        {error && <div className="signup-pinnumber-error">{error}</div>}
       </div>
       <div className="pincheck-keypad">
         {keypadNumbers.map((number) => (
