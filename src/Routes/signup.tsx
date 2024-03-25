@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./routes-Styles/signup.css";
 import axios from "axios";
-import { faL } from "@fortawesome/free-solid-svg-icons";
 
 function Signup() {
   const navigate = useNavigate(); //페이지 이동
@@ -107,9 +106,13 @@ function Signup() {
   //연도, 월, 일이 모두 입력되면 생일을 설정
   useEffect(() => {
     if (year && month && day) {
-      setBirthday(`${year}-${month}-${day}`);
+      setBirthday(`${year}${month}${day}`);
     }
   }, [year, month, day]);
+
+  useEffect(() => {
+    console.log(birthday);
+  }, [birthday]);
 
   //연도 입력시 유효성 검사
   const handleYear = (e: any) => {
