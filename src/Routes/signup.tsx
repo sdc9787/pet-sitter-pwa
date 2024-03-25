@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./routes-Styles/signup.css";
+import axios from "axios";
 
 function Signup() {
   const navigate = useNavigate(); //페이지 이동
@@ -14,13 +15,6 @@ function Signup() {
   const [day, setDay] = useState(""); //일
   const [birthday, setBirthday] = useState(""); //생일
   const [error, setError] = useState(""); //에러 메시지
-
-  //연도, 월, 일이 모두 입력되면 생일을 설정
-  useEffect(() => {
-    if (year && month && day) {
-      setBirthday(`${year}-${month}-${day}`);
-    }
-  }, [year, month, day]);
 
   const phoneNumberRef = useRef(null);
   const yearRef = useRef(null);
@@ -60,12 +54,58 @@ function Signup() {
 
   //회원가입 버튼 클릭시
   const handleSignup = () => {
-    // Handle signup logic here
-    // You can access the entered values using phoneNumber, pinNumber, and birthday states
-    // Perform any necessary validation and API calls
-    // After successful signup, navigate to the next page using navigate function
+    if (phoneNumber.length < 13) {
+      setError("핸드폰 번호를 입력해 주세요.");
+      return;
+    }
+    if (year === "" || month === "" || day === "") {
+      setError("생년월일을 입력해 주세요.");
+      return;
+    }
+    if (pinNumber.length < 6) {
+      setError("핀 번호를 입력해 주세요.");
+      return;
+    }
+    if (pinNumber !== pinNumberCheck) {
+      setError("핀 번호가 일치하지 않습니다.");
+      return;
+    }
+    // 회원가입 처리
+    axios
+      .post(
+        `${import.meta.env.VITE_APP_API_URL}/signup`,
+        {
+          phone_number: phoneNumber,
+          birthday: birthday,
+          pin_number: pinNumber,
+        },
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
+      .then((r: any) => {
+        if (r.data?.success) {
+          navigate("/home");
+        } else {
+          setError("회원가입에 실패했습니다.");
+        }
+      })
+      .catch((error: any) => {
+        console.error(error);
+        setError("회원가입에 실패했습니다.");
+      });
+
     navigate("/home");
   };
+
+  //연도, 월, 일이 모두 입력되면 생일을 설정
+  useEffect(() => {
+    if (year && month && day) {
+      setBirthday(`${year}-${month}-${day}`);
+    }
+  }, [year, month, day]);
 
   //연도 입력시 유효성 검사
   const handleYear = (e: any) => {
