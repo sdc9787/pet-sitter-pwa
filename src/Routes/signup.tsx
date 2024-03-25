@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./routes-Styles/signup.css";
 import axios from "axios";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 function Signup() {
   const navigate = useNavigate(); //페이지 이동
@@ -35,7 +36,7 @@ function Signup() {
     const value = e.target.value.replace(/\D/g, ""); // 숫자만 남김
     let formattedValue = "";
 
-    if (value.length > 2) {
+    if (value.length > 3) {
       const part1 = value.slice(0, 3);
       const part2 = value.slice(3, 7);
       const part3 = value.slice(7, 11);
@@ -70,6 +71,11 @@ function Signup() {
       setError("핀 번호가 일치하지 않습니다.");
       return;
     }
+    // if (checkbox === false) {
+    //   setError("개인정보 수집 및 이용에 동의해 주세요.");
+    //   return;
+    // }
+
     // 회원가입 처리
     axios
       .post(
@@ -96,8 +102,6 @@ function Signup() {
         console.error(error);
         setError("회원가입에 실패했습니다.");
       });
-
-    navigate("/home");
   };
 
   //연도, 월, 일이 모두 입력되면 생일을 설정
@@ -212,7 +216,7 @@ function Signup() {
               }}
             />
           </div>
-          {error && <div>{error}</div>}
+
           <div className="signup-input-span">
             <span>핀 번호</span>
             <input
@@ -241,6 +245,12 @@ function Signup() {
               }}
             />
           </div>
+        </div>
+        {error && <div className="signup-error">{error}</div>}
+
+        <div className="signup-checkbox">
+          <input type="checkbox" id="agree" />
+          <label htmlFor="agree">개인정보 수집 및 이용에 동의합니다.</label>
         </div>
         <button onClick={handleSignup}>시작하기</button>
       </div>
