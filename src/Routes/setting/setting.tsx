@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from "react";
-import "./routes-Styles/setting.css";
-import "../Styles/useClickAnimation.css";
-import UseClickAnimation from "../Component/useClickAnimation";
+import "../routes-Styles/setting.css";
+import "../../Styles/useClickAnimation.css";
+import UseClickAnimation from "../../Component/useClickAnimation";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Setting() {
   const url: string = "/mypage";
+  const navigate = useNavigate(); //페이지 이동
   const [profileName, setProfileName] = useState<string>(""); //프로필 이름
   useEffect(() => {
     axios
@@ -79,7 +81,7 @@ function Setting() {
             <img className="setting-profile-icon" src={profileImg} alt="프로필 아이콘" />
             <span className="setting-profile-name">{profileName}</span>
           </div>
-          <button ref={buttonRefProfile} className="setting-profile-set">
+          <button ref={buttonRefProfile} onClick={() => navigate("/setting/pincheck")} className="setting-profile-set">
             프로필 변경
           </button>
         </div>

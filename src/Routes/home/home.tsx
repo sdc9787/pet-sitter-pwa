@@ -1,7 +1,6 @@
-import useClickAnimation from "../Component/useClickAnimation";
-import "../Styles/useClickAnimation.css";
+import "../../Styles/useClickAnimation.css";
 import { useEffect, useRef, useState } from "react";
-import "./routes-Styles/home.css";
+import "../routes-Styles/home.css";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaw, faDog, faScissors, faHotel } from "@fortawesome/free-solid-svg-icons";
