@@ -81,7 +81,14 @@ function Setting() {
             <img className="setting-profile-icon" src={profileImg} alt="프로필 아이콘" />
             <span className="setting-profile-name">{profileName}</span>
           </div>
-          <button ref={buttonRefProfile} onClick={() => navigate("/setting/pincheck")} className="setting-profile-set">
+          <button
+            ref={buttonRefProfile}
+            onClick={() =>
+              setTimeout(() => {
+                navigate("/setting/pincheck");
+              }, 400)
+            }
+            className="setting-profile-set">
             프로필 변경
           </button>
         </div>
