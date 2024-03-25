@@ -24,7 +24,9 @@ function App() {
   //     navigate("/home");
   //   }
   // }, []);
-  navigate("/signup");
+  useEffect(() => {
+    navigate("/signup");
+  }, []);
   //tabState가 바뀔때마다 토큰 유효성 검사
   const checkTokenValidity = async () => {
     const expiresAtUnix = JSON.parse(window.localStorage.getItem("expires_at_unix") as string);
