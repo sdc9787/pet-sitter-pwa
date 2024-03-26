@@ -18,15 +18,17 @@ import SignUpPinNumber from "./Routes/signup/signup-pinnumber";
 function App() {
   let [tabState, setTabState] = useState<number>(() => JSON.parse(window.localStorage.getItem("tabState") as string) || 0); //class 체크 저장
   const navigate = useNavigate(); //페이지 이동
-  // useEffect(() => {
-  //   checkTokenValidity();
-  //   if (window.localStorage.getItem("access_token") === null) {
-  //     navigate("/login");
-  //   } else {
-  //     setTabState(0);
-  //     navigate("/home");
-  //   }
-  // }, []);
+
+  //토큰 유효성 검사
+  useEffect(() => {
+    checkTokenValidity();
+    if (window.localStorage.getItem("access_token") === null) {
+      navigate("/login");
+    } else {
+      setTabState(0);
+      navigate("/home");
+    }
+  }, []);
 
   //tabState가 바뀔때마다 토큰 유효성 검사
   const checkTokenValidity = async () => {
