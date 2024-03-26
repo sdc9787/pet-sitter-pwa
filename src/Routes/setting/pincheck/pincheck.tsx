@@ -26,7 +26,7 @@ const PinCheck = () => {
           }
         )
         .then((r: any) => {
-          navigate("/setting/edit-info");
+          navigate("/setting/edit-info", { state: { nickname: r.data.nickname, phone_number: r.data.phone_number } });
           console.log(r.data);
         })
         .catch((error: any) => {

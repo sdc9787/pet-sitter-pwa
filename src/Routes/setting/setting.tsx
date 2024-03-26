@@ -100,7 +100,7 @@ function Setting() {
               }, 400)
             }
             className="setting-profile-set">
-            프로필 변경
+            개인정보 수정
           </button>
           <button ref={buttonRefProfile} onClick={() => handleLogout()} className="setting-profile-set">
             로그아웃

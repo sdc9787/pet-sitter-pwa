@@ -1,0 +1,82 @@
+.edit-profile {
+  background-color: white;
+  width: 100%;
+  height: 100vh;
+  z-index: 40;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.edit-profile-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+
+.edit-profile-center-title {
+  font-size: 30px;
+  font-weight: 800;
+  margin-top: 50px;
+  margin-bottom: 20px;
+  color: black;
+}
+
+.edit-profile-center-content {
+  text-align: center;
+  word-break: keep-all;
+  padding: 0px 20px;
+}
+
+.edit-profile-input-span {
+  position: relative;
+  margin-bottom: 20px;
+}
+
+.edit-profile-input-span input {
+  font-size: 16px;
+  font-family: "Noto Sans KR", "Roboto";
+  width: 100%;
+  padding: 13px 10px;
+  border-radius: 8px;
+}
+
+.edit-profile-input-span span {
+  position: absolute;
+  top: -13px;
+  left: 10px;
+  background-color: white;
+  padding: 5px;
+}
+
+.edit-profile-input-box {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 10px;
+  max-width: 300px;
+
+  gap: 10px;
+}
+
+.edit-profile button {
+  width: 150px;
+  height: 50px;
+  background-color: #569bf6;
+  border: none;
+  border-radius: 8px;
+  font-size: 20px;
+  font-weight: 800;
+  color: white;
+  cursor: pointer;
+  margin: 20px 0px;
+}
+
+.edit-profile-error {
+  font-size: 16px;
+  font-weight: 800;
+  margin-bottom: 20px;
+}

@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
 import "./edit-info.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const EditProfile = () => {
   const [nickname, setNickname] = useState<string>("");
+  const [nicknamePlaceholder, setNicknamePlaceholder] = useState<string>(""); //닉네임 입력창 placeholder
   const [phoneNumber, setPhoneNumber] = useState<string>("");
+  const [phoneNumberPlaceholder, setPhoneNumberPlaceholder] = useState<string>(""); //핸드폰 번호 입력창 placeholder
   const [pinNumber, setPinNumber] = useState<string>("");
   const [pinNumberCheck, setPinNumberCheck] = useState<string>("");
   const [error, setError] = useState<string>("");
@@ -13,6 +15,17 @@ const EditProfile = () => {
   const phoneNumberRef = useRef(null);
   const pinNumberRef = useRef(null);
   const pinNumberCheckRef = React.createRef<HTMLInputElement>();
+
+  const location = useLocation(); //현재 경로에 대한 정보를 제공하는 hook
+
+  useEffect(() => {
+    if (location.state) {
+      setPhoneNumber(location.state.phone_number);
+      setNickname(location.state.nickname);
+      setPhoneNumberPlaceholder(location.state.phone_number);
+      setNicknamePlaceholder(location.state.nickname);
+    }
+  }, [location]);
 
   const handlePhoneNumberChange = (e: any) => {
     const value = e.target.value.replace(/\D/g, ""); // 숫자만 남김
@@ -76,14 +89,14 @@ const EditProfile = () => {
       <div className="edit-profile-input-box">
         <div className="edit-profile-input-span">
           <span>닉네임</span>
-          <input type="text" value={nickname} onChange={(e) => setNickname(e.target.value)} />
+          <input type="text" placeholder={nicknamePlaceholder} onChange={(e) => setNickname(e.target.value)} />
         </div>
         <div className="edit-profile-input-span">
           <span>핸드폰 번호</span>
           <input
             ref={phoneNumberRef}
             type="text"
-            value={phoneNumber}
+            placeholder={phoneNumberPlaceholder}
             maxLength={13}
             onChange={(e) => {
               handlePhoneNumberChange(e);
