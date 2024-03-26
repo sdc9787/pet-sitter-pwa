@@ -69,6 +69,17 @@ function Setting() {
   useEffect(() => {
     window.addEventListener("scroll", updateScroll);
   });
+
+  const handleLogout = () => {
+    window.localStorage.removeItem("access_token");
+    window.localStorage.removeItem("refresh_token");
+    window.localStorage.removeItem("nickname");
+    window.localStorage.removeItem("email");
+    window.localStorage.removeItem("expires_at_unix");
+    window.localStorage.removeItem("refresh_token_expires_in");
+    navigate("/login");
+  };
+
   return (
     <>
       <div className="setting">
@@ -90,6 +101,9 @@ function Setting() {
             }
             className="setting-profile-set">
             프로필 변경
+          </button>
+          <button ref={buttonRefProfile} onClick={() => handleLogout()} className="setting-profile-set">
+            로그아웃
           </button>
         </div>
         <div className="setting-menu">

@@ -14,7 +14,7 @@ const Redirection = () => {
       window.localStorage.setItem("refresh_token", r.data.refresh_token); // 만료 시간 저장
       window.localStorage.setItem("refresh_token_expires_in", r.data.refresh_token_expires_in); // 만료 시간 저장
 
-      r.data.login_or_sign === "회원가입" ? navigate("/signup") : navigate("/home");
+      // r.data.login_or_sign === "회원가입" ? navigate("/signup") : navigate("/home");
       // navigate("/signup");
     });
   }, []);

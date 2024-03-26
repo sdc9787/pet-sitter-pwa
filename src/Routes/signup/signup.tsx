@@ -10,7 +10,9 @@ function Signup() {
   const [month, setMonth] = useState(""); //월
   const [day, setDay] = useState(""); //일
   const [birthday, setBirthday] = useState(""); //생일
-  const [error, setError] = useState(""); //에러 메시지
+  const [error, setError] = useState("에러 메시지"); //에러 메시지
+
+  const [isChecked, setIsChecked] = useState(false);
 
   const phoneNumberRef = useRef(null);
   const yearRef = useRef(null);
@@ -56,12 +58,12 @@ function Signup() {
       setError("생년월일을 입력해 주세요.");
       return;
     }
+    if (isChecked === false) {
+      setError("개인정보 수집 및 이용에 동의해 주세요.");
+      return;
+    }
 
     navigate("/signup/pin-number", { state: { phoneNumber: phoneNumber, birthday: birthday } });
-    // if (checkbox === false) {
-    //   setError("개인정보 수집 및 이용에 동의해 주세요.");
-    //   return;
-    // }
 
     // 회원가입 처리
   };
@@ -85,7 +87,7 @@ function Signup() {
 
     if (inputValue === "" || (Number(inputValue) >= 1 && Number(inputValue) <= 2024)) {
       setYear(inputValue);
-      setError("");
+      setError("에러 메시지");
     } else {
       setError("연도는 2024까지만 입력 가능합니다.");
     }
@@ -97,7 +99,7 @@ function Signup() {
 
     if (inputValue === "" || (Number(inputValue) >= 1 && Number(inputValue) <= 12)) {
       setMonth(inputValue);
-      setError("");
+      setError("에러 메시지");
     } else {
       setError("월은 1~12까지만 입력 가능합니다.");
     }
@@ -109,10 +111,14 @@ function Signup() {
 
     if (inputValue === "" || (Number(inputValue) >= 1 && Number(inputValue) <= 31)) {
       setDay(inputValue);
-      setError("");
+      setError("에러 메시지");
     } else {
       setError("일은 1~31까지만 입력 가능합니다.");
     }
+  };
+
+  const handleCheckboxChange = (event: any) => {
+    setIsChecked(event.target.checked);
   };
 
   return (
@@ -187,10 +193,14 @@ function Signup() {
             />
           </div>
         </div>
-        {error && <div className="signup-error">{error}</div>}
+        {
+          <div className="signup-error" style={error === "에러 메시지" ? { color: "white" } : { color: "red" }}>
+            {error}
+          </div>
+        }
 
         <div className="signup-checkbox">
-          <input type="checkbox" id="agree" />
+          <input type="checkbox" id="agree" checked={isChecked} onChange={handleCheckboxChange} />
           <label htmlFor="agree">개인정보 수집 및 이용에 동의합니다.</label>
         </div>
         <button onClick={handleSignup}>다음</button>
