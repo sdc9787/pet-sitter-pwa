@@ -1,25 +1,25 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const 초기값: { count: number; user: string } = { count: 1, user: "kim" };
+const initialTabbarState: { state: number } = { state: 1 };
 
-let user = createSlice({
-  name: "user",
-  initialState: 초기값,
+let tabbar = createSlice({
+  name: "tabbar",
+  initialState: initialTabbarState,
   reducers: {
-    rt(state, action: PayloadAction<number>) {
-      state.count += action.payload;
+    selectedTab(state, action: PayloadAction<number>) {
+      state.state = action.payload;
     },
   },
 });
 
 let store = configureStore({
   reducer: {
-    user: user.reducer,
+    tabbar: tabbar.reducer,
   },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
-export let { rt } = user.actions;
+export let { selectedTab } = tabbar.actions;
 
 export default store;

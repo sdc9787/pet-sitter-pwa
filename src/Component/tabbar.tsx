@@ -1,18 +1,21 @@
 import { useNavigate } from "react-router-dom";
 import "../Styles/TabBar.css";
-type TabBarProps = {
-  tabState: number;
-  setTabState: React.Dispatch<React.SetStateAction<number>>;
-};
+import { useDispatch, useSelector } from "react-redux";
+import { selectedTab } from "../Store/store";
 
-function TabBar(props: TabBarProps) {
+function TabBar() {
   let tabbar = {
+    //tabbar 정보
     IconFalse: ["xi-home-o", "xi-paper-o", "xi-map-o", "xi-forum-o", "xi-user-o"],
     IconTrue: ["xi-home", "xi-paper", "xi-map", "xi-forum", "xi-user"],
     IconName: ["홈", "산책", "지도", "커뮤니티", "프로필"],
     Link: ["home", "pet", "map", "community", "setting"],
   };
   const navigate = useNavigate(); //페이지 이동
+
+  //tabbar state redux함수
+  let tabberState = useSelector((state: any) => state.tabbar); //tabbar state
+  let dispatch = useDispatch(); //dispatch 함수
 
   return (
     <>
@@ -22,13 +25,13 @@ function TabBar(props: TabBarProps) {
             <div
               key={i}
               onClick={() => {
-                props.setTabState(i);
+                dispatch(selectedTab(i));
                 window.localStorage.setItem("tabState", JSON.stringify(i));
                 navigate("/" + tabbar.Link[i]);
               }}
               className="tabbar-element">
-              <i className={(props.tabState === i ? a + " tabbar-element-icon" : tabbar.IconFalse[i]) + " xi-2x"}></i>
-              <span className={(props.tabState === i ? "tabbar-element-icon" : "") + " tabbar-element-name"}>{tabbar.IconName[i]}</span>
+              <i className={(tabberState.state === i ? a + " tabbar-element-icon" : tabbar.IconFalse[i]) + " xi-2x"}></i>
+              <span className={(tabberState.state === i ? "tabbar-element-icon" : "") + " tabbar-element-name"}>{tabbar.IconName[i]}</span>
             </div>
           );
         })}
