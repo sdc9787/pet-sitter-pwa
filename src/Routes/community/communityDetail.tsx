@@ -11,14 +11,23 @@ function CommunityDetail() {
   useEffect(() => {
     // detail이 존재할 때만 요청을 보냄
     axios
-      .get(`${import.meta.env.VITE_APP_API_URL}/community/${detail.community_board_id}`, {
-        headers: {
-          Authorization: `${window.localStorage.getItem("access_token")}`,
+      .post(
+        `${import.meta.env.VITE_APP_API_URL}/community/replies`,
+        {
+          communityBoardId: detail.community_board_id,
         },
-      })
+        {
+          headers: {
+            Authorization: `${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
       .then((r: any) => {
         console.log(r.data);
         setComment(r.data);
+      })
+      .catch((error: any) => {
+        console.error(error);
       });
   }, []); // detail이 변경될 때마다 useEffect 콜백이 실행됨
 
