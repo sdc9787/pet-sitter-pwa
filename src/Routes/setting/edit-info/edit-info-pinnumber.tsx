@@ -3,13 +3,10 @@ import "./edit-info-pinnumber.css";
 import { useNavigate, useLocation } from "react-router-dom";
 
 const EditInFoPinNumber = (props: any) => {
-  const [phoneNumber, setPhoneNumber] = useState(""); //핸드폰 번호
   const [pinNumber, setPinNumber] = useState(""); //핀 번호
   const [pinNumberCheck, setPinNumberCheck] = useState(""); //핀 번호 확인
   const [pintitle, setPinTitle] = useState("PIN 비밀번호 입력"); //핀번호 입력인지 확인인지 [PIN 비밀번호 입력, PIN 비밀번호 확인
-  const location = useLocation();
 
-  const navigate = useNavigate(); //페이지 이동
   const [keypadNumbers, setKeypadNumbers] = useState([1, 2, 3, 4, 5, 6, 7, 8, 9, 0]);
 
   const [pinBoolean, setPinBoolean] = useState(false); //핀번호 확인
@@ -77,24 +74,25 @@ const EditInFoPinNumber = (props: any) => {
   };
 
   return (
-    <div className="signup-pinnumber">
-      <div>
-        <div className="signup-pinnumber-title">{pintitle}</div>
-
-        <div className="signup-pinnumber-display">{renderPinDisplay()}</div>
-      </div>
-      <div className="signup-pinnumber-keypad">
-        {keypadNumbers.map((number) => (
-          <button className="signup-pinnumber-keypad-number" key={number} onClick={() => handlePinInput(number)}>
-            {number}
+    <div className="edit-pinnumber">
+      <div className="signup-pinnumber">
+        <div>
+          <div className="signup-pinnumber-title">{pintitle}</div>
+          <div className="signup-pinnumber-display">{renderPinDisplay()}</div>
+        </div>
+        <div className="signup-pinnumber-keypad">
+          {keypadNumbers.map((number) => (
+            <button className="signup-pinnumber-keypad-number" key={number} onClick={() => handlePinInput(number)}>
+              {number}
+            </button>
+          ))}
+          <button className="signup-pinnumber-keypad-clear" onClick={handleClearPin}>
+            전체삭제
           </button>
-        ))}
-        <button className="signup-pinnumber-keypad-clear" onClick={handleClearPin}>
-          전체삭제
-        </button>
-        <button className="signup-pinnumber-keypad-backspace" onClick={handleBackspace}>
-          <i className="xi-backspace xi-2x"></i>
-        </button>
+          <button className="signup-pinnumber-keypad-backspace" onClick={handleBackspace}>
+            <i className="xi-backspace xi-2x"></i>
+          </button>
+        </div>
       </div>
     </div>
   );
