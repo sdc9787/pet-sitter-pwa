@@ -1,136 +1,36 @@
 import axios from "axios";
 import "../routes-Styles/community.css";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Community() {
-  let community = [
-    {
-      title: "테스트 제목입니다.", //제목
-      content: "테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. ", //내용
-      likes: 10, //좋아요
-      created_date: "1시간전", //업로드 날짜
-      img: "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_960_720.jpg", //이미지
-      writer_nickname: "sdc9787", //작성자
-      views: 100, //조회수
-      commentList: [
+  let [communityPost, setCommunityPost] = useState<any>([]); //커뮤니티 게시글
+
+  const navigate = useNavigate(); //페이지 이동
+
+  //서버 api 호출
+  useEffect(() => {
+    axios
+      .post(
+        `${import.meta.env.VITE_APP_API_URL}/community`,
         {
-          writer_nickname: "김철수",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
+          page: 1,
         },
         {
-          writer_nickname: "김영희",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
-        },
-      ],
-    },
-    {
-      title: "테스트 제목입니다.", //제목
-      content: "테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. ", //내용
-      likes: 10, //좋아요
-      created_date: "1시간전", //업로드 날짜
-      img: "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_960_720.jpg", //이미지
-      writer_nickname: "sdc9787", //작성자
-      views: 100, //조회수
-      commentList: [
-        {
-          writer_nickname: "김철수",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
-        },
-        {
-          writer_nickname: "김영희",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
-        },
-      ],
-    },
-    {
-      title: "테스트 제목입니다.", //제목
-      content: "테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. ", //내용
-      likes: 10, //좋아요
-      created_date: "1시간전", //업로드 날짜
-      img: "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_960_720.jpg", //이미지
-      writer_nickname: "sdc9787", //작성자
-      views: 100, //조회수
-      commentList: [
-        {
-          writer_nickname: "김철수",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
-        },
-        {
-          writer_nickname: "김영희",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
-        },
-      ],
-    },
-    {
-      title: "테스트 제목입니다.", //제목
-      content: "테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. ", //내용
-      likes: 10, //좋아요
-      created_date: "1시간전", //업로드 날짜
-      img: "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_960_720.jpg", //이미지
-      writer_nickname: "sdc9787", //작성자
-      views: 100, //조회수
-      commentList: [
-        {
-          writer_nickname: "김철수",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
-        },
-        {
-          writer_nickname: "김영희",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
-        },
-      ],
-    },
-    {
-      title: "테스트 제목입니다.", //제목
-      content: "테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. ", //내용
-      likes: 10, //좋아요
-      created_date: "1시간전", //업로드 날짜
-      img: "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_960_720.jpg", //이미지
-      writer_nickname: "sdc9787", //작성자
-      views: 100, //조회수
-      commentList: [
-        {
-          writer_nickname: "김철수",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
-        },
-        {
-          writer_nickname: "김영희",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
-        },
-      ],
-    },
-    {
-      title: "테스트 제목입니다.", //제목
-      content: "테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. 테스트 내용입니다. ", //내용
-      likes: 10, //좋아요
-      created_date: "1시간전", //업로드 날짜
-      img: "https://cdn.pixabay.com/photo/2016/11/29/05/45/astronomy-1867616_960_720.jpg", //이미지
-      writer_nickname: "sdc9787", //작성자
-      views: 100, //조회수
-      commentList: [
-        {
-          writer_nickname: "김철수",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
-        },
-        {
-          writer_nickname: "김영희",
-          reply_date: "2021-08-24",
-          reply_content: "너무 귀여워요",
-        },
-      ],
-    },
-  ];
+          headers: {
+            Authorization: `${localStorage.getItem("access_token")}`,
+          },
+        }
+      )
+      .then((r: any) => {
+        communityPost = r.data.posts;
+        console.log(communityPost);
+        setCommunityPost(r.data.posts);
+      })
+      .catch((error: any) => {
+        console.error(error);
+      });
+  }, []);
 
   //스크롤 이벤트
   const [scrollPosition, setScrollPosition] = useState(0);
@@ -148,18 +48,26 @@ function Community() {
           <i className="xi-bars xi-2x"></i>
         </div>
         <div className="community-element">
-          {community.map((c, i) => {
+          {communityPost.map((c: any, i: number) => {
             return (
-              <div key={i} className="community-card">
+              <div
+                key={i}
+                className="community-card"
+                onClick={() => {
+                  navigate("/community/detail", { state: c });
+                }}>
                 <div className="community-card-content">
-                  <div className="community-card-content-img">
-                    <img src={c.img} alt="img" />
-                  </div>
+                  {c.img_url == null ? null : (
+                    <div className="community-card-content-img">
+                      <img src={c.img_url} alt="img" />
+                    </div>
+                  )}
+
                   <div className="community-card-content-title">{c.title}</div>
                   <div className="community-card-content-writer_nickname">{c.writer_nickname}</div>
                   <div className="community-card-content-content">{c.content}</div>
                   <div className="community-card-content-created_date">{c.created_date}</div>
-                  <div className="community-card-content-comment">댓글 : {c.commentList.length}</div>
+                  <div className="community-card-content-comment">댓글 : {/*c.commentList.length*/}</div>
                   <div className="community-card-content-views">조회수 : {c.views}</div>
                   <div className="community-card-content-likes">추천 :{c.likes}</div>
                 </div>

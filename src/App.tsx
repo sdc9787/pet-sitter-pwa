@@ -15,6 +15,7 @@ import PinCheck from "./Routes/setting/pincheck/pincheck";
 import EditInfo from "./Routes/setting/edit-info/edit-info";
 import SignUpPinNumber from "./Routes/signup/signup-pinnumber";
 import { useSelector } from "react-redux";
+import CommunityDetail from "./Routes/community/communityDetail";
 
 function App() {
   const navigate = useNavigate(); //페이지 이동
@@ -74,6 +75,7 @@ function App() {
           <Route path="/pet" element={<Pet></Pet>}></Route>
           <Route path="/map" element={<Map></Map>}></Route>
           <Route path="/community" element={<Community></Community>}></Route>
+          <Route path="/community/detail" element={<CommunityDetail></CommunityDetail>}></Route>
           <Route path="/setting" element={<Setting></Setting>}></Route>
           <Route path="/setting/pincheck" element={<PinCheck></PinCheck>}></Route>
           <Route path="/setting/edit-info" element={<EditInfo></EditInfo>}></Route>

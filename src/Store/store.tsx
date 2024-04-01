@@ -1,6 +1,6 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-const initialTabbarState: { state: number } = { state: 1 };
+const initialTabbarState: { state: number } = { state: 0 };
 
 let tabbar = createSlice({
   name: "tabbar",
