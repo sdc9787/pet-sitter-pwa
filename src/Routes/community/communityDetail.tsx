@@ -9,6 +9,7 @@ function CommunityDetail() {
   const [comment, setComment] = useState<any>([]);
 
   useEffect(() => {
+    // detail이 존재할 때만 요청을 보냄
     axios
       .get(`${import.meta.env.VITE_APP_API_URL}/community/${detail.community_board_id}`, {
         headers: {
@@ -19,7 +20,7 @@ function CommunityDetail() {
         console.log(r.data);
         setComment(r.data);
       });
-  }, [detail]);
+  }, []); // detail이 변경될 때마다 useEffect 콜백이 실행됨
 
   return (
     <>

@@ -10,6 +10,7 @@ function Signup() {
   const [month, setMonth] = useState(""); //월
   const [day, setDay] = useState(""); //일
   const [birthday, setBirthday] = useState(""); //생일
+  const [nickName, setNickName] = useState(""); //닉네임
   const [error, setError] = useState("에러 메시지"); //에러 메시지
 
   const [isChecked, setIsChecked] = useState(false);
@@ -17,7 +18,8 @@ function Signup() {
   const phoneNumberRef = useRef(null);
   const yearRef = useRef(null);
   const monthRef = useRef(null);
-  const dayRef = React.createRef<HTMLInputElement>();
+  const dayRef = useRef(null);
+  const nickNameRef = React.createRef<HTMLInputElement>();
 
   //입력창이 가득 찼을 때 다음 입력창으로 포커스 이동
   const handleInputChange = (e: any, nextField: any) => {
@@ -141,6 +143,18 @@ function Signup() {
               maxLength={13}
               onChange={(e) => {
                 handlePhoneNumberChange(e);
+                handleInputChange(e, nickNameRef);
+              }}
+            />
+          </div>
+          <div className="signup-input-span">
+            <span>닉네임</span>
+            <input
+              ref={nickNameRef}
+              type="text"
+              maxLength={10}
+              value={nickName}
+              onChange={(e) => {
                 handleInputChange(e, yearRef);
               }}
             />
@@ -186,8 +200,8 @@ function Signup() {
               value={day}
               onChange={(e) => {
                 handleDay(e);
-                if (e.target.value.length === 2 && dayRef.current) {
-                  dayRef.current.blur();
+                if (e.target.value.length >= e.target.maxLength) {
+                  e.target.blur();
                 }
               }}
             />
