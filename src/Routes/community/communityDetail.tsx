@@ -48,9 +48,17 @@ function CommunityDetail() {
       <div className="community-detail">
         <span className="community-detail-title">{detail.title}</span>
         <span className="community-detail-content">{detail.content}</span>
-        <div className="community-detail-created_date">{detail.created_date}</div>
+        <span className="community-detail-created_date">{detail.created_date}</span>
+        <div className="community-detail-likes">추천 :{detail.likes}</div>
+        <div className="community-detail-views">조회수 : {detail.views}</div>
         {comment.map((a: any, i: any) => {
-          <div className="community-card-content-comment">댓글 : {detail.relies}</div>;
+          return (
+            <>
+              <div className="community-detail-comment">댓글 : {a.writer_nickname}</div>
+              <div className="community-detail-comment">댓글 : {a.reply_date}</div>
+              <div className="community-detail-comment">댓글 : {a.reply_content}</div>
+            </>
+          );
         })}
 
         {/* <div className="community-card">
@@ -61,7 +69,7 @@ function CommunityDetail() {
               </div>
             )}
             <div className="community-card-content-comment">댓글 : {detail.relies}</div>
-            <div className="community-card-content-views">조회수 : {detail.views}</div>
+            
             <div className="community-card-content-likes">추천 :{detail.likes}</div>
           </div>
         </div> */}
