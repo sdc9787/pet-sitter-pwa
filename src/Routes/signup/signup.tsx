@@ -10,16 +10,16 @@ function Signup() {
   const [month, setMonth] = useState(""); //월
   const [day, setDay] = useState(""); //일
   const [birthday, setBirthday] = useState(""); //생일
-  const [nickName, setNickName] = useState(""); //닉네임
+  const [nickname, setNickname] = useState(""); //닉네임
   const [error, setError] = useState("에러 메시지"); //에러 메시지
 
   const [isChecked, setIsChecked] = useState(false);
 
   const phoneNumberRef = useRef(null);
+  const nickNameRef = useRef(null);
   const yearRef = useRef(null);
   const monthRef = useRef(null);
-  const dayRef = useRef(null);
-  const nickNameRef = React.createRef<HTMLInputElement>();
+  const dayRef = React.createRef<HTMLInputElement>();
 
   //입력창이 가득 찼을 때 다음 입력창으로 포커스 이동
   const handleInputChange = (e: any, nextField: any) => {
@@ -65,7 +65,7 @@ function Signup() {
       return;
     }
 
-    navigate("/signup/pin-number", { state: { phoneNumber: phoneNumber, birthday: birthday } });
+    navigate("/signup/pin-number", { state: { phoneNumber: phoneNumber, birthday: birthday, nickname: nickname } });
 
     // 회원가입 처리
   };
@@ -83,6 +83,18 @@ function Signup() {
     console.log(birthday);
   }, [birthday]);
 
+  //닉네임 입력시 유효성 검사
+  const handleNickname = (e: any) => {
+    const inputValue = e.target.value;
+    const regex = /^[a-zA-Z0-9ㄱ-힣]+$/;
+
+    if (inputValue === "" || regex.test(inputValue)) {
+      setNickname(inputValue);
+      setError("에러 메시지");
+    } else {
+      setError("닉네임은 영어, 한글, 숫자만 입력 가능합니다.");
+    }
+  };
   //연도 입력시 유효성 검사
   const handleYear = (e: any) => {
     const inputValue = e.target.value;
@@ -143,22 +155,11 @@ function Signup() {
               maxLength={13}
               onChange={(e) => {
                 handlePhoneNumberChange(e);
-                handleInputChange(e, nickNameRef);
-              }}
-            />
-          </div>
-          <div className="signup-input-span">
-            <span>닉네임</span>
-            <input
-              ref={nickNameRef}
-              type="text"
-              maxLength={10}
-              value={nickName}
-              onChange={(e) => {
                 handleInputChange(e, yearRef);
               }}
             />
           </div>
+
           <div className="signup-input-span">
             <span>연도</span>
             <input
@@ -200,9 +201,22 @@ function Signup() {
               value={day}
               onChange={(e) => {
                 handleDay(e);
-                if (e.target.value.length >= e.target.maxLength) {
-                  e.target.blur();
-                }
+                handleInputChange(e, nickNameRef);
+                // if (e.target.value.length >= e.target.maxLength) {
+                //   e.target.blur();
+                // }
+              }}
+            />
+          </div>
+          <div className="signup-input-span">
+            <span>닉네임</span>
+            <input
+              ref={nickNameRef}
+              type="text"
+              value={nickname}
+              maxLength={10}
+              onChange={(e) => {
+                handleNickname(e);
               }}
             />
           </div>

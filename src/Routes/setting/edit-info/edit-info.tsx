@@ -2,13 +2,17 @@ import React, { useEffect, useRef, useState } from "react";
 import "./edit-info.css";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { selectedTab } from "../../../Store/store";
 
 const EditProfile = () => {
+  const dispatch = useDispatch(); //dispatch 함수
+  const navigator = useNavigate(); //페이지 이동
   const [nickname, setNickname] = useState<string>(""); //닉네임
   const [nicknamePlaceholder, setNicknamePlaceholder] = useState<string>(""); //닉네임 입력창 placeholder
   const [phoneNumber, setPhoneNumber] = useState<string>(""); //핸드폰 번호
   const [phoneNumberPlaceholder, setPhoneNumberPlaceholder] = useState<string>(""); //핸드폰 번호 입력창 placeholder
-  const [error, setError] = useState<string>(""); //에러메세지
+  const [error, setError] = useState<string>("에러 메시지"); //에러메세지
 
   const phoneNumberRef = React.createRef<HTMLInputElement>(); //핸드폰 번호
 
@@ -77,7 +81,9 @@ const EditProfile = () => {
       )
       .then((r: any) => {
         console.log(r.data);
-        setError("");
+        setError("에러 메시지");
+        dispatch(selectedTab(0));
+        navigator("/home");
       })
       .catch((error: any) => {
         console.error(error);
@@ -231,7 +237,9 @@ const EditProfile = () => {
             />
           </div>
         </div>
-        {error && <div className="edit-profile-error">{error}</div>}
+        <div className="signup-error" style={error === "에러 메시지" ? { color: "white" } : { color: "red" }}>
+          {error}
+        </div>
         <button onClick={handleEditProfile}>수정하기</button>
       </div>
       {pinNumberState ? (

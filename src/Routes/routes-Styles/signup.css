@@ -66,6 +66,10 @@
 .signup-input-span:first-child {
   grid-column: 1 / 4;
 }
+.signup-input-span:last-child {
+  grid-column: 1 / 4;
+  grid-row: 3/ 4;
+}
 
 .signup button {
   width: 150px;

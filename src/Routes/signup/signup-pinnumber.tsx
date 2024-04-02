@@ -6,6 +6,7 @@ import { useNavigate, useLocation } from "react-router-dom";
 const SignUpPinNumber = (props: any) => {
   const [error, setError] = useState(""); //에러 메시지
   const [phoneNumber, setPhoneNumber] = useState(""); //핸드폰 번호
+  const [nickname, setNickname] = useState(""); //닉네임
   const [birthday, setBirthday] = useState(""); //생일
   const [pinNumber, setPinNumber] = useState(""); //핀 번호
   const [pinNumberCheck, setPinNumberCheck] = useState(""); //핀 번호 확인
@@ -22,6 +23,7 @@ const SignUpPinNumber = (props: any) => {
     if (location.state) {
       setPhoneNumber(location.state.phoneNumber);
       setBirthday(location.state.birthday);
+      setNickname(location.state.nickname);
     }
   }, [location]);
 
@@ -46,6 +48,7 @@ const SignUpPinNumber = (props: any) => {
             {
               phone_number: phoneNumber,
               birthday: birthday,
+              nickname: nickname,
               pin_number: pinNumber,
             },
             {

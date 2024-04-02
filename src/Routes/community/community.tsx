@@ -5,9 +5,36 @@ import { useNavigate } from "react-router-dom";
 
 function Community() {
   let [communityPost, setCommunityPost] = useState<any>([]); //커뮤니티 게시글
-
   const navigate = useNavigate(); //페이지 이동
 
+  const nowDate = new Date();
+  const nowUnixTimestamp = nowDate.getTime() / 1000;
+
+  function timeAgo(unixTimestamp: number) {
+    const seconds = Math.floor(nowUnixTimestamp - unixTimestamp);
+    let interval = seconds / 31536000;
+
+    if (interval > 1) {
+      return Math.floor(interval) + " 년전";
+    }
+    interval = seconds / 2592000;
+    if (interval > 1) {
+      return Math.floor(interval) + " 달전";
+    }
+    interval = seconds / 86400;
+    if (interval > 1) {
+      return Math.floor(interval) + " 일전";
+    }
+    interval = seconds / 3600;
+    if (interval > 1) {
+      return Math.floor(interval) + " 시간전";
+    }
+    interval = seconds / 60;
+    if (interval > 1) {
+      return Math.floor(interval) + " 분전";
+    }
+    return Math.floor(seconds) + " 초전";
+  }
   //서버 api 호출
   useEffect(() => {
     axios
@@ -23,8 +50,14 @@ function Community() {
         }
       )
       .then((r: any) => {
-        communityPost = r.data.posts;
-        console.log(communityPost);
+        console.log(r.data.posts);
+        r.data.posts.map((a: any) => {
+          const date = new Date(a.created_date);
+          const unixTimestamp = Math.floor(date.getTime() / 1000);
+
+          a.created_date = timeAgo(unixTimestamp);
+        });
+
         setCommunityPost(r.data.posts);
       })
       .catch((error: any) => {
@@ -39,7 +72,7 @@ function Community() {
   };
   useEffect(() => {
     window.addEventListener("scroll", updateScroll);
-  });
+  }, []);
   return (
     <>
       <div className="community">
@@ -49,6 +82,9 @@ function Community() {
         </div>
         <div className="community-element">
           {communityPost.map((c: any, i: number) => {
+            // const nowDate = new Date();
+            // const nowUnixTimestamp = Math.floor(date.getTime() / 1000);
+
             return (
               <div
                 key={i}
@@ -65,9 +101,9 @@ function Community() {
 
                   <div className="community-card-content-title">{c.title}</div>
                   <div className="community-card-content-writer_nickname">{c.writer_nickname}</div>
-                  <div className="community-card-content-content">{c.content}</div>
+                  <div className={c.img_url == null ? "community-no-img community-card-content-content" : "community-card-content-content"}>{c.content}</div>
                   <div className="community-card-content-created_date">{c.created_date}</div>
-                  <div className="community-card-content-comment">댓글 : {/*c.commentList.length*/}</div>
+                  <div className="community-card-content-comment">댓글 : {c.replies}</div>
                   <div className="community-card-content-views">조회수 : {c.views}</div>
                   <div className="community-card-content-likes">추천 :{c.likes}</div>
                 </div>
