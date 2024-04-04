@@ -82,6 +82,7 @@ const EditProfile = () => {
       .then((r: any) => {
         console.log(r.data);
         setError("에러 메시지");
+        window.localStorage.setItem("nickname", nickname); //닉네임 갱신
         dispatch(selectedTab(0));
         navigator("/home");
       })

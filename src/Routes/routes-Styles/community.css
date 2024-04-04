@@ -133,3 +133,13 @@
   font-size: 12px;
   text-wrap: nowrap;
 }
+
+.community-create-link-button {
+  position: fixed;
+  right: 10px;
+  bottom: 100px;
+  border-radius: 20px;
+  background-color: #569bf6;
+  color: white;
+  padding: 10px;
+}

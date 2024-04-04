@@ -90,6 +90,7 @@ function Community() {
                 key={i}
                 className="community-card"
                 onClick={() => {
+                  console.log(c);
                   navigate("/community/detail", { state: c });
                 }}>
                 <div className="community-card-content">
@@ -111,6 +112,13 @@ function Community() {
             );
           })}
         </div>
+        <button
+          className="community-create-link-button"
+          onClick={() => {
+            navigate("/community/create");
+          }}>
+          <i className="xi-pen xi-2x"></i>
+        </button>
       </div>
     </>
   );
