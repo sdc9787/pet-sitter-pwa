@@ -11,6 +11,8 @@ function CommunityEdit() {
   const [image, setImage] = useState<File | null>(null);
   const [imageState, setImageState] = useState<boolean>(false); //이미지 상태
 
+  const [imagePreview, setImagePreview] = useState<boolean>(location?.state.img_url !== null ? true : false); //이미지 미리보기
+
   useEffect(() => {
     setCommunitytitle(detail.title);
     setCommunityContent(detail.content);
@@ -29,8 +31,21 @@ function CommunityEdit() {
     }
   };
 
+  //이미지 삭제
+  const deleteImage = () => {
+    if (imagePreview === true) {
+      setImageState(true);
+      setImagePreview(false);
+    } else {
+      setImageState(false);
+      setImagePreview(true);
+    }
+  };
+
   //게시글 수정
   const editCommunity = () => {
+    imagePreview === true ? setImageState(false) : setImageState(true); //이미지 삭제 버튼을 눌렀을때 이미지 상태를 false로 변경
+    image !== null ? setImageState(true) : null; //이미지가 있을때만 이미지 상태를 true로 변경
     axios
       .post(
         `${import.meta.env.VITE_APP_API_URL}/community/edit/board`,
@@ -88,7 +103,20 @@ function CommunityEdit() {
             onChange={(e) => {
               setCommunityContent(e.target.value);
             }}></textarea>
+          {detail.img_url !== null ? (
+            <div className="community-create-img">
+              <button
+                className="community-create-img-delete-button"
+                onClick={() => {
+                  deleteImage();
+                }}>
+                이미지 삭제
+              </button>
+              {imagePreview === true ? <img src={detail.img_url}></img> : <img style={{ opacity: 0.7 }} src={detail.img_url}></img>}
+            </div>
+          ) : null}
           <input type="file" onChange={handleImageChange} />
+
           <button
             className="community-create-content-button"
             onClick={() => {
