@@ -23,7 +23,7 @@ function App() {
   const navigate = useNavigate(); //페이지 이동
   let tabbarState = useSelector((state: any) => state.tabbar); //tabbar state
 
-  //토큰 유효성 검사
+  // 토큰 유효성 검사
   useEffect(() => {
     checkTokenValidity();
     if (window.localStorage.getItem("access_token") === null) {
@@ -38,11 +38,12 @@ function App() {
     const expiresAtUnix = JSON.parse(window.localStorage.getItem("access_token_expires_in") as string);
     const refreshTokenExpiresIn = JSON.parse(window.localStorage.getItem("refresh_token_expires_in") as string);
     const currentTimeUnix = Math.floor(Date.now() / 1000);
+    console.log(currentTimeUnix);
     const url = "/refresh";
     if (currentTimeUnix >= expiresAtUnix) {
-      if (refreshTokenExpiresIn >= expiresAtUnix) {
+      if (currentTimeUnix >= refreshTokenExpiresIn) {
         window.localStorage.removeItem("access_token");
-        window.localStorage.removeItem("expires_at_unix");
+        window.localStorage.removeItem("access_token_expires_in");
         window.localStorage.removeItem("refresh_token");
         window.localStorage.removeItem("refresh_token_expires_in");
         return 0;

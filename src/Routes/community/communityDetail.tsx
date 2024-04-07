@@ -176,31 +176,33 @@ function CommunityDetail() {
       {/*본문 내용*/}
       <div className="community-detail">
         <span className="community-detail-title">{detail.title}</span>
-        <span className="community-detail-content">{detail.content}</span>
-        <span className="community-detail-created_date">{detail.created_date}</span>
-        <div className="community-detail-likes">추천 :{detail.likes}</div>
-        <div className="community-detail-views">조회수 : {detail.views}</div>
-        {localStorage.getItem("nickname") === detail.writer_nickname ? (
-          <div>
-            <button
-              className="community-detail-delete-button"
-              onClick={() => {
-                handleDelete(); //본문 삭제
-              }}>
-              삭제
-            </button>
-            <button
-              className="community-detail-edit-button"
-              onClick={() => {
-                navgate("/community/edit", { state: detail }); //본문 수정
-              }}>
-              수정
-            </button>
-          </div>
-        ) : (
-          console.log("")
-        )}
 
+        <div className="community-detail-info">
+          <span className="community-detail-writer">{detail.writer_nickname}</span>
+          <span className="community-detail-created_date">{detail.created_date}</span>
+          <span className="community-detail-likes">추천 :{detail.likes}</span>
+          <span className="community-detail-views">조회수 : {detail.views}</span>
+          {localStorage.getItem("nickname") === detail.writer_nickname ? (
+            <div>
+              <button
+                className="community-detail-delete-button"
+                onClick={() => {
+                  handleDelete(); //본문 삭제
+                }}>
+                삭제
+              </button>
+              <button
+                className="community-detail-edit-button"
+                onClick={() => {
+                  navgate("/community/edit", { state: detail }); //본문 수정
+                }}>
+                수정
+              </button>
+            </div>
+          ) : null}
+        </div>
+        <img src={detail.img_url} className="community-detail-img"></img>
+        <span className="community-detail-content">{detail.content}</span>
         <button
           className="community-detail-likes-button"
           onClick={() => {

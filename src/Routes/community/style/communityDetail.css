@@ -1,8 +1,19 @@
 .community-detail {
-  margin-top: 70px;
+  margin: 70px 0px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
   width: 100%;
+}
+
+.community-detail-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+}
+
+.community-detail-title {
+  font-size: 20px;
+  margin-bottom: 10px;
 }
