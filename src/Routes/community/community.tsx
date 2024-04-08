@@ -50,11 +50,13 @@ function Community() {
         }
       )
       .then((r: any) => {
-        console.log(r.data.posts);
         r.data.posts.map((a: any) => {
           const date = new Date(a.created_date);
+          const options = { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false };
+          let formattedDate = date.toLocaleString("ko-KR", { ...options, timeZone: "Asia/Seoul" }).replace(/. /g, "-");
+          a.created_date = formattedDate.slice(0, 10) + " " + formattedDate.slice(11); // 11번째 문자를 제거합니다.
+
           const unixTimestamp = Math.floor(date.getTime() / 1000);
-          a.created_date = date.toISOString().replace("T", " ").substring(0, 16).replace(/:/g, "-");
           a.created_date_timeAgo = timeAgo(unixTimestamp);
         });
 

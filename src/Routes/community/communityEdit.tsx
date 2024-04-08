@@ -86,7 +86,6 @@ function CommunityEdit() {
         <i className="xi-bars xi-2x"></i>
       </div>
       <div className="community-create">
-        <div className="community-create-title">게시글 작성</div>
         <div className="community-create-content">
           <input
             value={communitytitle}
@@ -104,13 +103,13 @@ function CommunityEdit() {
               setCommunityContent(e.target.value);
             }}></textarea>
           {detail.img_url !== null ? (
-            <div className="community-create-img">
+            <div className="community-create-content-file-img">
               <button
                 className="community-create-img-delete-button"
                 onClick={() => {
                   deleteImage();
                 }}>
-                이미지 삭제
+                <i className="xi-close-min xi-2x"></i>
               </button>
               {imagePreview === true ? <img src={detail.img_url}></img> : <img style={{ opacity: 0.7 }} src={detail.img_url}></img>}
             </div>
