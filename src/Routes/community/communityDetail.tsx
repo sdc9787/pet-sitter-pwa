@@ -20,6 +20,10 @@ function CommunityDetail() {
 
   // 댓글을 서버에 전송하는 함수
   const handleCommentSubmit = () => {
+    if (!commentText) {
+      alert("댓글을 입력해주세요.");
+      return;
+    }
     setCommentText("");
     axios
       .post(
@@ -149,8 +153,10 @@ function CommunityDetail() {
         if (Array.isArray(r.data)) {
           r.data.map((a: any) => {
             const date = new Date(a.reply_date);
-            a.reply_date = date.toISOString().replace("T", " ").substring(0, 16).replace(/:/g, "-");
+            let formattedDate = date.toLocaleString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).replace(/. /g, "-");
+            a.reply_date = formattedDate.slice(0, 10) + " " + formattedDate.slice(11); // 11번째 문자를 제거합니다.
           });
+
           setComment(r.data);
         } else {
           console.error("Expected r.data to be an array but received a different type.");
