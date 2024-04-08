@@ -1,9 +1,10 @@
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./style/communityDetail.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { AlertText, useAlert } from "../../Component/alertText";
 
 function CommunityDetail() {
   const location = useLocation();
@@ -12,16 +13,17 @@ function CommunityDetail() {
   const [detail, setDetail] = useState<any>(location?.state);
   const [comment, setComment] = useState<any>([]);
   const [commentText, setCommentText] = useState("");
-
+  const [showAlert, triggerAlert] = useAlert();
   // 댓글 내용을 업데이트하는 함수
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentText(event.target.value);
   };
 
+  const timerRef = useRef<NodeJS.Timeout | null>(null); // 타이머 참조를 저장하는 ref
   // 댓글을 서버에 전송하는 함수
   const handleCommentSubmit = () => {
     if (!commentText) {
-      alert("댓글을 입력해주세요.");
+      triggerAlert();
       return;
     }
     setCommentText("");
@@ -185,6 +187,7 @@ function CommunityDetail() {
         <i className="xi-bars xi-2x"></i>
       </div>
       {/*본문 내용*/}
+
       <div className="community-detail">
         <span className="community-detail-title">{detail.title}</span>
 
@@ -281,6 +284,7 @@ function CommunityDetail() {
           </div>
         </div> */}
       </div>
+      <AlertText state={showAlert} text="댓글을 입력해주세요" />
     </>
   );
 }
