@@ -2,6 +2,8 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import "./style/communityDetail.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 
 function CommunityDetail() {
   const location = useLocation();
@@ -12,7 +14,7 @@ function CommunityDetail() {
   const [commentText, setCommentText] = useState("");
 
   // 댓글 내용을 업데이트하는 함수
-  const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentText(event.target.value);
   };
 
@@ -144,8 +146,11 @@ function CommunityDetail() {
         }
       )
       .then((r: any) => {
-        console.log(r.data);
         if (Array.isArray(r.data)) {
+          r.data.map((a: any) => {
+            const date = new Date(a.reply_date);
+            a.reply_date = date.toISOString().replace("T", " ").substring(0, 16).replace(/:/g, "-");
+          });
           setComment(r.data);
         } else {
           console.error("Expected r.data to be an array but received a different type.");
@@ -179,18 +184,14 @@ function CommunityDetail() {
 
         <div className="community-detail-info">
           <span className="community-detail-writer">{detail.writer_nickname}</span>
-          <span className="community-detail-created_date">{detail.created_date}</span>
-          <span className="community-detail-likes">추천 :{detail.likes}</span>
+          <span className="communtiy-detail-replies">댓글 : {detail.replies}개</span>
+          <span className="community-detail-likes">추천 : {detail.likes}개</span>
           <span className="community-detail-views">조회수 : {detail.views}</span>
+        </div>
+        <div className="community-detail-info-second">
+          <span className="community-detail-created_date">{detail.created_date}</span>
           {localStorage.getItem("nickname") === detail.writer_nickname ? (
-            <div>
-              <button
-                className="community-detail-delete-button"
-                onClick={() => {
-                  handleDelete(); //본문 삭제
-                }}>
-                삭제
-              </button>
+            <div className="community-detail-info-button">
               <button
                 className="community-detail-edit-button"
                 onClick={() => {
@@ -198,9 +199,17 @@ function CommunityDetail() {
                 }}>
                 수정
               </button>
+              <button
+                className="community-detail-delete-button"
+                onClick={() => {
+                  handleDelete(); //본문 삭제
+                }}>
+                삭제
+              </button>
             </div>
           ) : null}
         </div>
+
         <img src={detail.img_url} className="community-detail-img"></img>
         <span className="community-detail-content">{detail.content}</span>
         <button
@@ -208,43 +217,50 @@ function CommunityDetail() {
           onClick={() => {
             handleLike(); //본문 좋아요
           }}>
-          추천
+          <FontAwesomeIcon icon={faThumbsUp} />
+          <span>추천</span>
         </button>
-        {/*댓글 작성*/}
-        <div className="community-detail-comment-input">
-          <input type="text" placeholder="댓글을 입력하세요" value={commentText} onChange={handleCommentChange} />
-          <button onClick={handleCommentSubmit}>작성</button>
-        </div>
+        <div className="community-detail-comment">
+          {/*댓글 작성*/}
+          <div className="community-detail-comment-input">
+            <textarea placeholder="댓글을 입력하세요" value={commentText} onChange={handleCommentChange} />
+            <button onClick={handleCommentSubmit}>등록</button>
+          </div>
+          {/*댓글 내용*/}
 
-        {/*댓글 내용*/}
-        {comment.map((a: any, i: any) => {
-          return (
-            <div key={i}>
-              <div>댓글</div>
-              <div className="community-detail-comment">이름 : {a.writer_nickname}</div>
-              <div className="community-detail-comment">날짜 : {a.reply_date}</div>
-              <div className="community-detail-comment">내용 : {a.reply_content}</div>
-              <div className="community-detail-comment">추천 : {a.likes}</div>
-              {localStorage.getItem("nickname") === a.writer_nickname ? (
+          {comment.map((a: any, i: any) => {
+            return (
+              <div className="community-detail-comment-element" key={i}>
+                <div className="community-detail-comment-info">
+                  <div>
+                    <div className="community-detail-comment-name">{a.writer_nickname}</div>
+                    <div className="community-detail-comment-date">{a.reply_date}</div>
+                  </div>
+                  {localStorage.getItem("nickname") === a.writer_nickname ? (
+                    <button
+                      className="community-detail-comment-delete-button"
+                      onClick={() => {
+                        handleCommentDelete(a.community_reply_id); //댓글 삭제
+                      }}>
+                      <i className="xi-close-min xi-2x"></i>
+                    </button>
+                  ) : null}
+                </div>
+                <div className="community-detail-comment-content">{a.reply_content}</div>
+
                 <button
-                  className="community-detail-delete-button"
+                  className="community-detail-comment-likes-button"
                   onClick={() => {
-                    handleCommentDelete(a.community_reply_id); //댓글 삭제
+                    handleCommentLike(a.community_reply_id, i); //댓글 좋아요
                   }}>
-                  삭제
+                  <FontAwesomeIcon icon={faThumbsUp} />
+                  <span>{a.likes}</span>
                 </button>
-              ) : null}
-              <button
-                className="community-detail-likes-button"
-                onClick={() => {
-                  handleCommentLike(a.community_reply_id, i); //댓글 좋아요
-                }}>
-                추천
-              </button>
-              <br></br>
-            </div>
-          );
-        })}
+                <br></br>
+              </div>
+            );
+          })}
+        </div>
 
         {/* <div className="community-card">
           <div className="community-card-content">
