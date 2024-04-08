@@ -14,16 +14,17 @@ function CommunityDetail() {
   const [comment, setComment] = useState<any>([]);
   const [commentText, setCommentText] = useState("");
   const [showAlert, triggerAlert] = useAlert();
+  const [alertText, setAlertText] = useState<string>("");
   // 댓글 내용을 업데이트하는 함수
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentText(event.target.value);
   };
 
-  const timerRef = useRef<NodeJS.Timeout | null>(null); // 타이머 참조를 저장하는 ref
   // 댓글을 서버에 전송하는 함수
   const handleCommentSubmit = () => {
     if (!commentText) {
       triggerAlert();
+      setAlertText("댓글을 입력해주세요");
       return;
     }
     setCommentText("");
@@ -68,6 +69,8 @@ function CommunityDetail() {
         setDetail({ ...detail, likes: detail.likes + 1 });
       })
       .catch((error: any) => {
+        triggerAlert();
+        setAlertText(error.response.data.bad);
         console.error(error.response.data.bad);
       });
   };
@@ -98,6 +101,8 @@ function CommunityDetail() {
         );
       })
       .catch((error: any) => {
+        triggerAlert();
+        setAlertText(error.response.data.bad);
         console.error(error.response.data.bad);
       });
   };
@@ -284,7 +289,7 @@ function CommunityDetail() {
           </div>
         </div> */}
       </div>
-      <AlertText state={showAlert} text="댓글을 입력해주세요" />
+      <AlertText state={showAlert} text={alertText} />
     </>
   );
 }

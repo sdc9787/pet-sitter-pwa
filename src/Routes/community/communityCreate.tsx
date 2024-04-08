@@ -2,6 +2,7 @@ import axios from "axios";
 import "./style/communityCreate.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { AlertText, useAlert } from "../../Component/alertText";
 
 function CommunityCreate() {
   const [communitytitle, setCommunitytitle] = useState(""); //커뮤니티 게시글 제목
@@ -9,6 +10,8 @@ function CommunityCreate() {
   const [image, setImage] = useState<File | null>(null); //이미지
   const [previewImage, setPreviewImage] = useState<string | null>(null); //미리보기 이미지
 
+  const [showAlert, triggerAlert] = useAlert(); //알림창 state
+  const [alertText, setAlertText] = useState<string>(""); //알림창 텍스트
   const navigate = useNavigate(); //페이지 이동
 
   //파일 업로드
@@ -38,14 +41,16 @@ function CommunityCreate() {
 
   //게시글 작성
   const createCommunity = () => {
-    console.log(communityContent);
-    console.log(communitytitle);
-    console.log(image);
-    if (!communitytitle || !communityContent) {
-      console.error("All fields are required");
+    if (!communitytitle) {
+      triggerAlert();
+      setAlertText("제목을 입력해주세요");
       return;
     }
-
+    if (!communityContent) {
+      triggerAlert();
+      setAlertText("내용을 입력해주세요");
+      return;
+    }
     const formData = new FormData();
     formData.append("title", communitytitle);
     formData.append("content", communityContent);
@@ -80,6 +85,7 @@ function CommunityCreate() {
   useEffect(() => {
     window.addEventListener("scroll", updateScroll);
   }, []);
+
   return (
     <>
       <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
@@ -135,6 +141,7 @@ function CommunityCreate() {
           </div>
         </div>
       </div>
+      <AlertText state={showAlert} text={alertText} />
     </>
   );
 }
