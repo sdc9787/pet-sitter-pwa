@@ -128,7 +128,6 @@ table {
   border-spacing: 0;
 }
 button {
-  font-family: Noto Sans KR, Roboto;
   font-weight: 800;
   color: #737373;
   background: inherit;
@@ -145,4 +144,10 @@ span {
   -khtml-user-select: none;
   -webkit-user-select: none;
   user-select: none;
+}
+
+input,
+textarea,
+button {
+  font-family: Noto Sans KR, Roboto;
 }
