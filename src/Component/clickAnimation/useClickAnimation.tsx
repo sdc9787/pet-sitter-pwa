@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import "./useClickAnimation.css";
 
 interface ClickAnimationConfig {
   size?: number;

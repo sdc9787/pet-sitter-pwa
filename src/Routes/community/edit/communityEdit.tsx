@@ -1,5 +1,5 @@
 import axios from "axios";
-import "./style/communityEdit.css";
+import "./communityEdit.css";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 

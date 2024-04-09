@@ -1,8 +1,8 @@
 import axios from "axios";
-import "./style/communityCreate.css";
+import "./communityCreate.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { AlertText, useAlert } from "../../Component/alertText";
+import { AlertText, useAlert } from "../../../Component/alertText/alertText";
 
 function CommunityCreate() {
   const [communitytitle, setCommunitytitle] = useState(""); //커뮤니티 게시글 제목

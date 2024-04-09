@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedTab } from "../../../Store/store";
 
-const EditProfile = () => {
+const EditInfo = () => {
   const dispatch = useDispatch(); //dispatch 함수
   const navigator = useNavigate(); //페이지 이동
   const [nickname, setNickname] = useState<string>(""); //닉네임
@@ -270,4 +270,4 @@ const EditProfile = () => {
   );
 };
 
-export default EditProfile;
+export default EditInfo;

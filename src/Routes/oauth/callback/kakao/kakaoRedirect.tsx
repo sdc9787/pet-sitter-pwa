@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-const Redirection = () => {
+const KakaoRedirect = () => {
   const code: string = window.location.search;
   const url: string = "/callback";
   const navigate = useNavigate();
@@ -22,4 +22,4 @@ const Redirection = () => {
   return <div>로그인 중입니다.</div>;
 };
 
-export default Redirection;
+export default KakaoRedirect;

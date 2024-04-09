@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import "../Styles/TabBar.css";
+import "./TabBar.css";
 import { useDispatch, useSelector } from "react-redux";
-import { selectedTab } from "../Store/store";
+import { selectedTab } from "../../Store/store";
 
 function TabBar() {
   let tabbar = {

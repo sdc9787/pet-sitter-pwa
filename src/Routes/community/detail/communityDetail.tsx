@@ -1,10 +1,10 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import "./style/communityDetail.css";
+import "./communityDetail.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import { AlertText, useAlert } from "../../Component/alertText";
+import { AlertText, useAlert } from "../../../Component/alertText/alertText";
 
 function CommunityDetail() {
   const location = useLocation();

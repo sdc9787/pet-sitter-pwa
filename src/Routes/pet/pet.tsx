@@ -1,4 +1,4 @@
-import "../routes-Styles/pet.css";
+import "./pet.css";
 
 function Pet() {
   return (

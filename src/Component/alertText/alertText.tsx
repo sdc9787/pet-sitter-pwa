@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import "./alertText.css";
 
 export const useAlert = () => {
   const [showAlert, setShowAlert] = useState(false);

@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import "../routes-Styles/setting.css";
-import "../../Styles/useClickAnimation.css";
-import UseClickAnimation from "../../Component/useClickAnimation";
+import "./setting.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import UseClickAnimation from "../../Component/clickAnimation/useClickAnimation";
 
 function Setting() {
   const url: string = "/mypage";

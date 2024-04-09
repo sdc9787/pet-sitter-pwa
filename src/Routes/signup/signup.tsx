@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import "../routes-Styles/signup.css";
-import axios from "axios";
+import "./signup.css";
 
 function Signup() {
   const navigate = useNavigate(); //페이지 이동

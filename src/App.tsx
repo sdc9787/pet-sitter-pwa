@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import "./Styles/App.css";
-import TabBar from "./Component/tabbar";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import Setting from "./Routes/setting/setting";
+import { useSelector } from "react-redux";
+import axios from "axios";
+import Login from "./Routes/login/login";
+import Signup from "./Routes/signup/signup";
+import SignUpPinNumber from "./Routes/signup/signup-pinnumber/signup-pinnumber";
 import Home from "./Routes/home/home";
 import Pet from "./Routes/pet/pet";
-import Map from "./Routes/map";
 import Community from "./Routes/community/community";
-import Login from "./Routes/login";
-import KakaoRedirect from "./Routes/oauth/callback/kakao/kakaoRedirect";
-import axios from "axios";
-import Signup from "./Routes/signup/signup";
+import CommunityCreate from "./Routes/community/create/communityCreate";
+import CommunityEdit from "./Routes/community/edit/communityEdit";
+import CommunityDetail from "./Routes/community/detail/communityDetail";
+import Setting from "./Routes/setting/setting";
 import PinCheck from "./Routes/setting/pincheck/pincheck";
 import EditInfo from "./Routes/setting/edit-info/edit-info";
-import SignUpPinNumber from "./Routes/signup/signup-pinnumber";
-import { useSelector } from "react-redux";
-import CommunityDetail from "./Routes/community/communityDetail";
-import CommunityCreate from "./Routes/community/communityCreate";
-import CommunityEdit from "./Routes/community/communityEdit";
+import KakaoRedirect from "./Routes/oauth/callback/kakao/kakaoRedirect";
+import TabBar from "./Component/tabbar/tabbar";
+import Map from "./Routes/map/map";
 
 function App() {
   const navigate = useNavigate(); //페이지 이동
