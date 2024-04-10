@@ -10,6 +10,7 @@ const KEYWORD_LIST = [
   { id: 1, value: "애견카페", emoji: "xi-cafe" },
   { id: 2, value: "동물병원", emoji: "xi-hospital" },
   { id: 3, value: "애견호텔", emoji: "xi-hotel" },
+  { id: 4, value: "반려동물용품", emoji: "xi-market" },
 ];
 
 const Kakao = () => {
