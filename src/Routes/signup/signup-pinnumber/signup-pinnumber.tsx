@@ -132,27 +132,28 @@ const SignUpPinNumber = (props: any) => {
   };
 
   return (
-    <div className="signup-pinnumber">
-      <div>
-        <div className="signup-pinnumber-title">{pintitle}</div>
-
-        <div className="signup-pinnumber-display">{renderPinDisplay()}</div>
-        {error && <div className="signup-pinnumber-error">{error}</div>}
-      </div>
-      <div className="signup-pinnumber-keypad">
-        {keypadNumbers.map((number) => (
-          <button className="signup-pinnumber-keypad-number" key={number} onClick={() => handlePinInput(number)}>
-            {number}
+    <>
+      <div className="signup-pinnumber">
+        <div>
+          <div className="signup-pinnumber-title">{pintitle}</div>
+          <div className="signup-pinnumber-display">{renderPinDisplay()}</div>
+          {error && <div className="signup-pinnumber-error">{error}</div>}
+        </div>
+        <div className="signup-pinnumber-keypad">
+          {keypadNumbers.map((number) => (
+            <button className="signup-pinnumber-keypad-number" key={number} onClick={() => handlePinInput(number)}>
+              {number}
+            </button>
+          ))}
+          <button className="signup-pinnumber-keypad-clear" onClick={handleClearPin}>
+            전체삭제
           </button>
-        ))}
-        <button className="signup-pinnumber-keypad-clear" onClick={handleClearPin}>
-          전체삭제
-        </button>
-        <button className="signup-pinnumber-keypad-backspace" onClick={handleBackspace}>
-          <i className="xi-backspace xi-2x"></i>
-        </button>
+          <button className="signup-pinnumber-keypad-backspace" onClick={handleBackspace}>
+            <i className="xi-backspace xi-2x"></i>
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

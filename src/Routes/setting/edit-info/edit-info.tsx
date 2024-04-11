@@ -4,6 +4,7 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedTab } from "../../../Store/store";
+import MotionComponent from "../../../Component/motion/motion";
 
 const EditInfo = () => {
   const dispatch = useDispatch(); //dispatch 함수
@@ -178,94 +179,96 @@ const EditInfo = () => {
 
   return (
     <>
-      <div className="edit-profile">
-        <div className="edit-profile-center">
-          <h1 className="edit-profile-center-title">프로필 수정</h1>
-          <span className="edit-profile-center-content">
-            정보를 수정하려면 아래의 <br />
-            필드를 업데이트하세요
-          </span>
-        </div>
-        <div className="edit-profile-input-box">
-          <div className="edit-profile-input-span">
-            <span>닉네임</span>
-            <input type="text" placeholder={nicknamePlaceholder} onChange={(e) => setNickname(e.target.value)} />
+      <MotionComponent>
+        <div className="edit-profile">
+          <div className="edit-profile-center">
+            <h1 className="edit-profile-center-title">프로필 수정</h1>
+            <span className="edit-profile-center-content">
+              정보를 수정하려면 아래의 <br />
+              필드를 업데이트하세요
+            </span>
           </div>
-          <div className="edit-profile-input-span">
-            <span>핸드폰 번호</span>
-            <input
-              ref={phoneNumberRef}
-              type="text"
-              value={phoneNumber}
-              placeholder={phoneNumberPlaceholder}
-              maxLength={13}
-              onChange={(e) => {
-                handlePhoneNumberChange(e);
-                if (e.target.value.length === 13 && phoneNumberRef.current) {
-                  phoneNumberRef.current.blur();
-                }
-              }}
-            />
-          </div>
-          <div className="edit-profile-input-span">
-            <span>핀 번호</span>
-            <input
-              type="password"
-              value={pinNumber}
-              maxLength={6}
-              onClick={() => {
-                keypadnumberRandom();
-                setPinNumber("");
-                setPinNumberState(true);
-                setPinBoolean(false);
-                setPinTitle("PIN 비밀번호 입력");
-              }}
-            />
-          </div>
-          <div className="edit-profile-input-span">
-            <span>핀 번호 확인</span>
-            <input
-              type="password"
-              value={pinNumberCheck}
-              maxLength={6}
-              onClick={() => {
-                keypadnumberRandom();
-                setPinNumberCheck("");
-                setPinNumberState(true);
-                setPinBoolean(true);
-                setPinTitle("PIN 비밀번호 재입력");
-              }}
-            />
-          </div>
-        </div>
-        <div className="signup-error" style={error === "에러 메시지" ? { color: "white" } : { color: "red" }}>
-          {error}
-        </div>
-        <button onClick={handleEditProfile}>수정하기</button>
-      </div>
-      {pinNumberState ? (
-        <div className="edit-pinnumber">
-          <div className="signup-pinnumber">
-            <div>
-              <div className="signup-pinnumber-title">{pintitle}</div>
-              <div className="signup-pinnumber-display">{renderPinDisplay()}</div>
+          <div className="edit-profile-input-box">
+            <div className="edit-profile-input-span">
+              <span>닉네임</span>
+              <input type="text" placeholder={nicknamePlaceholder} onChange={(e) => setNickname(e.target.value)} />
             </div>
-            <div className="signup-pinnumber-keypad">
-              {keypadNumbers.map((number) => (
-                <button className="signup-pinnumber-keypad-number" key={number} onClick={() => handlePinInput(number)}>
-                  {number}
+            <div className="edit-profile-input-span">
+              <span>핸드폰 번호</span>
+              <input
+                ref={phoneNumberRef}
+                type="text"
+                value={phoneNumber}
+                placeholder={phoneNumberPlaceholder}
+                maxLength={13}
+                onChange={(e) => {
+                  handlePhoneNumberChange(e);
+                  if (e.target.value.length === 13 && phoneNumberRef.current) {
+                    phoneNumberRef.current.blur();
+                  }
+                }}
+              />
+            </div>
+            <div className="edit-profile-input-span">
+              <span>핀 번호</span>
+              <input
+                type="password"
+                value={pinNumber}
+                maxLength={6}
+                onClick={() => {
+                  keypadnumberRandom();
+                  setPinNumber("");
+                  setPinNumberState(true);
+                  setPinBoolean(false);
+                  setPinTitle("PIN 비밀번호 입력");
+                }}
+              />
+            </div>
+            <div className="edit-profile-input-span">
+              <span>핀 번호 확인</span>
+              <input
+                type="password"
+                value={pinNumberCheck}
+                maxLength={6}
+                onClick={() => {
+                  keypadnumberRandom();
+                  setPinNumberCheck("");
+                  setPinNumberState(true);
+                  setPinBoolean(true);
+                  setPinTitle("PIN 비밀번호 재입력");
+                }}
+              />
+            </div>
+          </div>
+          <div className="signup-error" style={error === "에러 메시지" ? { color: "white" } : { color: "red" }}>
+            {error}
+          </div>
+          <button onClick={handleEditProfile}>수정하기</button>
+        </div>
+        {pinNumberState ? (
+          <div className="edit-pinnumber">
+            <div className="signup-pinnumber">
+              <div>
+                <div className="signup-pinnumber-title">{pintitle}</div>
+                <div className="signup-pinnumber-display">{renderPinDisplay()}</div>
+              </div>
+              <div className="signup-pinnumber-keypad">
+                {keypadNumbers.map((number) => (
+                  <button className="signup-pinnumber-keypad-number" key={number} onClick={() => handlePinInput(number)}>
+                    {number}
+                  </button>
+                ))}
+                <button className="signup-pinnumber-keypad-clear" onClick={handleClearPin}>
+                  전체삭제
                 </button>
-              ))}
-              <button className="signup-pinnumber-keypad-clear" onClick={handleClearPin}>
-                전체삭제
-              </button>
-              <button className="signup-pinnumber-keypad-backspace" onClick={handleBackspace}>
-                <i className="xi-backspace xi-2x"></i>
-              </button>
+                <button className="signup-pinnumber-keypad-backspace" onClick={handleBackspace}>
+                  <i className="xi-backspace xi-2x"></i>
+                </button>
+              </div>
             </div>
           </div>
-        </div>
-      ) : null}
+        ) : null}
+      </MotionComponent>
     </>
   );
 };

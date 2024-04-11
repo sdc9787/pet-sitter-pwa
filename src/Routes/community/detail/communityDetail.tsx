@@ -5,6 +5,7 @@ import "./communityDetail.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { AlertText, useAlert } from "../../../Component/alertText/alertText";
+import MotionComponent from "../../../Component/motion/motion";
 
 function CommunityDetail() {
   const location = useLocation();
@@ -187,109 +188,105 @@ function CommunityDetail() {
   }, []);
   return (
     <>
-      <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
-        <span className={"setting-setting-title-true"}>커뮤니티</span>
-        <i className="xi-bars xi-2x"></i>
-      </div>
-      {/*본문 내용*/}
-
-      <div className="community-detail">
-        <span className="community-detail-title">{detail.title}</span>
-
-        <div className="community-detail-info">
-          <span className="community-detail-writer">{detail.writer_nickname}</span>
-          <span className="communtiy-detail-replies">댓글 : {detail.replies}개</span>
-          <span className="community-detail-likes">추천 : {detail.likes}개</span>
-          <span className="community-detail-views">조회수 : {detail.views}</span>
+      <MotionComponent>
+        <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
+          <span className={"setting-setting-title-true"}>커뮤니티</span>
+          <i className="xi-bars xi-2x"></i>
         </div>
-        <div className="community-detail-info-second">
-          <span className="community-detail-created_date">{detail.created_date}</span>
-          {localStorage.getItem("nickname") === detail.writer_nickname ? (
-            <div className="community-detail-info-button">
-              <button
-                className="community-detail-edit-button"
-                onClick={() => {
-                  navgate("/community/edit", { state: detail }); //본문 수정
-                }}>
-                수정
-              </button>
-              <button
-                className="community-detail-delete-button"
-                onClick={() => {
-                  handleDelete(); //본문 삭제
-                }}>
-                삭제
-              </button>
-            </div>
-          ) : null}
-        </div>
-
-        <img src={detail.img_url} className="community-detail-img"></img>
-        <span className="community-detail-content">{detail.content}</span>
-        <button
-          className="community-detail-likes-button"
-          onClick={() => {
-            handleLike(); //본문 좋아요
-          }}>
-          <FontAwesomeIcon icon={faThumbsUp} />
-          <span>추천</span>
-        </button>
-        <div className="community-detail-comment">
-          {/*댓글 작성*/}
-          <div className="community-detail-comment-input">
-            <textarea placeholder="댓글을 입력하세요" value={commentText} onChange={handleCommentChange} />
-            <button onClick={handleCommentSubmit}>등록</button>
+        {/*본문 내용*/}
+        <div className="community-detail">
+          <span className="community-detail-title">{detail.title}</span>
+          <div className="community-detail-info">
+            <span className="community-detail-writer">{detail.writer_nickname}</span>
+            <span className="communtiy-detail-replies">댓글 : {detail.replies}개</span>
+            <span className="community-detail-likes">추천 : {detail.likes}개</span>
+            <span className="community-detail-views">조회수 : {detail.views}</span>
           </div>
-          {/*댓글 내용*/}
-
-          {comment.map((a: any, i: any) => {
-            return (
-              <div className="community-detail-comment-element" key={i}>
-                <div className="community-detail-comment-info">
-                  <div>
-                    <div className="community-detail-comment-name">{a.writer_nickname}</div>
-                    <div className="community-detail-comment-date">{a.reply_date}</div>
-                  </div>
-                  {localStorage.getItem("nickname") === a.writer_nickname ? (
-                    <button
-                      className="community-detail-comment-delete-button"
-                      onClick={() => {
-                        handleCommentDelete(a.community_reply_id); //댓글 삭제
-                      }}>
-                      <i className="xi-close-min xi-2x"></i>
-                    </button>
-                  ) : null}
-                </div>
-                <div className="community-detail-comment-content">{a.reply_content}</div>
-
+          <div className="community-detail-info-second">
+            <span className="community-detail-created_date">{detail.created_date}</span>
+            {localStorage.getItem("nickname") === detail.writer_nickname ? (
+              <div className="community-detail-info-button">
                 <button
-                  className="community-detail-comment-likes-button"
+                  className="community-detail-edit-button"
                   onClick={() => {
-                    handleCommentLike(a.community_reply_id, i); //댓글 좋아요
+                    navgate("/community/edit", { state: detail }); //본문 수정
                   }}>
-                  <FontAwesomeIcon icon={faThumbsUp} />
-                  <span>{a.likes}</span>
+                  수정
                 </button>
-                <br></br>
+                <button
+                  className="community-detail-delete-button"
+                  onClick={() => {
+                    handleDelete(); //본문 삭제
+                  }}>
+                  삭제
+                </button>
               </div>
-            );
-          })}
-        </div>
-
-        {/* <div className="community-card">
-          <div className="community-card-content">
-            {detail.img_url == null ? null : (
-              <div className="community-card-content-img">
-                <img src={detail.img_url} alt="img" />
-              </div>
-            )}
-            <div className="community-card-content-comment">댓글 : {detail.relies}</div>
-            
-            <div className="community-card-content-likes">추천 :{detail.likes}</div>
+            ) : null}
           </div>
-        </div> */}
-      </div>
-      <AlertText state={showAlert} text={alertText} />
+          <img src={detail.img_url} className="community-detail-img"></img>
+          <span className="community-detail-content">{detail.content}</span>
+          <button
+            className="community-detail-likes-button"
+            onClick={() => {
+              handleLike(); //본문 좋아요
+            }}>
+            <FontAwesomeIcon icon={faThumbsUp} />
+            <span>추천</span>
+          </button>
+          <div className="community-detail-comment">
+            {/*댓글 작성*/}
+            <div className="community-detail-comment-input">
+              <textarea placeholder="댓글을 입력하세요" value={commentText} onChange={handleCommentChange} />
+              <button onClick={handleCommentSubmit}>등록</button>
+            </div>
+            {/*댓글 내용*/}
+            {comment.map((a: any, i: any) => {
+              return (
+                <div className="community-detail-comment-element" key={i}>
+                  <div className="community-detail-comment-info">
+                    <div>
+                      <div className="community-detail-comment-name">{a.writer_nickname}</div>
+                      <div className="community-detail-comment-date">{a.reply_date}</div>
+                    </div>
+                    {localStorage.getItem("nickname") === a.writer_nickname ? (
+                      <button
+                        className="community-detail-comment-delete-button"
+                        onClick={() => {
+                          handleCommentDelete(a.community_reply_id); //댓글 삭제
+                        }}>
+                        <i className="xi-close-min xi-2x"></i>
+                      </button>
+                    ) : null}
+                  </div>
+                  <div className="community-detail-comment-content">{a.reply_content}</div>
+                  <button
+                    className="community-detail-comment-likes-button"
+                    onClick={() => {
+                      handleCommentLike(a.community_reply_id, i); //댓글 좋아요
+                    }}>
+                    <FontAwesomeIcon icon={faThumbsUp} />
+                    <span>{a.likes}</span>
+                  </button>
+                  <br></br>
+                </div>
+              );
+            })}
+          </div>
+          {/* <div className="community-card">
+            <div className="community-card-content">
+              {detail.img_url == null ? null : (
+                <div className="community-card-content-img">
+                  <img src={detail.img_url} alt="img" />
+                </div>
+              )}
+              <div className="community-card-content-comment">댓글 : {detail.relies}</div>
+        
+              <div className="community-card-content-likes">추천 :{detail.likes}</div>
+            </div>
+          </div> */}
+        </div>
+        <AlertText state={showAlert} text={alertText} />
+      </MotionComponent>
     </>
   );
 }

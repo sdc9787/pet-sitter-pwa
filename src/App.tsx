@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import "./Styles/App.css";
-import { Route, Routes, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "axios";
 import Login from "./Routes/login/login";
@@ -22,6 +22,7 @@ import Map from "./Routes/map/map";
 function App() {
   const navigate = useNavigate(); //페이지 이동
   let tabbarState = useSelector((state: any) => state.tabbar); //tabbar state
+  const location = useLocation(); //현재 페이지 url
 
   // 토큰 유효성 검사
   useEffect(() => {
@@ -70,7 +71,7 @@ function App() {
   return (
     <>
       <div className="main-frame-routes">
-        <Routes>
+        <Routes location={location} key={location.pathname}>
           <Route path="/login" element={<Login></Login>}></Route>
           <Route path="/signup" element={<Signup></Signup>}></Route>
           <Route path="/signup/pin-number" element={<SignUpPinNumber></SignUpPinNumber>}></Route>

@@ -2,6 +2,8 @@ import axios from "axios";
 import "./community.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { motion } from "framer-motion";
+import MotionComponent from "../../Component/motion/motion";
 
 function Community() {
   let [communityPost, setCommunityPost] = useState<any>([]); //커뮤니티 게시글
@@ -75,51 +77,51 @@ function Community() {
   }, []);
   return (
     <>
-      <div className="community">
-        <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
-          <span className={"setting-setting-title-true"}>커뮤니티</span>
-          <i className="xi-bars xi-2x"></i>
-        </div>
-        <div className="community-element">
-          {communityPost.map((c: any, i: number) => {
-            // const nowDate = new Date();
-            // const nowUnixTimestamp = Math.floor(date.getTime() / 1000);
-
-            return (
-              <div
-                key={i}
-                className="community-card"
-                onClick={() => {
-                  console.log(c);
-                  navigate("/community/detail", { state: c });
-                }}>
-                <div className="community-card-content">
-                  {c.img_url == null ? null : (
-                    <div className="community-card-content-img">
-                      <img src={c.img_url} alt="img" />
-                    </div>
-                  )}
-
-                  <div className="community-card-content-title">{c.title}</div>
-                  <div className="community-card-content-writer_nickname">{c.writer_nickname}</div>
-                  <div className={c.img_url == null ? "community-no-img community-card-content-content" : "community-card-content-content"}>{c.content}</div>
-                  <div className="community-card-content-created_date">{c.created_date_timeAgo}</div>
-                  <div className="community-card-content-comment">댓글 : {c.replies}</div>
-                  <div className="community-card-content-views">조회수 : {c.views}</div>
-                  <div className="community-card-content-likes">추천 :{c.likes}</div>
+      <MotionComponent>
+        <div className="community">
+          <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
+            <span className={"setting-setting-title-true"}>커뮤니티</span>
+            <i className="xi-bars xi-2x"></i>
+          </div>
+          <div className="community-element">
+            {communityPost.map((c: any, i: number) => {
+              // const nowDate = new Date();
+              // const nowUnixTimestamp = Math.floor(date.getTime() / 1000);
+              return (
+                <div
+                  key={i}
+                  className="community-card"
+                  onClick={() => {
+                    console.log(c);
+                    navigate("/community/detail", { state: c });
+                  }}>
+                  <div className="community-card-content">
+                    {c.img_url == null ? null : (
+                      <div className="community-card-content-img">
+                        <img src={c.img_url} alt="img" />
+                      </div>
+                    )}
+                    <div className="community-card-content-title">{c.title}</div>
+                    <div className="community-card-content-writer_nickname">{c.writer_nickname}</div>
+                    <div className={c.img_url == null ? "community-no-img community-card-content-content" : "community-card-content-content"}>{c.content}</div>
+                    <div className="community-card-content-created_date">{c.created_date_timeAgo}</div>
+                    <div className="community-card-content-comment">댓글 : {c.replies}</div>
+                    <div className="community-card-content-views">조회수 : {c.views}</div>
+                    <div className="community-card-content-likes">추천 :{c.likes}</div>
+                  </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
+          </div>
+          <button
+            className="community-create-link-button"
+            onClick={() => {
+              navigate("/community/create");
+            }}>
+            <i className="xi-pen xi-2x"></i>
+          </button>
         </div>
-        <button
-          className="community-create-link-button"
-          onClick={() => {
-            navigate("/community/create");
-          }}>
-          <i className="xi-pen xi-2x"></i>
-        </button>
-      </div>
+      </MotionComponent>
     </>
   );
 }

@@ -3,6 +3,7 @@ import "./communityCreate.css";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { AlertText, useAlert } from "../../../Component/alertText/alertText";
+import MotionComponent from "../../../Component/motion/motion";
 
 function CommunityCreate() {
   const [communitytitle, setCommunitytitle] = useState(""); //커뮤니티 게시글 제목
@@ -88,60 +89,61 @@ function CommunityCreate() {
 
   return (
     <>
-      <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
-        <span className={"setting-setting-title-true"}>커뮤니티</span>
-        <i className="xi-bars xi-2x"></i>
-      </div>
-      <div className="community-create">
-        <div className="community-create-content">
-          <input
-            className="community-create-content-title"
-            placeholder="제목을 입력해주세요"
-            onChange={(e) => {
-              setCommunitytitle(e.target.value);
-            }}
-          />
-          <textarea
-            className="community-create-content-content"
-            placeholder="내용을 입력해주세요"
-            onChange={(e) => {
-              setCommunityContent(e.target.value);
-            }}></textarea>
-
-          <div className="community-create-content-file">
-            {previewImage && (
-              <div className="community-create-content-file-img">
-                <img src={previewImage} alt="preview" />
-                <button onClick={handleRemoveClick}>
-                  <i className="xi-close-min xi-2x"></i>
-                </button>
+      <MotionComponent>
+        <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
+          <span className={"setting-setting-title-true"}>커뮤니티</span>
+          <i className="xi-bars xi-2x"></i>
+        </div>
+        <div className="community-create">
+          <div className="community-create-content">
+            <input
+              className="community-create-content-title"
+              placeholder="제목을 입력해주세요"
+              onChange={(e) => {
+                setCommunitytitle(e.target.value);
+              }}
+            />
+            <textarea
+              className="community-create-content-content"
+              placeholder="내용을 입력해주세요"
+              onChange={(e) => {
+                setCommunityContent(e.target.value);
+              }}></textarea>
+            <div className="community-create-content-file">
+              {previewImage && (
+                <div className="community-create-content-file-img">
+                  <img src={previewImage} alt="preview" />
+                  <button onClick={handleRemoveClick}>
+                    <i className="xi-close-min xi-2x"></i>
+                  </button>
+                </div>
+              )}
+              <div className="filebox">
+                <input className="upload-name" value={fileName} placeholder="첨부파일" readOnly />
+                <label htmlFor="file">파일찾기</label>
+                <input type="file" id="file" onChange={handleImageChange} />
               </div>
-            )}
-            <div className="filebox">
-              <input className="upload-name" value={fileName} placeholder="첨부파일" readOnly />
-              <label htmlFor="file">파일찾기</label>
-              <input type="file" id="file" onChange={handleImageChange} />
+            </div>
+            <div className="community-create-content-buttons">
+              <button
+                className="community-create-content-back-button"
+                onClick={() => {
+                  navigate("/community");
+                }}>
+                취소
+              </button>
+              <button
+                className="community-create-content-send-button"
+                onClick={() => {
+                  createCommunity();
+                }}>
+                작성
+              </button>
             </div>
           </div>
-          <div className="community-create-content-buttons">
-            <button
-              className="community-create-content-back-button"
-              onClick={() => {
-                navigate("/community");
-              }}>
-              취소
-            </button>
-            <button
-              className="community-create-content-send-button"
-              onClick={() => {
-                createCommunity();
-              }}>
-              작성
-            </button>
-          </div>
         </div>
-      </div>
-      <AlertText state={showAlert} text={alertText} />
+        <AlertText state={showAlert} text={alertText} />
+      </MotionComponent>
     </>
   );
 }

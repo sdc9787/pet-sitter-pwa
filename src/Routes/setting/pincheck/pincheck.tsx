@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "./pincheck.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import MotionComponent from "../../../Component/motion/motion";
 
 const PinCheck = () => {
   const navigate = useNavigate(); //페이지 이동
@@ -78,26 +79,28 @@ const PinCheck = () => {
   };
 
   return (
-    <div className="pincheck">
-      <div>
-        <div className="pincheck-title">PIN 비밀번호 입력</div>
-        <div className="pincheck-display">{renderPinDisplay()}</div>
-        {error && <div className="signup-pinnumber-error">{error}</div>}
-      </div>
-      <div className="pincheck-keypad">
-        {keypadNumbers.map((number) => (
-          <button className="pincheck-keypad-number" key={number} onClick={() => handlePinInput(number)}>
-            {number}
+    <>
+      <div className="pincheck">
+        <div>
+          <div className="pincheck-title">PIN 비밀번호 입력</div>
+          <div className="pincheck-display">{renderPinDisplay()}</div>
+          {error && <div className="signup-pinnumber-error">{error}</div>}
+        </div>
+        <div className="pincheck-keypad">
+          {keypadNumbers.map((number) => (
+            <button className="pincheck-keypad-number" key={number} onClick={() => handlePinInput(number)}>
+              {number}
+            </button>
+          ))}
+          <button className="pincheck-keypad-clear" onClick={handleClearPin}>
+            전체삭제
           </button>
-        ))}
-        <button className="pincheck-keypad-clear" onClick={handleClearPin}>
-          전체삭제
-        </button>
-        <button className="pincheck-keypad-backspace" onClick={handleBackspace}>
-          <i className="xi-backspace xi-2x"></i>
-        </button>
+          <button className="pincheck-keypad-backspace" onClick={handleBackspace}>
+            <i className="xi-backspace xi-2x"></i>
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -8,3 +8,9 @@ body {
   justify-content: center;
   align-items: flex-start;
 }
+
+.page {
+  position: absolute;
+
+  width: 100vw;
+}

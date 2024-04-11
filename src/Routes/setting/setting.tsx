@@ -3,6 +3,7 @@ import "./setting.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import UseClickAnimation from "../../Component/clickAnimation/useClickAnimation";
+import MotionComponent from "../../Component/motion/motion";
 
 function Setting() {
   const url: string = "/mypage";
@@ -81,48 +82,50 @@ function Setting() {
 
   return (
     <>
-      <div className="setting">
-        <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
-          <span className={scrollPosition < 1 ? "setting-setting-title-false" : "setting-setting-title-true"}>프로필</span>
-          <i className="xi-cog xi-2x"></i>
-        </div>
-        <div className="setting-profile">
-          <div className="setting-profile-icon-name">
-            <img className="setting-profile-icon" src={profileImg} alt="프로필 아이콘" />
-            <span className="setting-profile-name">{profileName}</span>
+      <MotionComponent>
+        <div className="setting">
+          <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
+            <span className={scrollPosition < 1 ? "setting-setting-title-false" : "setting-setting-title-true"}>프로필</span>
+            <i className="xi-cog xi-2x"></i>
           </div>
-          <button
-            ref={buttonRefProfile}
-            onClick={() =>
-              setTimeout(() => {
-                navigate("/setting/pincheck");
-              }, 400)
-            }
-            className="setting-profile-set">
-            개인정보 수정
-          </button>
-          <button ref={buttonRefProfile} onClick={() => handleLogout()} className="setting-profile-set">
-            로그아웃
-          </button>
+          <div className="setting-profile">
+            <div className="setting-profile-icon-name">
+              <img className="setting-profile-icon" src={profileImg} alt="프로필 아이콘" />
+              <span className="setting-profile-name">{profileName}</span>
+            </div>
+            <button
+              ref={buttonRefProfile}
+              onClick={() =>
+                setTimeout(() => {
+                  navigate("/setting/pincheck");
+                }, 400)
+              }
+              className="setting-profile-set">
+              개인정보 수정
+            </button>
+            <button ref={buttonRefProfile} onClick={() => handleLogout()} className="setting-profile-set">
+              로그아웃
+            </button>
+          </div>
+          <div className="setting-menu">
+            {setting_menu.map((a, i) => {
+              return (
+                <div key={i} className="setting-menu-title-element">
+                  <div className="setting-menu-title">{a.title}</div>
+                  {a.element.map((b, j) => {
+                    return (
+                      <button ref={buttonRef[count++]} key={j} className="setting-menu-element-icon">
+                        <i className={a.elementIcon[j] + " xi-2x"}></i>
+                        <div className="setting-menu-element">{b}</div>
+                      </button>
+                    );
+                  })}
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div className="setting-menu">
-          {setting_menu.map((a, i) => {
-            return (
-              <div key={i} className="setting-menu-title-element">
-                <div className="setting-menu-title">{a.title}</div>
-                {a.element.map((b, j) => {
-                  return (
-                    <button ref={buttonRef[count++]} key={j} className="setting-menu-element-icon">
-                      <i className={a.elementIcon[j] + " xi-2x"}></i>
-                      <div className="setting-menu-element">{b}</div>
-                    </button>
-                  );
-                })}
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      </MotionComponent>
     </>
   );
 }

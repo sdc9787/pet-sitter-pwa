@@ -2,6 +2,7 @@ import axios from "axios";
 import "./communityEdit.css";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import MotionComponent from "../../../Component/motion/motion";
 
 function CommunityEdit() {
   const location = useLocation();
@@ -81,50 +82,51 @@ function CommunityEdit() {
   }, []);
   return (
     <>
-      <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
-        <span className={"setting-setting-title-true"}>커뮤니티</span>
-        <i className="xi-bars xi-2x"></i>
-      </div>
-      <div className="community-create">
-        <div className="community-create-content">
-          <input
-            value={communitytitle}
-            className="community-create-content-title"
-            placeholder="제목을 입력해주세요"
-            onChange={(e) => {
-              setCommunitytitle(e.target.value);
-            }}
-          />
-          <textarea
-            value={communityContent}
-            className="community-create-content-content"
-            placeholder="내용을 입력해주세요"
-            onChange={(e) => {
-              setCommunityContent(e.target.value);
-            }}></textarea>
-          {detail.img_url !== null ? (
-            <div className="community-create-content-file-img">
-              <button
-                className="community-create-img-delete-button"
-                onClick={() => {
-                  deleteImage();
-                }}>
-                <i className="xi-close-min xi-2x"></i>
-              </button>
-              {imagePreview === true ? <img src={detail.img_url}></img> : <img style={{ opacity: 0.7 }} src={detail.img_url}></img>}
-            </div>
-          ) : null}
-          <input type="file" onChange={handleImageChange} />
-
-          <button
-            className="community-create-content-button"
-            onClick={() => {
-              editCommunity();
-            }}>
-            수정
-          </button>
+      <MotionComponent>
+        <div className={(scrollPosition < 1 ? "" : "setting-setting-shadow ") + " setting-setting"}>
+          <span className={"setting-setting-title-true"}>커뮤니티</span>
+          <i className="xi-bars xi-2x"></i>
         </div>
-      </div>
+        <div className="community-create">
+          <div className="community-create-content">
+            <input
+              value={communitytitle}
+              className="community-create-content-title"
+              placeholder="제목을 입력해주세요"
+              onChange={(e) => {
+                setCommunitytitle(e.target.value);
+              }}
+            />
+            <textarea
+              value={communityContent}
+              className="community-create-content-content"
+              placeholder="내용을 입력해주세요"
+              onChange={(e) => {
+                setCommunityContent(e.target.value);
+              }}></textarea>
+            {detail.img_url !== null ? (
+              <div className="community-create-content-file-img">
+                <button
+                  className="community-create-img-delete-button"
+                  onClick={() => {
+                    deleteImage();
+                  }}>
+                  <i className="xi-close-min xi-2x"></i>
+                </button>
+                {imagePreview === true ? <img src={detail.img_url}></img> : <img style={{ opacity: 0.7 }} src={detail.img_url}></img>}
+              </div>
+            ) : null}
+            <input type="file" onChange={handleImageChange} />
+            <button
+              className="community-create-content-button"
+              onClick={() => {
+                editCommunity();
+              }}>
+              수정
+            </button>
+          </div>
+        </div>
+      </MotionComponent>
     </>
   );
 }

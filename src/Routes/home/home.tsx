@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import "./home.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaw, faDog, faScissors, faHotel } from "@fortawesome/free-solid-svg-icons";
+import MotionComponent from "../../Component/motion/motion";
 
 function Home() {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -37,60 +38,62 @@ function Home() {
 
   return (
     <>
-      <div className="home">
-        <div className={(scrollPosition < 1 ? "" : "home-navbar-shadow ") + " home-navbar"}>
-          <div className="home-navbar-title">
-            <i className="xi-bars xi-2x"></i>
+      <MotionComponent>
+        <div className="home">
+          <div className={(scrollPosition < 1 ? "" : "home-navbar-shadow ") + " home-navbar"}>
+            <div className="home-navbar-title">
+              <i className="xi-bars xi-2x"></i>
+            </div>
+            <span className="home-navbar-logo">SWR</span>
           </div>
-          <span className="home-navbar-logo">SWR</span>
+          <div className="home-main">
+            <div className="home-main-service">
+              <div className="home-main-service-title">
+                <span>서비스 추천</span>
+                <i className="xi-help-o xi-2x"></i>
+              </div>
+              <div className="home-main-service-content">
+                <div className="home-main-service-content-item">
+                  <FontAwesomeIcon icon={faPaw} size="2x" />
+                  <span>돌봄</span>
+                </div>
+                <div className="home-main-service-content-item">
+                  <FontAwesomeIcon icon={faDog} size="2x" />
+                  <span>산책</span>
+                </div>
+                <div className="home-main-service-content-item">
+                  <FontAwesomeIcon icon={faScissors} size="2x" />
+                  <span>미용</span>
+                </div>
+                <div className="home-main-service-content-item">
+                  <FontAwesomeIcon icon={faHotel} size="2x" />
+                  <span>숙소</span>
+                </div>
+              </div>
+            </div>
+            <div className="home-main-service">
+              <div className="home-main-service-menu-title">
+                <span>플레이스</span>
+                <i className="xi-help-o xi-2x"></i>
+              </div>
+              <div className="home-main-service-menu">
+                <div className="home-main-service-content-item">
+                  <i className="xi-cafe xi-2x"></i>
+                  <span>카페</span>
+                </div>
+                <div className="home-main-service-content-item">
+                  <i className="xi-shop xi-2x"></i>
+                  <span>식당</span>
+                </div>
+                <div className="home-main-service-content-item">
+                  <i className="xi-hotel xi-2x"></i>
+                  <span>호텔</span>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div className="home-main">
-          <div className="home-main-service">
-            <div className="home-main-service-title">
-              <span>서비스 추천</span>
-              <i className="xi-help-o xi-2x"></i>
-            </div>
-            <div className="home-main-service-content">
-              <div className="home-main-service-content-item">
-                <FontAwesomeIcon icon={faPaw} size="2x" />
-                <span>돌봄</span>
-              </div>
-              <div className="home-main-service-content-item">
-                <FontAwesomeIcon icon={faDog} size="2x" />
-                <span>산책</span>
-              </div>
-              <div className="home-main-service-content-item">
-                <FontAwesomeIcon icon={faScissors} size="2x" />
-                <span>미용</span>
-              </div>
-              <div className="home-main-service-content-item">
-                <FontAwesomeIcon icon={faHotel} size="2x" />
-                <span>숙소</span>
-              </div>
-            </div>
-          </div>
-          <div className="home-main-service">
-            <div className="home-main-service-menu-title">
-              <span>플레이스</span>
-              <i className="xi-help-o xi-2x"></i>
-            </div>
-            <div className="home-main-service-menu">
-              <div className="home-main-service-content-item">
-                <i className="xi-cafe xi-2x"></i>
-                <span>카페</span>
-              </div>
-              <div className="home-main-service-content-item">
-                <i className="xi-shop xi-2x"></i>
-                <span>식당</span>
-              </div>
-              <div className="home-main-service-content-item">
-                <i className="xi-hotel xi-2x"></i>
-                <span>호텔</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      </MotionComponent>
     </>
   );
 }
