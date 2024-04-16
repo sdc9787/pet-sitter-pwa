@@ -1,7 +1,20 @@
+import { useEffect, useState } from "react";
 import MotionComponent from "../../Component/motion/motion";
 import "./pet.css";
 
 function Pet() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const img = new Image();
+    img.src = "/img/petimg.webp";
+    img.onload = () => setIsLoading(false);
+  }, []);
+
+  if (isLoading) {
+    return <div>Loading...</div>; // 이 부분에 로딩 페이지를 표시합니다.
+  }
+
   return (
     <>
       <MotionComponent>
