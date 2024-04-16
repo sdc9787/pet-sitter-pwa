@@ -14,6 +14,11 @@ function CommunityEdit() {
 
   const [imagePreview, setImagePreview] = useState<boolean>(location?.state.img_url !== null ? true : false); //이미지 미리보기
 
+  //파일 업로드
+  const [previewImage, setPreviewImage] = useState<string | null>(null); //미리보기 이미지
+
+  const [fileName, setFileName] = useState("첨부파일");
+
   useEffect(() => {
     setCommunitytitle(detail.title);
     setCommunityContent(detail.content);
@@ -26,10 +31,25 @@ function CommunityEdit() {
     if (event.target.files && event.target.files[0]) {
       setImage(event.target.files[0]);
       setImageState(true);
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewImage(reader.result as string);
+      };
+      setFileName(event.target.files[0].name);
+      reader.readAsDataURL(event.target.files[0]);
     } else {
       setImage(null);
       setImageState(false);
     }
+  };
+  //이미지 삭제
+  const handleRemoveClick = () => {
+    setImage(null);
+    setImageState(false);
+    setPreviewImage(null);
+    setFileName("첨부파일");
+    const fileInput = document.getElementById("file") as HTMLInputElement;
+    fileInput.value = "";
   };
 
   //이미지 삭제
@@ -104,7 +124,7 @@ function CommunityEdit() {
               onChange={(e) => {
                 setCommunityContent(e.target.value);
               }}></textarea>
-            {detail.img_url !== null ? (
+            {detail.img_url !== null && !previewImage ? (
               <div className="community-create-content-file-img">
                 <button
                   className="community-create-img-delete-button"
@@ -116,9 +136,33 @@ function CommunityEdit() {
                 {imagePreview === true ? <img src={detail.img_url}></img> : <img style={{ opacity: 0.7 }} src={detail.img_url}></img>}
               </div>
             ) : null}
-            <input type="file" onChange={handleImageChange} />
+
+            <div className="community-create-content-file ">
+              {previewImage && (
+                <div className="community-create-content-file-img">
+                  <img src={previewImage} alt="preview" />
+                  <button onClick={handleRemoveClick}>
+                    <i className="xi-close-min xi-2x"></i>
+                  </button>
+                </div>
+              )}
+              <div className="filebox">
+                <input className="upload-name" value={fileName} placeholder="첨부파일" readOnly />
+                <label htmlFor="file">파일찾기</label>
+                <input type="file" id="file" onChange={handleImageChange} />
+              </div>
+            </div>
+          </div>
+          <div className="community-create-content-buttons">
             <button
-              className="community-create-content-button"
+              className="community-create-content-back-button"
+              onClick={() => {
+                navigate("/community");
+              }}>
+              취소
+            </button>
+            <button
+              className="community-create-content-send-button"
               onClick={() => {
                 editCommunity();
               }}>
