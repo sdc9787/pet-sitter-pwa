@@ -18,6 +18,7 @@ import EditInfo from "./Routes/setting/edit-info/edit-info";
 import KakaoRedirect from "./Routes/oauth/callback/kakao/kakaoRedirect";
 import TabBar from "./Component/tabbar/tabbar";
 import Map from "./Routes/map/map";
+import PetInfo from "./Routes/setting/pet-info/pet-info";
 
 function App() {
   const navigate = useNavigate(); //페이지 이동
@@ -85,6 +86,7 @@ function App() {
           <Route path="/setting" element={<Setting></Setting>}></Route>
           <Route path="/setting/pincheck" element={<PinCheck></PinCheck>}></Route>
           <Route path="/setting/edit-info" element={<EditInfo></EditInfo>}></Route>
+          <Route path="/setting/pet-info" element={<PetInfo></PetInfo>}></Route>
           <Route path="/oauth/callback/kakao" element={<KakaoRedirect></KakaoRedirect>}></Route>
           <Route path="*" element={<div>접근할 수 없는 페이지입니다.</div>}></Route>
         </Routes>

@@ -107,6 +107,13 @@ function Setting() {
               로그아웃
             </button>
           </div>
+          <div
+            className="setting-pet-info"
+            onClick={() => {
+              navigate("/setting/pet-info");
+            }}>
+            <span className="setting-pet-info-title">반려동물 프로필</span>
+          </div>
           <div className="setting-menu">
             {setting_menu.map((a, i) => {
               return (

@@ -126,3 +126,14 @@
 .setting-menu-element-icon i {
   margin-right: 10px;
 }
+
+.setting-pet-info {
+  text-align: center;
+  width: auto;
+  padding: 15px;
+  border: 1px solid #f5f6f8;
+  margin: 0px 15px;
+  background-color: #f2f3f7;
+  color: #737373;
+  border-radius: 10px;
+}
