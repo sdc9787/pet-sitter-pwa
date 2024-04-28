@@ -1,3 +1,7 @@
+:root {
+  --main-color: #569bf6;
+}
+
 body {
   position: relative;
 }
