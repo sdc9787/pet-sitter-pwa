@@ -3,6 +3,7 @@ import "./home.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaw, faDog, faScissors, faHotel } from "@fortawesome/free-solid-svg-icons";
 import MotionComponent from "../../Component/motion/motion";
+import axios from "axios";
 
 function Home() {
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -27,6 +28,27 @@ function Home() {
   //     .catch((error) => console.log(error.response));
   // });
 
+  const handleLogin = () => {
+    console.log(123);
+    const formData = new FormData();
+    formData.append("username", "tester10@naver.com");
+    formData.append("pasword", "123456a");
+
+    axios
+      .post(`${import.meta.env.VITE_APP_API_URL}/login`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          "Content-Encoding": "charset=utf-8",
+        },
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   //스크롤 이벤트
   const [scrollPosition, setScrollPosition] = useState(0);
   const updateScroll = () => {
@@ -49,7 +71,7 @@ function Home() {
           <div className="home-main">
             <div className="home-main-service">
               <div className="home-main-service-title">
-                <span>서비스 추천</span>
+                <span onClick={handleLogin}>서비스 추천</span>
                 <i className="xi-help-o xi-2x"></i>
               </div>
               <div className="home-main-service-content">
