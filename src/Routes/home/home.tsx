@@ -37,8 +37,9 @@ function Home() {
     axios
       .post(`https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app/login`, formData, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "multipart/form-data",
           "Content-Encoding": "charset=utf-8",
+          Authorization: "aasd",
         },
       })
       .then((res) => {
