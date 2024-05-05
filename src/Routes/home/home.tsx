@@ -35,7 +35,7 @@ function Home() {
     formData.append("password", "123456a");
 
     axios
-      .post(`${import.meta.env.VITE_APP_API_URL}/login`, formData, {
+      .post(`https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app/login`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           "Content-Encoding": "charset=utf-8",
@@ -52,8 +52,12 @@ function Home() {
   const handleemail = () => {
     console.log(123);
     axios
-      .post(`${import.meta.env.VITE_APP_API_URL}/email`, {
+      .post(`https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app/join/email-check`, {
         email: "sdc9787@naver.com",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Encoding": "charset=utf-8",
+        },
       })
       .then((res) => {
         console.log(res.data);
