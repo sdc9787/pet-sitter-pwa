@@ -101,6 +101,11 @@ function Home() {
                   <FontAwesomeIcon icon={faPaw} size="2x" />
                   <span>로그인</span>
                 </div>
+                <form action="https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app/login" method="post" encType="multipart/form-data">
+                  <input type="text" name="username" value="tester10@naver.com" />
+                  <input type="password" name="password" value="123456a" />
+                  <input type="submit" value="Submit" />
+                </form>
                 <div onClick={handleemail} className="home-main-service-content-item">
                   <FontAwesomeIcon icon={faDog} size="2x" />
                   <span>이메일</span>
