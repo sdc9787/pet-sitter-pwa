@@ -49,6 +49,20 @@ function Home() {
       });
   };
 
+  const handleemail = () => {
+    console.log(123);
+    axios
+      .post(`${import.meta.env.VITE_APP_API_URL}/email`, {
+        email: "sdc9787@naver.com",
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   //스크롤 이벤트
   const [scrollPosition, setScrollPosition] = useState(0);
   const updateScroll = () => {
@@ -71,17 +85,17 @@ function Home() {
           <div className="home-main">
             <div className="home-main-service">
               <div className="home-main-service-title">
-                <span onClick={handleLogin}>서비스 추천</span>
+                <span>서비스 추천</span>
                 <i className="xi-help-o xi-2x"></i>
               </div>
               <div className="home-main-service-content">
-                <div className="home-main-service-content-item">
+                <div onClick={handleLogin} className="home-main-service-content-item">
                   <FontAwesomeIcon icon={faPaw} size="2x" />
-                  <span>돌봄</span>
+                  <span>로그인</span>
                 </div>
-                <div className="home-main-service-content-item">
+                <div onClick={handleemail} className="home-main-service-content-item">
                   <FontAwesomeIcon icon={faDog} size="2x" />
-                  <span>산책</span>
+                  <span>이메일</span>
                 </div>
                 <div className="home-main-service-content-item">
                   <FontAwesomeIcon icon={faScissors} size="2x" />

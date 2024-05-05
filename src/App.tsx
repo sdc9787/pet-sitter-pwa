@@ -26,15 +26,15 @@ function App() {
   let tabbarState = useSelector((state: any) => state.tabbar); //tabbar state
   const location = useLocation(); //현재 페이지 url
 
-  // 토큰 유효성 검사
-  useEffect(() => {
-    checkTokenValidity();
-    if (window.localStorage.getItem("access_token") === null) {
-      navigate("/login");
-    } else {
-      navigate("/home");
-    }
-  }, []);
+  // // 토큰 유효성 검사
+  // useEffect(() => {
+  //   checkTokenValidity();
+  //   if (window.localStorage.getItem("access_token") === null) {
+  //     navigate("/login");
+  //   } else {
+  //     navigate("/home");
+  //   }
+  // }, []);
 
   //tabState가 바뀔때마다 토큰 유효성 검사
   const checkTokenValidity = async () => {
