@@ -20,6 +20,7 @@ import TabBar from "./Component/tabbar/tabbar";
 import Map from "./Routes/map/map";
 import PetInfo from "./Routes/setting/pet-info/pet-info";
 import PetRegister from "./Routes/setting/pet-register/pet-register";
+import Test from "./test";
 
 function App() {
   const navigate = useNavigate(); //페이지 이동
@@ -90,6 +91,7 @@ function App() {
           <Route path="/setting/pet-info" element={<PetInfo></PetInfo>}></Route>
           <Route path="/setting/pet-register" element={<PetRegister></PetRegister>}></Route>
           <Route path="/oauth/callback/kakao" element={<KakaoRedirect></KakaoRedirect>}></Route>
+          <Route path="/test" element={<Test></Test>}></Route>
           <Route path="*" element={<div>접근할 수 없는 페이지입니다.</div>}></Route>
         </Routes>
       </div>
