@@ -53,7 +53,7 @@ function Home() {
     console.log(123);
     axios
       .post(`https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app/join/email-check`, {
-        email: "sdc9787@naver.com",
+        data: { email: "sdc9787@naver.com" },
         headers: {
           "Content-Type": "application/json",
           "Content-Encoding": "charset=utf-8",
