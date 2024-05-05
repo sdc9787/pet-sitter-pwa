@@ -32,7 +32,7 @@ function Home() {
     console.log(123);
     const formData = new FormData();
     formData.append("username", "tester10@naver.com");
-    formData.append("pasword", "123456a");
+    formData.append("password", "123456a");
 
     axios
       .post(`${import.meta.env.VITE_APP_API_URL}/login`, formData, {
