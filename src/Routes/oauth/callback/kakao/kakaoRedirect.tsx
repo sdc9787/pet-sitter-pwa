@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 
 const KakaoRedirect = () => {
   const code: string = window.location.search;
+
   const url: string = "/callback";
   const navigate = useNavigate();
   useEffect(() => {
