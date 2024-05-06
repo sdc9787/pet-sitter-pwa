@@ -39,8 +39,6 @@ function Home() {
         headers: {
           "Content-Type": "multipart/form-data",
           "Content-Encoding": "charset=utf-8",
-          "Access-Control-Allow-Origin": `https://teamswr.store`,
-          "Access-Control-Allow-Credentials": "true",
         },
       })
       .then((res) => {
@@ -61,8 +59,6 @@ function Home() {
           headers: {
             "Content-Type": "application/json",
             "Content-Encoding": "charset=utf-8",
-            "Access-Control-Allow-Origin": `https://teamswr.store`,
-            "Access-Control-Allow-Credentials": "true",
           },
         }
       )
@@ -84,8 +80,6 @@ function Home() {
           headers: {
             "Content-Type": "application/json",
             "Content-Encoding": "charset=utf-8",
-            "Access-Control-Allow-Origin": `https://teamswr.store`,
-            "Access-Control-Allow-Credentials": "true",
             Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3RlcjEwQG5hdmVyLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3MTQ5NDc4NzQsImV4cCI6MTcxNDk4Mzg3NH0.YUxomtNUO1ztrYmFC6tFZdkaHiptnrh2cndm6tzj-nU",
             refresh_token: "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3RlcjNAbmF2ZXIuY29tIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTcxNDkxNjkyOCwiZXhwIjoxNzE0OTE3NTMyfQ.K0zn5af3UTr4gs4QDDXm9AlDE57eEb9CwAWLBxWNai4",
           },
