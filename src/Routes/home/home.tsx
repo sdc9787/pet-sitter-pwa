@@ -39,7 +39,6 @@ function Home() {
         headers: {
           "Content-Type": "multipart/form-data",
           "Content-Encoding": "charset=utf-8",
-          Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3RlcjEwQG5hdmVyLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3MTQ5NDc4NzQsImV4cCI6MTcxNDk4Mzg3NH0.YUxomtNUO1ztrYmFC6tFZdkaHiptnrh2cndm6tzj-nU",
         },
       })
       .then((res) => {
