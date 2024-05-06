@@ -39,7 +39,7 @@ function Home() {
         headers: {
           "Content-Type": "multipart/form-data",
           "Content-Encoding": "charset=utf-8",
-          Authorization: "aasd",
+          Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3RlcjEwQG5hdmVyLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3MTQ5NDc4NzQsImV4cCI6MTcxNDk4Mzg3NH0.YUxomtNUO1ztrYmFC6tFZdkaHiptnrh2cndm6tzj-nU",
         },
       })
       .then((res) => {
@@ -81,7 +81,7 @@ function Home() {
           headers: {
             "Content-Type": "application/json",
             "Content-Encoding": "charset=utf-8",
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3RlcjNAbmF2ZXIuY29tIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTcxNDkxNjkyOCwiZXhwIjoxNzE0OTUyOTI4fQ.-N9IP1ObJP9xoN2gzvNWK7PdPuuCTrBfj3J8uXUeOSQ",
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3RlcjEwQG5hdmVyLmNvbSIsInJvbGUiOiJST0xFX1VTRVIiLCJpYXQiOjE3MTQ5NDc4NzQsImV4cCI6MTcxNDk4Mzg3NH0.YUxomtNUO1ztrYmFC6tFZdkaHiptnrh2cndm6tzj-nU",
             refresh_token: "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3RlcjNAbmF2ZXIuY29tIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTcxNDkxNjkyOCwiZXhwIjoxNzE0OTE3NTMyfQ.K0zn5af3UTr4gs4QDDXm9AlDE57eEb9CwAWLBxWNai4",
           },
         }
