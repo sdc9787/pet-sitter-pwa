@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "proxy": "https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
