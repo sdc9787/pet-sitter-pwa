@@ -71,6 +71,29 @@ function Home() {
       });
   };
 
+  const handlenickname = () => {
+    console.log(123);
+    axios
+      .post(
+        `https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app/join/nickname-check`,
+        { nickname: "sdc9787" },
+        {
+          headers: {
+            "Content-Type": "application/json",
+            "Content-Encoding": "charset=utf-8",
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3RlcjNAbmF2ZXIuY29tIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTcxNDkxNjkyOCwiZXhwIjoxNzE0OTUyOTI4fQ.-N9IP1ObJP9xoN2gzvNWK7PdPuuCTrBfj3J8uXUeOSQ",
+            refresh_token: "eyJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6InRlc3RlcjNAbmF2ZXIuY29tIiwicm9sZSI6IlJPTEVfVVNFUiIsImlhdCI6MTcxNDkxNjkyOCwiZXhwIjoxNzE0OTE3NTMyfQ.K0zn5af3UTr4gs4QDDXm9AlDE57eEb9CwAWLBxWNai4",
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   //스크롤 이벤트
   const [scrollPosition, setScrollPosition] = useState(0);
   const updateScroll = () => {
@@ -110,33 +133,9 @@ function Home() {
                   <FontAwesomeIcon icon={faDog} size="2x" />
                   <span>이메일</span>
                 </div>
-                <div className="home-main-service-content-item">
+                <div onClick={handlenickname} className="home-main-service-content-item">
                   <FontAwesomeIcon icon={faScissors} size="2x" />
-                  <span>미용</span>
-                </div>
-                <div className="home-main-service-content-item">
-                  <FontAwesomeIcon icon={faHotel} size="2x" />
-                  <span>숙소</span>
-                </div>
-              </div>
-            </div>
-            <div className="home-main-service">
-              <div className="home-main-service-menu-title">
-                <span>플레이스</span>
-                <i className="xi-help-o xi-2x"></i>
-              </div>
-              <div className="home-main-service-menu">
-                <div className="home-main-service-content-item">
-                  <i className="xi-cafe xi-2x"></i>
-                  <span>카페</span>
-                </div>
-                <div className="home-main-service-content-item">
-                  <i className="xi-shop xi-2x"></i>
-                  <span>식당</span>
-                </div>
-                <div className="home-main-service-content-item">
-                  <i className="xi-hotel xi-2x"></i>
-                  <span>호텔</span>
+                  <span>닉네임</span>
                 </div>
               </div>
             </div>
