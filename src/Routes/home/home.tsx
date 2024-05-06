@@ -75,7 +75,7 @@ function Home() {
     console.log(123);
     axios
       .post(
-        `https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app/join/nickname-check`,
+        `https://port-0-swr-17xco2nlst8pr67.sel5.cloudtype.app/join/step1`,
         { nickname: "sdc9787" },
         {
           headers: {
