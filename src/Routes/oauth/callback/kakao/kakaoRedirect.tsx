@@ -11,15 +11,23 @@ const KakaoRedirect = () => {
     axios.get(`${import.meta.env.VITE_APP_API_URL}${url}${code}`).then((r: any) => {
       // console.log(r.data);
       window.localStorage.setItem("access_token", r.data.access_token); // 엑세스 토큰 저장
-      window.localStorage.setItem("access_token_expires_in", r.data.access_token_expires_in); // 만료 시간 저장
       window.localStorage.setItem("refresh_token", r.data.refresh_token); // 만료 시간 저장
-      window.localStorage.setItem("refresh_token_expires_in", r.data.refresh_token_expires_in); // 만료 시간 저장
 
       r.data.login_or_sign === "회원가입" ? navigate("/signup") : navigate("/home");
       // navigate("/signup");
+      axios
+        .get(`${import.meta.env.VITE_APP_API_URL}/mypage`, {
+          headers: {
+            Authorization: `${window.localStorage.getItem("access_token")}`,
+          },
+        })
+        .then((r: any) => {
+          console.log(r.data);
+          window.localStorage.setItem("nickname", r.data.nickname); // 닉네임 저장
+          window.localStorage.setItem("email", r.data.email); // 이메일 저장
+        });
     });
   }, []);
-
   return <div>로그인 중입니다.</div>;
 };
 

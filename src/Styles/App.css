@@ -1,5 +1,6 @@
 :root {
   --main-color: #569bf6;
+  --gray: #575759;
 }
 
 body {
@@ -11,10 +12,4 @@ body {
   display: flex;
   justify-content: center;
   align-items: flex-start;
-}
-
-.page {
-  position: absolute;
-
-  width: 100vw;
 }
