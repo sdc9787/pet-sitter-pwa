@@ -1,12 +1,23 @@
 import "./Styles/App.css";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom";
 import TabBar from "./Component/tabbar/tabbar";
 import { AlertText } from "./Component/alertText/alertText";
 import Profile from "./Routes/profile/profile";
 import Community from "./Routes/community/community";
 import Oauth from "./Routes/oauth/oauth";
+import { useEffect } from "react";
 
 function App() {
+  const navigate = useNavigate(); //페이지 이동
+
+  useEffect(() => {
+    if (localStorage.getItem("Authorization")) {
+      navigate("/home");
+    } else {
+      navigate("/oauth/login");
+    }
+  }, []);
+
   return (
     <>
       <div className="w-screen flex justify-center items-start font-custom">
