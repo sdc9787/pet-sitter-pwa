@@ -6,6 +6,7 @@ import Profile from "./Routes/profile/profile";
 import Community from "./Routes/community/community";
 import Oauth from "./Routes/oauth/oauth";
 import { useEffect } from "react";
+import KakaoMap from "./Routes/map/map";
 
 function App() {
   const navigate = useNavigate(); //페이지 이동
@@ -28,6 +29,10 @@ function App() {
           <Route path="/profile/*" element={<Profile></Profile>}></Route>
           {/* 커뮤니티 */}
           <Route path="/community/*" element={<Community></Community>}></Route>
+          {/* 홈 */}
+          <Route path="/home" element={<div>홈</div>}></Route>
+          {/* 지도 */}
+          <Route path="/map" element={<KakaoMap></KakaoMap>}></Route>
         </Routes>
       </div>
       <div className="TabBar font-custom">

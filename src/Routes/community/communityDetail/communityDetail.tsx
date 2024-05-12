@@ -284,13 +284,22 @@ function CommunityDetail() {
                     <div className="text-xs font-semibold mb-1">{a.createDate}</div>
                   </div>
                   {localStorage.getItem("nickname") === a.nickname ? (
-                    <button
-                      className="text-sm"
-                      onClick={() => {
-                        handleCommentDelete(a.id); //댓글 삭제
-                      }}>
-                      <i className="xi-close-min xi-2x"></i>
-                    </button>
+                    <div className="flex justify-center items-center">
+                      <button
+                        className="px-1 py-1 font-bold text-gray"
+                        onClick={() => {
+                          navgate("/community/edit", { state: detail }); //본문 수정
+                        }}>
+                        수정
+                      </button>
+                      <button
+                        className="text-sm"
+                        onClick={() => {
+                          handleCommentDelete(a.id); //댓글 삭제
+                        }}>
+                        <i className="xi-close-min xi-2x"></i>
+                      </button>
+                    </div>
                   ) : null}
                 </div>
                 <div className="text-base mb-3" style={{ letterSpacing: "1.2px", lineHeight: "1.3" }}>
