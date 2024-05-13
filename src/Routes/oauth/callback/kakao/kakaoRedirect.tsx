@@ -9,12 +9,11 @@ const KakaoRedirect = () => {
   const navigate = useNavigate();
   useEffect(() => {
     axios.get(`${import.meta.env.VITE_APP_API_URL}${url}${code}`).then((r: any) => {
-      // console.log(r.data);
       window.localStorage.setItem("access_token", r.data.access_token); // 엑세스 토큰 저장
       window.localStorage.setItem("refresh_token", r.data.refresh_token); // 만료 시간 저장
 
       r.data.login_or_sign === "회원가입" ? navigate("/signup") : navigate("/home");
-      // navigate("/signup");
+
       axios
         .get(`${import.meta.env.VITE_APP_API_URL}/mypage`, {
           headers: {

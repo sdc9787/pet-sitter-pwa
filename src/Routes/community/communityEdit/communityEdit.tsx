@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Topbar from "../../../Component/topbar/topbar";
 import { useAlert } from "../../../Component/alertText/alertText";
+import instanceMultipart from "../../../Component/axios/axiosMultipart";
 
 function CommunityEdit() {
   const location = useLocation();
@@ -68,27 +69,15 @@ function CommunityEdit() {
   const editCommunity = () => {
     imagePreview === true ? setImageState(false) : setImageState(true); //이미지 삭제 버튼을 눌렀을때 이미지 상태를 false로 변경
     image !== null ? setImageState(true) : null; //이미지가 있을때만 이미지 상태를 true로 변경
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/community/edit/post`,
-        {
-          title: communitytitle,
-          content: communityContent,
-          image: image,
-          community_board_id: detail.id,
-          image_change_check: imageState,
-        },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refash_token: `${localStorage.getItem("refresh_token")}`,
-            "Content-Encoding": "charset=UTF-8",
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      )
+    instanceMultipart
+      .post("/community/edit/post", {
+        title: communitytitle,
+        content: communityContent,
+        image: image,
+        community_board_id: detail.id,
+        image_change_check: imageState,
+      })
       .then((r: any) => {
-        console.log(r.data);
         alertBox("게시글이 수정되었습니다.");
         navigate("/community");
       })

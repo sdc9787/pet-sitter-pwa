@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../../../Component/topbar/topbar";
+import instanceJson from "../../../Component/axios/axiosJson";
 
 type Post = {
   id: number;
@@ -49,15 +50,8 @@ function CommunityMain() {
     if (loading || !hasMore) return;
     setLoading(true);
 
-    axios
-      .get(`${import.meta.env.VITE_APP_API_URL}/community/${page}`, {
-        headers: {
-          Authorization: `${localStorage.getItem("Authorization")}`,
-          refresh_token: `${localStorage.getItem("refresh_token")}`,
-          "Content-Type": "application/json",
-          "Content-Encoding": "charset=UTF-8",
-        },
-      })
+    instanceJson
+      .get(`/community/${page}`)
       .then((res) => {
         const newPosts = res.data.posts.map((post: any) => {
           const date = new Date(post.createDate);

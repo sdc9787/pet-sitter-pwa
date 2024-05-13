@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAlert } from "../../../../Component/alertText/alertText";
+import instanceJson from "../../../../Component/axios/axiosJson";
 
 const SignUpPinNumber = (props: any) => {
   const alertBox = useAlert(); //알림창
@@ -43,24 +43,8 @@ const SignUpPinNumber = (props: any) => {
   useEffect(() => {
     if (pinNumberCheck.length === 6) {
       if (pinNumber === pinNumberCheck) {
-        axios
-          .post(
-            `${import.meta.env.VITE_APP_API_URL}/join/step2`,
-            {
-              phoneNumber: phoneNumber,
-              birth: birthday,
-              nickname: nickname,
-              pinNumber: pinNumber,
-            },
-            {
-              headers: {
-                "Content-Encoding": "charset=UTF-8",
-                "Content-Type": "application/json",
-                Authorization: `${localStorage.getItem("Authorization")}`,
-                refresh_token: `${localStorage.getItem("refresh_token")}`,
-              },
-            }
-          )
+        instanceJson
+          .post("/join/step2", { phoneNumber: phoneNumber, birth: birthday, nickname: nickname, pinNumber: pinNumber })
           .then((r: any) => {
             console.log(r);
             localStorage.setItem("nickname", nickname);

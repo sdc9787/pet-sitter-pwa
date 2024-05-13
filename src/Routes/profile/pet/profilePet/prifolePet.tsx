@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Topbar from "../../../../Component/topbar/topbar";
+import instanceJson from "../../../../Component/axios/axiosJson";
+import { useAlert } from "../../../../Component/alertText/alertText";
 
 function PetProfile() {
   const navigator = useNavigate(); //페이지 이동
+  const alertBox = useAlert(); //알림창
   //현재 연도
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
 
@@ -12,29 +14,17 @@ function PetProfile() {
 
   //펫 정보 가져오기
   useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_APP_API_URL}/mypage/pet/list`, {
-        headers: {
-          "Content-Type": "application/json",
-          "Content-Encoding": "charset=UTF-8",
-          Authorization: `${localStorage.getItem("Authorization")}`,
-          refresh_token: `${localStorage.getItem("refresh_token")}`,
-        },
-      })
+    instanceJson
+      .get("/mypage/pet/list")
       .then((r: any) => {
         setPetProfile(r.data.petList);
+      })
+      .catch((error: any) => {
+        alertBox("펫 정보를 가져오는데 실패했습니다");
+        console.error(error);
       });
   }, []);
 
-  //스크롤 이벤트
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const updateScroll = () => {
-    setScrollPosition(window.scrollY || document.documentElement.scrollTop);
-  };
-
-  useEffect(() => {
-    window.addEventListener("scroll", updateScroll);
-  });
   return (
     <>
       <div className="w-full h-screen p-5">

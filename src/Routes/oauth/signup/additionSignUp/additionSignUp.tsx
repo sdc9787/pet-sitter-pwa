@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../../Component/alertText/alertText";
 import Topbar from "../../../../Component/topbar/topbar";
-import axios from "axios";
+import instanceJson from "../../../../Component/axios/axiosJson";
 
 function AdditionSignUp() {
   const navigate = useNavigate(); //페이지 이동
@@ -57,21 +57,11 @@ function AdditionSignUp() {
 
   const handleNickName = () => {
     //닉네임 유효성 검사
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/join/step1`,
-        {
-          nickname: nickname,
-        },
-        {
-          headers: {
-            "Content-Encoding": "charset=UTF-8",
-            "Content-Type": "application/json",
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-          },
-        }
-      )
+
+    instanceJson
+      .post("/join/step1", {
+        nickname: nickname,
+      })
       .then((res) => {
         setNicknameState(true);
         alertBox("사용 가능한 닉네임입니다");

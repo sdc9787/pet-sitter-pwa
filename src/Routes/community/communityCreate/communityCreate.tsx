@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../../../Component/topbar/topbar";
 import { useAlert } from "../../../Component/alertText/alertText";
+import instanceMultipart from "../../../Component/axios/axiosMultipart";
 
 function CommunityCreate() {
   const [communitytitle, setCommunitytitle] = useState(""); //커뮤니티 게시글 제목
@@ -60,15 +61,8 @@ function CommunityCreate() {
       formData.append("image", emptyFile);
     }
 
-    axios
-      .post(`${import.meta.env.VITE_APP_API_URL}/community/create/post`, formData, {
-        headers: {
-          Authorization: `${localStorage.getItem("Authorization")}`,
-          refresh_token: `${localStorage.getItem("refresh_token")}`,
-          "Content-Type": "multipart/form-data",
-          "Content-Encoding": "charset=UTF-8",
-        },
-      })
+    instanceMultipart
+      .post("/community/create/post", formData)
       .then((r: any) => {
         console.log(r.data);
         alertBox("게시글이 작성되었습니다.");
@@ -79,14 +73,6 @@ function CommunityCreate() {
         console.error(error);
       });
   };
-  //스크롤 이벤트
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const updateScroll = () => {
-    setScrollPosition(window.scrollY || document.documentElement.scrollTop);
-  };
-  useEffect(() => {
-    window.addEventListener("scroll", updateScroll);
-  }, []);
 
   return (
     <>

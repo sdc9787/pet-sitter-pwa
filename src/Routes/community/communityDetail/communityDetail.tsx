@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { useAlert } from "../../../Component/alertText/alertText";
 import Topbar from "../../../Component/topbar/topbar";
+import instanceJson from "../../../Component/axios/axiosJson";
 
 interface Detail {
   id: number;
@@ -41,15 +42,8 @@ function CommunityDetail() {
 
   //글목록 및 댓글목록을 서버에 요청하는 함수
   const getDetail = () => {
-    axios
-      .get(`${import.meta.env.VITE_APP_API_URL}/community/post/${id}`, {
-        headers: {
-          Authorization: `${localStorage.getItem("Authorization")}`,
-          refresh_token: `${localStorage.getItem("refresh_token")}`,
-          "Content-Type": "application/json",
-          "Content-Encoding": "charset=UTF-8",
-        },
-      })
+    instanceJson
+      .get(`/community/post/${id}`)
       .then((r: any) => {
         if (Array.isArray(r.data.comments)) {
           r.data.comments.map((a: any) => {
@@ -80,22 +74,8 @@ function CommunityDetail() {
     if (!commentText) {
       return;
     }
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/community/create/comment`,
-        {
-          content: commentText,
-          community_board_id: id,
-        },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-            "Content-Type": "application/json",
-            "Content-Encoding": "charset=UTF-8",
-          },
-        }
-      )
+    instanceJson
+      .post(`/community/create/comment`, { content: commentText, community_board_id: id })
       .then((r: any) => {
         alertBox("댓글이 등록되었습니다.");
         getDetail();
@@ -109,23 +89,9 @@ function CommunityDetail() {
 
   // 본문 좋아요 api
   const handleLike = () => {
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/community/like/post`,
-        {
-          community_board_id: detail.id,
-        },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-            "Content-Type": "application/json",
-            "Content-Encoding": "charset=UTF-8",
-          },
-        }
-      )
+    instanceJson
+      .post(`/community/like/post`, { community_board_id: detail.id })
       .then((r: any) => {
-        console.log(r.data);
         alertBox("추천완료");
         setDetail({ ...detail, likeCount: detail.likeCount + 1 });
       })
@@ -137,21 +103,8 @@ function CommunityDetail() {
 
   // 댓글 좋아요 api
   const handleCommentLike = (id: number) => {
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/community/like/comment`,
-        {
-          comment_id: id,
-        },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-            "Content-Type": "application/json",
-            "Content-Encoding": "charset=UTF-8",
-          },
-        }
-      )
+    instanceJson
+      .post(`/community/like/comment`, { comment_id: id })
       .then((r: any) => {
         alertBox("추천완료");
         getDetail();
@@ -164,23 +117,10 @@ function CommunityDetail() {
 
   // 본문 삭제 api
   const handleDelete = () => {
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/community/remove/post`,
-        {
-          community_board_id: detail.id,
-        },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-            "Content-Type": "application/json",
-            "Content-Encoding": "charset=UTF-8",
-          },
-        }
-      )
+    instanceJson
+      .post(`/community/remove/post`, { community_board_id: detail.id })
       .then((r: any) => {
-        console.log(r.data);
+        alertBox("게시글이 삭제되었습니다.");
         navgate("/community");
       })
       .catch((error: any) => {
@@ -191,23 +131,9 @@ function CommunityDetail() {
 
   // 댓글 삭제 api
   const handleCommentDelete = (id: number) => {
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/community/remove/comment`,
-        {
-          comment_id: id,
-        },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-            "Content-Type": "application/json",
-            "Content-Encoding": "charset=UTF-8",
-          },
-        }
-      )
+    instanceJson
+      .post(`/community/remove/comment`, { comment_id: id })
       .then((r: any) => {
-        console.log(r.data);
         alertBox("댓글이 삭제되었습니다.");
         setComment(comment.filter((item: any) => item.id !== id));
       })
