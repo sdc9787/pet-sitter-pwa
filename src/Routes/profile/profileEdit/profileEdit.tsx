@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectedTab } from "../../../Store/store";
 import { useAlert } from "../../../Component/alertText/alertText";
 import Topbar from "../../../Component/topbar/topbar";
+import instanceJson from "../../../Component/axios/axiosJson";
 
 const EditProfile = () => {
   const navigator = useNavigate(); //페이지 이동
@@ -66,23 +67,8 @@ const EditProfile = () => {
       alertBox("핀번호가 일치하지 않습니다.");
       return;
     }
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/mypage/edit/info`,
-        {
-          phoneNumber: phoneNumber,
-          nickname: nickname,
-          pinNumber: pinNumber,
-        },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-            "Content-Type": "application/json",
-            "Content-Encoding": "charset=UTF-8",
-          },
-        }
-      )
+    instanceJson
+      .post("/mypage/edit/info", { phoneNumber: phoneNumber, nickname: nickname, pinNumber: pinNumber })
       .then((r: any) => {
         console.log(r.data);
         alertBox("프로필 수정이 완료되었습니다.");

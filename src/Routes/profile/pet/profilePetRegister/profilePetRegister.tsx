@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../../../../Component/topbar/topbar";
 import { useAlert } from "../../../../Component/alertText/alertText";
+import instanceMultipart from "../../../../Component/axios/axiosMultipart";
 
 const PetRegister = () => {
   const navigate = useNavigate(); //페이지 이동
@@ -80,15 +81,8 @@ const PetRegister = () => {
     formData.append("species", species);
     formData.append("gender", gender);
 
-    axios
-      .post(`${import.meta.env.VITE_APP_API_URL}/mypage/pet/add/step1`, formData, {
-        headers: {
-          Authorization: `${localStorage.getItem("Authorization")}`,
-          refresh_token: `${localStorage.getItem("refresh_token")}`,
-          "Content-Encoding": "charset=UTF-8",
-          "Content-Type": "multipart/form-data",
-        },
-      })
+    instanceMultipart
+      .post("/mypage/pet/add/step1", formData)
       .then((r: any) => {
         console.log(r.data);
         navigate(`/profile/petRegister2/${r.data.petId}`);

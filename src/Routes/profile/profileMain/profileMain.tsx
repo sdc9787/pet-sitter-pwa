@@ -125,6 +125,7 @@ function ProfileMain() {
             <div
               key={menu.icon}
               onClick={() => {
+                if (menu.onClick) menu.onClick();
                 navigate(menu.navigate);
               }}
               className="ml-6 mb-7 flex justify-start items-center">

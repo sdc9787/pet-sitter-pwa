@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../Component/alertText/alertText";
 import Topbar from "../../../Component/topbar/topbar";
+import instanceJson from "../../../Component/axios/axiosJson";
 
 const EditPassword = () => {
   const navigator = useNavigate(); //페이지 이동
@@ -17,22 +18,8 @@ const EditPassword = () => {
       return;
     }
 
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/mypage/edit/password`,
-        {
-          currentPassword: currentPassword,
-          changePassword: newPassword,
-        },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-            "Content-Type": "application/json",
-            "Content-Encoding": "charset=UTF-8",
-          },
-        }
-      )
+    instanceJson
+      .post("/mypage/edit/password", { currentPassword: currentPassword, changePassword: newPassword })
       .then((r: any) => {
         console.log(r.data);
         alertBox("비밀번호 수정이 완료되었습니다.");

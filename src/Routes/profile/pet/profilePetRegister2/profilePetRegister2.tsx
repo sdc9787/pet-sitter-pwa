@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Topbar from "../../../../Component/topbar/topbar";
 import { useAlert } from "../../../../Component/alertText/alertText";
+import instanceJson from "../../../../Component/axios/axiosJson";
 
 const PetRegister2 = () => {
   const navigate = useNavigate(); //페이지 이동
@@ -39,24 +40,16 @@ const PetRegister2 = () => {
   //펫정보 등록api
   const handleSubmit = () => {
     console.log({ id, weight, neutering, animalHospital, vaccination, etc });
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/mypage/pet/edit/step2`,
-        { id: id, weight: weight, neutering: neutering, animalHospital: animalHospital, vaccination: vaccination, etc: etc },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-            "Content-Encoding": "charset=UTF-8",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+
+    instanceJson
+      .post("/mypage/pet/edit/step2", { id: id, weight: weight, neutering: neutering, animalHospital: animalHospital, vaccination: vaccination, etc: etc })
       .then((r: any) => {
         console.log(r.data);
+        alertBox("펫 정보를 등록했습니다.");
         navigate("/profile/petProfile");
       })
       .catch((error: any) => {
+        alertBox("펫 정보를 등록하지 못했습니다.");
         console.error(error);
       });
   };

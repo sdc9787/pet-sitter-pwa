@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAlert } from "../../../../Component/alertText/alertText";
 import Topbar from "../../../../Component/topbar/topbar";
 import instanceJson from "../../../../Component/axios/axiosJson";
+import instanceMultipart from "../../../../Component/axios/axiosMultipart";
 
 function PetProfileDetail() {
   const navigate = useNavigate(); //페이지 이동
@@ -40,19 +41,8 @@ function PetProfileDetail() {
 
   //펫정보 가져오기api
   useEffect(() => {
-    axios
-      .get(
-        `${import.meta.env.VITE_APP_API_URL}/mypage/pet?pet_id=${id}`,
-
-        {
-          headers: {
-            "Content-Type": "application/json",
-            "Content-Encoding": "charset=UTF-8",
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-          },
-        }
-      )
+    instanceJson
+      .get(`/mypage/pet?pet_id=${id}`)
       .then((r: any) => {
         console.log(r.data.pet_info);
         setName(r.data.pet_info.petName);
@@ -132,15 +122,8 @@ function PetProfileDetail() {
     formData.append("image_change_check", previewImage !== null ? "true" : "false");
     formData.append("image", petImage as File | Blob);
 
-    axios
-      .post(`${import.meta.env.VITE_APP_API_URL}/mypage/pet/edit/step1`, formData, {
-        headers: {
-          Authorization: `${localStorage.getItem("Authorization")}`,
-          refresh_token: `${localStorage.getItem("refresh_token")}`,
-          "Content-Encoding": "charset=UTF-8",
-          "Content-Type": "multipart/form-data",
-        },
-      })
+    instanceMultipart
+      .post("/mypage/pet/edit/step1", formData)
       .then((r: any) => {
         console.log(r.data);
         alertBox("펫 정보가 수정되었습니다.");
@@ -169,24 +152,16 @@ function PetProfileDetail() {
   //펫정보 등록api
   const handleSubmit2 = () => {
     console.log({ id, weight, neutering, animalHospital, vaccination, etc });
-    axios
-      .post(
-        `${import.meta.env.VITE_APP_API_URL}/mypage/pet/edit/step2`,
-        { id: id, weight: weight, neutering: neutering, animalHospital: animalHospital, vaccination: vaccination, etc: etc },
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-            "Content-Encoding": "charset=UTF-8",
-            "Content-Type": "application/json",
-          },
-        }
-      )
+
+    instanceJson
+      .post("/mypage/pet/edit/step2", { id: id, weight: weight, neutering: neutering, animalHospital: animalHospital, vaccination: vaccination, etc: etc })
       .then((r: any) => {
         console.log(r.data);
+        alertBox("펫 정보가 수정되었습니다.");
         navigate("/profile/petProfile");
       })
       .catch((error: any) => {
+        alertBox("펫 정보 수정에 실패했습니다.");
         console.error(error);
       });
   };

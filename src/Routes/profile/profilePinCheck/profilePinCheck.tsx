@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../Component/alertText/alertText";
-import Topbar from "../../../Component/topbar/topbar";
+import instanceJson from "../../../Component/axios/axiosJson";
 
 const PinCheck = () => {
   const navigate = useNavigate(); //페이지 이동
@@ -14,21 +13,8 @@ const PinCheck = () => {
     console.log(pin);
     console.log(pin.length);
     if (pin.length === 6) {
-      axios
-        .post(
-          `${import.meta.env.VITE_APP_API_URL}/mypage`,
-          {
-            pinNumber: pin,
-          },
-          {
-            headers: {
-              "Content-Encoding": "charset=UTF-8",
-              "Content-Type": "application/json",
-              Authorization: `${localStorage.getItem("Authorization")}`,
-              refresh_token: `${localStorage.getItem("refresh_token")}`,
-            },
-          }
-        )
+      instanceJson
+        .post("/mypage", { pinNumber: pin })
         .then((r: any) => {
           //핀번호가 일치할때
           navigate("/profile/editProfile", { state: { nickname: r.data[0].nickname, phone_number: r.data[0].phoneNumber } });
