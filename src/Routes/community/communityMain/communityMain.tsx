@@ -3,9 +3,17 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../../../Component/topbar/topbar";
 
+type Post = {
+  id: number;
+  title: string;
+};
+
 function CommunityMain() {
-  let [communityPost, setCommunityPost] = useState<any>([]); //커뮤니티 게시글
-  const navigate = useNavigate(); //페이지 이동
+  const [page, setPage] = useState(1); // 페이지
+  const [communityPost, setCommunityPost] = useState<Post[]>([]);
+  const [loading, setLoading] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
+  const navigate = useNavigate();
 
   const nowDate = new Date();
   const nowUnixTimestamp = nowDate.getTime() / 1000;
@@ -35,50 +43,63 @@ function CommunityMain() {
     }
     return Math.floor(seconds) + " 초전";
   }
-  //서버 api 호출
-  useEffect(() => {
-    axios
-      .get(
-        `${import.meta.env.VITE_APP_API_URL}/community/1`,
 
-        {
-          headers: {
-            Authorization: `${localStorage.getItem("Authorization")}`,
-            refresh_token: `${localStorage.getItem("refresh_token")}`,
-            "Content-Type": "application/json",
-            "Content-Encoding": "charset=UTF-8",
-          },
-        }
-      )
-      .then((r: any) => {
-        r.data.posts.map((a: any) => {
-          const date = new Date(a.createDate);
+  // 데이터 로드 함수
+  const loadCommunityPosts = () => {
+    if (loading || !hasMore) return;
+    setLoading(true);
+
+    axios
+      .get(`${import.meta.env.VITE_APP_API_URL}/community/${page}`, {
+        headers: {
+          Authorization: `${localStorage.getItem("Authorization")}`,
+          refresh_token: `${localStorage.getItem("refresh_token")}`,
+          "Content-Type": "application/json",
+          "Content-Encoding": "charset=UTF-8",
+        },
+      })
+      .then((res) => {
+        const newPosts = res.data.posts.map((post: any) => {
+          const date = new Date(post.createDate);
           let formattedDate = date.toLocaleString("ko-KR", { year: "numeric", month: "2-digit", day: "2-digit", hour: "2-digit", minute: "2-digit", hour12: false }).replace(/. /g, "-");
-          a.created_date = formattedDate.slice(0, 10) + " " + formattedDate.slice(11); // 11번째 문자를 제거합니다.
+          post.created_date = formattedDate.slice(0, 10) + " " + formattedDate.slice(11);
           const unixTimestamp = Math.floor(date.getTime() / 1000);
-          a.created_date_timeAgo = timeAgo(unixTimestamp);
+          post.created_date_timeAgo = timeAgo(unixTimestamp);
+          return post;
         });
 
-        setCommunityPost(r.data.posts);
+        setCommunityPost((prevPosts) => [...prevPosts, ...newPosts]);
+        setHasMore(res.data.posts.length > 0);
+        setPage((prevPage) => prevPage + 1);
+        setLoading(false);
       })
-      .catch((error: any) => {
+      .catch((error) => {
         console.error(error);
+        setLoading(false);
       });
+  };
+
+  // 초기 및 페이지 데이터 로드
+  useEffect(() => {
+    loadCommunityPosts();
   }, []);
 
-  //스크롤 이벤트
-  const [scrollPosition, setScrollPosition] = useState(0);
-  const updateScroll = () => {
-    setScrollPosition(window.scrollY || document.documentElement.scrollTop);
-  };
+  // 스크롤 이벤트 핸들러
   useEffect(() => {
-    window.addEventListener("scroll", updateScroll);
-  }, []);
+    const handleScroll = () => {
+      if (window.innerHeight + document.documentElement.scrollTop + 1 >= document.documentElement.scrollHeight) {
+        loadCommunityPosts();
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [loading, hasMore]);
+
   return (
     <>
       <div className="flex flex-col items-center justify-center">
         <Topbar title="커뮤니티"></Topbar>
-        <div className="flex flex-col mt-20 gap-1">
+        <div className="flex flex-col my-20 gap-1">
           {communityPost.map((c: any, i: number) => {
             // const nowDate = new Date();
             // const nowUnixTimestamp = Math.floor(date.getTime() / 1000);
