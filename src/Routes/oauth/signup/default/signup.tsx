@@ -16,11 +16,6 @@ function SignUp() {
   const [name, setName] = useState<string>(""); //이름
   const [gender, setGender] = useState<string>(""); //성별
 
-  useEffect(() => {
-    window.localStorage.removeItem("Authorization");
-    window.localStorage.removeItem("refresh_token");
-    window.localStorage.removeItem("nickname");
-  }, []);
 
   //회원가입 버튼 클릭시
   const handleSignUp = () => {
