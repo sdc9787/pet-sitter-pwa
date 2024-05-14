@@ -211,13 +211,14 @@ function CommunityDetail() {
                   </div>
                   {localStorage.getItem("nickname") === a.nickname ? (
                     <div className="flex justify-center items-center">
-                      <button
+                      {/* todo 댓글 수정기능 */}
+                      {/* <button
                         className="px-1 py-1 font-bold text-gray"
                         onClick={() => {
                           navgate("/community/edit", { state: detail }); //본문 수정
                         }}>
                         수정
-                      </button>
+                      </button> */}
                       <button
                         className="text-sm"
                         onClick={() => {

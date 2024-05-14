@@ -10,7 +10,6 @@ export const useAlert = () => {
   //alert 함수
   const triggerAlert = (text: string) => {
     dispatch(alertOn(text));
-    console.log(123);
     if (timerRef.current) {
       clearTimeout(timerRef.current);
     }

@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAlert } from "../../../Component/alertText/alertText";
 
@@ -8,6 +8,13 @@ function Login() {
   const alertBox = useAlert(); //알림창
   const [email, setEmail] = useState<string>(""); //이메일
   const [password, setPassword] = useState<string>(""); //비밀번호
+
+  useEffect(() => {
+    window.localStorage.removeItem("Authorization");
+    window.localStorage.removeItem("refresh_token");
+    window.localStorage.removeItem("nickname");
+    window.localStorage.removeItem("partnership");
+  }, []);
 
   // todo api 주소 변경
   //로그인 버튼 클릭시
@@ -26,8 +33,10 @@ function Login() {
         console.log(res.headers);
         localStorage.setItem("Authorization", res.headers.authorization); //토큰 저장
         localStorage.setItem("refresh_token", res.headers.refresh_token); //리프레시 토큰 저장
+        localStorage.setItem("nickname", res.headers.nickname); //닉네임 저장
+        localStorage.setItem("partnership", res.headers.partnership); //파트너십 저장
         //회원가입 추가 정보가 있는지 확인
-        if (res.headers.joindetails) {
+        if (res.headers.joindetails == "true") {
           navigate("/home");
         } else {
           navigate("/oauth/signup/additionSignUp");

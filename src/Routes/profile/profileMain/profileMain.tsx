@@ -17,7 +17,7 @@ function ProfileMain() {
     window.localStorage.removeItem("Authorization");
     window.localStorage.removeItem("refresh_token");
     window.localStorage.removeItem("nickname");
-    window.localStorage.removeItem("email");
+    window.localStorage.removeItem("partnership");
   };
 
   //설정 목록

@@ -3,7 +3,7 @@ import axios from "axios";
 // Axios 인스턴스 생성
 const instanceJson = axios.create({
   baseURL: `${import.meta.env.VITE_APP_API_URL}`,
-  timeout: 1000,
+  timeout: 7000,
   headers: {
     "Content-Type": "application/json",
     "Content-Encoding": "charset=UTF-8",

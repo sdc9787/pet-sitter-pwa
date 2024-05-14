@@ -96,24 +96,7 @@ function PetProfileDetail() {
       alertBox("펫 정보를 가져오지 못했습니다.");
       return;
     }
-    if (!name) {
-      alertBox("이름을 입력해주세요");
-      return;
-    }
 
-    if (!age) {
-      alertBox("나이를 입력해주세요");
-      return;
-    }
-
-    if (!species) {
-      alertBox("견종을 입력해주세요");
-      return;
-    }
-    if (!gender) {
-      alertBox("성별을 선택해주세요");
-      return;
-    }
     formData.append("pet_id", id);
     formData.append("pet_name", name);
     formData.append("pet_age", age);

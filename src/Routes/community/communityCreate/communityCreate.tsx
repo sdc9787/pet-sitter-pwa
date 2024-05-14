@@ -61,6 +61,24 @@ function CommunityCreate() {
       formData.append("image", emptyFile);
     }
 
+    // axios
+    //   .post(`${import.meta.env.VITE_APP_API_URL}/community/create/post`, formData, {
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //       "Content-Encoding": "charset=UTF-8",
+    //       Authorization: localStorage.getItem("Authorization"),
+    //       "X-Refresh-Token": localStorage.getItem("refresh_token"),
+    //     },
+    //   })
+    //   .then((r: any) => {
+    //     console.log(r.data);
+    //     alertBox("게시글이 작성되었습니다.");
+    //     navigate("/community");
+    //   })
+    //   .catch((error: any) => {
+    //     alertBox(error.response.data);
+    //     console.error(error);
+    //   });
     instanceMultipart
       .post("/community/create/post", formData)
       .then((r: any) => {
@@ -69,7 +87,7 @@ function CommunityCreate() {
         navigate("/community");
       })
       .catch((error: any) => {
-        alertBox(error.response.data);
+        alertBox("게시글 작성에 실패했습니다.");
         console.error(error);
       });
   };
