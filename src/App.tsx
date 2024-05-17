@@ -7,6 +7,8 @@ import Community from "./Routes/community/community";
 import Oauth from "./Routes/oauth/oauth";
 import { useEffect } from "react";
 import KakaoMap from "./Routes/map/map";
+import Reservation from "./Routes/reservation/reservation";
+import ReservationUtils from "./Routes/reservationUtils/reservationUtils";
 
 function App() {
   const navigate = useNavigate(); //페이지 이동
@@ -29,8 +31,10 @@ function App() {
           <Route path="/profile/*" element={<Profile></Profile>}></Route>
           {/* 커뮤니티 */}
           <Route path="/community/*" element={<Community></Community>}></Route>
-          {/* 홈 */}
-          <Route path="/home" element={<div>홈</div>}></Route>
+          {/* 예약(홈) */}
+          <Route path="/reservation" element={<Reservation></Reservation>}></Route>
+          {/* 예약 내역*/}
+          <Route path="/reservationUtils" element={<ReservationUtils></ReservationUtils>}></Route>
           {/* 지도 */}
           <Route path="/map" element={<KakaoMap></KakaoMap>}></Route>
         </Routes>

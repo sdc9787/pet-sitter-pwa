@@ -2,10 +2,13 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useAlert } from "../../../Component/alertText/alertText";
+import { useDispatch } from "react-redux";
+import { selectedTab } from "../../../Store/store";
 
 function Login() {
   const navigate = useNavigate(); //페이지 이동
   const alertBox = useAlert(); //알림창
+  const dispatch = useDispatch(); //리덕스 디스패치
   const [email, setEmail] = useState<string>(""); //이메일
   const [password, setPassword] = useState<string>(""); //비밀번호
 
@@ -35,6 +38,8 @@ function Login() {
         localStorage.setItem("refresh_token", res.headers.refresh_token); //리프레시 토큰 저장
         localStorage.setItem("nickname", res.headers.nickname); //닉네임 저장
         localStorage.setItem("partnership", res.headers.partnership); //파트너십 저장
+        dispatch(selectedTab(0)); //탭바 초기화
+
         //회원가입 추가 정보가 있는지 확인
         if (res.headers.joindetails == "true") {
           navigate("/home");
