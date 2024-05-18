@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Topbar from "../../../../Component/topbar/topbar";
-import { useAlert } from "../../../../Component/alertText/alertText";
+import { useAlert } from "../../../../hook/useAlert/useAlert";
 import instanceJson from "../../../../Component/axios/axiosJson";
 
 const PetRegister2 = () => {

@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAlert } from "../../../../Component/alertText/alertText";
+import { useAlert } from "../../../../hook/useAlert/useAlert";
 
 const KakaoRedirect = () => {
   const code: string = window.location.search;

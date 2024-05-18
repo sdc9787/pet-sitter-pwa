@@ -1,7 +1,7 @@
 import "./Styles/App.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import TabBar from "./Component/tabbar/tabbar";
-import { AlertText } from "./Component/alertText/alertText";
+import { AlertText } from "./hook/useAlert/useAlert";
 import Profile from "./Routes/profile/profile";
 import Community from "./Routes/community/community";
 import Oauth from "./Routes/oauth/oauth";
@@ -15,7 +15,7 @@ function App() {
 
   useEffect(() => {
     if (localStorage.getItem("Authorization")) {
-      navigate("/home");
+      navigate("/reservation");
     } else {
       navigate("/oauth/login");
     }
@@ -32,9 +32,9 @@ function App() {
           {/* 커뮤니티 */}
           <Route path="/community/*" element={<Community></Community>}></Route>
           {/* 예약(홈) */}
-          <Route path="/reservation" element={<Reservation></Reservation>}></Route>
+          <Route path="/reservation/*" element={<Reservation></Reservation>}></Route>
           {/* 예약 내역*/}
-          <Route path="/reservationUtils" element={<ReservationUtils></ReservationUtils>}></Route>
+          <Route path="/reservationUtils/*" element={<ReservationUtils></ReservationUtils>}></Route>
           {/* 지도 */}
           <Route path="/map" element={<KakaoMap></KakaoMap>}></Route>
         </Routes>

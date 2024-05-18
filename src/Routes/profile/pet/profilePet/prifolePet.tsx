@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../../../../Component/topbar/topbar";
 import instanceJson from "../../../../Component/axios/axiosJson";
-import { useAlert } from "../../../../Component/alertText/alertText";
+import { useAlert } from "../../../../hook/useAlert/useAlert";
 
 function PetProfile() {
   const navigator = useNavigate(); //페이지 이동

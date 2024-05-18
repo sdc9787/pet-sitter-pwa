@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAlert } from "../../../../Component/alertText/alertText";
+import { useAlert } from "../../../../hook/useAlert/useAlert";
 import Topbar from "../../../../Component/topbar/topbar";
 import instanceJson from "../../../../Component/axios/axiosJson";
 

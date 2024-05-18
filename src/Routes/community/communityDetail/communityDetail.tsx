@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import { useAlert } from "../../../Component/alertText/alertText";
+import { useAlert } from "../../../hook/useAlert/useAlert";
 import Topbar from "../../../Component/topbar/topbar";
 import instanceJson from "../../../Component/axios/axiosJson";
 

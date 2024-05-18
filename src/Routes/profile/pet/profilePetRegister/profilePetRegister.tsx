@@ -2,7 +2,7 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../../../../Component/topbar/topbar";
-import { useAlert } from "../../../../Component/alertText/alertText";
+import { useAlert } from "../../../../hook/useAlert/useAlert";
 import instanceMultipart from "../../../../Component/axios/axiosMultipart";
 
 const PetRegister = () => {

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../../../../Component/topbar/topbar";
-import { useAlert } from "../../../../Component/alertText/alertText";
+import { useAlert } from "../../../../hook/useAlert/useAlert";
 import axios from "axios";
 
 function SignUp() {
@@ -15,7 +15,6 @@ function SignUp() {
   const [passwordCheck, setPasswordCheck] = useState<string>(""); //비밀번호 확인
   const [name, setName] = useState<string>(""); //이름
   const [gender, setGender] = useState<string>(""); //성별
-
 
   //회원가입 버튼 클릭시
   const handleSignUp = () => {

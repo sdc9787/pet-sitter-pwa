@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import Topbar from "../../../Component/topbar/topbar";
-import { useAlert } from "../../../Component/alertText/alertText";
+import { useAlert } from "../../../hook/useAlert/useAlert";
 import instanceMultipart from "../../../Component/axios/axiosMultipart";
 
 function CommunityEdit() {

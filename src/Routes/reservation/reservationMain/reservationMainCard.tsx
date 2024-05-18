@@ -1,20 +1,24 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface CardProps {
-  title: string;
-  description: string;
-  highlight?: string;
+  title: string; // title을 props로 받아옴
+  description: string; //description을 props로 받아옴
+  navigateProps: string; // navigate를 props로 받아옴
 }
 
-const ReservationMainCard: React.FC<CardProps> = ({ title, description, highlight }) => {
+const ReservationMainCard: React.FC<CardProps> = ({ title, description, navigateProps }) => {
+  const navigate = useNavigate(); // navigate를 사용하기 위해 useNavigate를 사용
+
   return (
-    <div className="p-4 bg-white rounded-lg shadow-md">
-      <div className="flex items-center justify-between">
-        <div className="text-lg font-bold">{title}</div>
-        {highlight && <div className="text-sm text-red-500">{highlight}</div>}
+    <>
+      <div onClick={() => navigate(`${navigateProps}`)} className={"p-4 bg-white rounded-lg shadow-md"}>
+        <div className="flex items-center justify-between">
+          <div className="text-lg font-bold">{title}</div>
+        </div>
+        <p className="text-gray-600">{description}</p>
       </div>
-      <p className="text-gray-600">{description}</p>
-    </div>
+    </>
   );
 };
 

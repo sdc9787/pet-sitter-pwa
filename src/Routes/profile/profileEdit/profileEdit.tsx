@@ -3,7 +3,7 @@ import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { selectedTab } from "../../../Store/store";
-import { useAlert } from "../../../Component/alertText/alertText";
+import { useAlert } from "../../../hook/useAlert/useAlert";
 import Topbar from "../../../Component/topbar/topbar";
 import instanceJson from "../../../Component/axios/axiosJson";
 

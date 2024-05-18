@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { useAlert } from "../../../Component/alertText/alertText";
+import { useAlert } from "../../../hook/useAlert/useAlert";
 import { useDispatch } from "react-redux";
 import { selectedTab } from "../../../Store/store";
 

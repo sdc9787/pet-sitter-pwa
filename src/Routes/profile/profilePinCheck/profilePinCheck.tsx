@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAlert } from "../../../Component/alertText/alertText";
+import { useAlert } from "../../../hook/useAlert/useAlert";
 import instanceJson from "../../../Component/axios/axiosJson";
 
 const PinCheck = () => {
