@@ -16,7 +16,7 @@ function ReservationWalkLocate() {
 
   useEffect(() => {
     if (error) {
-      alertBox("위치를 가져오는데 실패했습니다.");
+      alertBox(error);
     } else {
       dispatch(
         setLocation({
