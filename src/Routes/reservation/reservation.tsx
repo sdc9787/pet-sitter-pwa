@@ -8,8 +8,8 @@ function Reservation() {
     <>
       <Routes>
         <Route path="/" element={<ReservationMain></ReservationMain>}></Route>
-        <Route path="/walk" element={<ReservationWalk></ReservationWalk>}></Route>
-        <Route path="/care" element={<ReservationCare></ReservationCare>}></Route>
+        <Route path="/walk/*" element={<ReservationWalk></ReservationWalk>}></Route>
+        <Route path="/care/*" element={<ReservationCare></ReservationCare>}></Route>
       </Routes>
     </>
   );

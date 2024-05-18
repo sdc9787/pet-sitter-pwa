@@ -1,23 +1,19 @@
-import useGeolocation from "../../../hook/useGeolocation/useGeolocation";
+import { Route, Routes } from "react-router-dom";
+import ReservationWalkTime from "./reservationWalkTime";
+import ReservationWalkLocate from "./reservationWalkLocate";
+import ReservationWalkPet from "./reservationWalkPet";
+import ReservationWalkPost from "./reservationWalkPost";
 
 function ReservationWalk() {
-  const { latitude, longitude, city, error } = useGeolocation();
-
   return (
-    <div>
-      <h1>현재 위치 정보</h1>
-      {error ? (
-        <p>{error}</p>
-      ) : latitude && longitude ? (
-        <div>
-          <p>위도: {latitude}</p>
-          <p>경도: {longitude}</p>
-          <p>도시명: {city}</p>
-        </div>
-      ) : (
-        <p>위치 정보를 가져오는 중...</p>
-      )}
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<ReservationWalkTime></ReservationWalkTime>}></Route>
+        <Route path="/locate" element={<ReservationWalkLocate></ReservationWalkLocate>}></Route>
+        <Route path="/pet" element={<ReservationWalkPet></ReservationWalkPet>}></Route>
+        <Route path="/post" element={<ReservationWalkPost></ReservationWalkPost>}></Route>
+      </Routes>
+    </>
   );
 }
 
