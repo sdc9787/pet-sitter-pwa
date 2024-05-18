@@ -42,6 +42,7 @@ function Login() {
 
         //회원가입 추가 정보가 있는지 확인
         if (res.headers.joindetails == "true") {
+          alertBox("환영합니다");
           navigate("/home");
         } else {
           navigate("/oauth/signup/additionSignUp");
