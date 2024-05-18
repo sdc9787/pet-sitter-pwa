@@ -65,7 +65,6 @@ const useGeolocation = () => {
             let road = "";
 
             addressComponents.reverse().forEach((component: any) => {
-              console.log("Component:", component);
               if (component.types.includes("administrative_area_level_1")) {
                 city = component.long_name;
               }

@@ -42,7 +42,7 @@ function ReservationWalkLocate() {
 
   return (
     <>
-      <Topbar title="위치 선택" backUrl="/reservation/walk" sendText="다음" sendFunction={() => navigate("/reservation/walk/locate")}></Topbar>
+      <Topbar title="위치 선택" backUrl="/reservation/walk" sendText="다음" sendFunction={() => (locate.detailAddress === "" ? alertBox("상세 주소를 입력해주세요") : navigate("/reservation/walk/pet"))}></Topbar>
       <div className="w-full h-screen flex flex-col justify-start p-6 ">
         <div className="mt-20 flex flex-col justify-center items-start">
           <h2 className="text-lg font-bold">현재 주소를 확인해 주세요</h2>
@@ -53,9 +53,11 @@ function ReservationWalkLocate() {
         </div>
         {/* 상세 주소입력*/}
         <div className="mt-5">
-          <h2>상세 주소를 입력해주세요</h2>
-          <input className="w-full  border border-gray-300 rounded-lg px-4 py-3" type="text" placeholder="상세 주소를 입력해주세요." onChange={handleDetailAddress} />
+          <h2 className="text-lg font-bold">상세 주소</h2>
+          <input className="w-full mt-2 font-medium text-zinc-600 p-4 border-2 border-zinc-400 rounded-xl" type="text" placeholder="상세 주소를 입력해주세요" value={locate.detailAddress} onChange={handleDetailAddress} />
         </div>
+
+        <span className="mt-8 text-zinc-400 text-sm">주소가 다르다면 여기를 터치해주세요(동작안함)</span>
       </div>
     </>
   );
