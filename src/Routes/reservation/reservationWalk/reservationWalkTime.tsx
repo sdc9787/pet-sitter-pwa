@@ -25,7 +25,7 @@ function ReservationWalkTime() {
 
   return (
     <>
-      <Topbar title="시간 선택" backUrl="/reservation" sendText="다음" sendFunction={() => navigate("/reservation/walk/locate")}></Topbar>
+      <Topbar title="시간 선택" backUrl="/reservation/walk" sendText="다음" sendFunction={() => navigate("/reservation/walk/locate")}></Topbar>
       <div className="w-full h-screen flex flex-col justify-start p-6 ">
         <span className="mt-20 text-lg mb-5 font-bold">산책 시간</span>
         <div className="flex justify-around items-center">

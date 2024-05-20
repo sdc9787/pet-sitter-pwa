@@ -42,7 +42,7 @@ function ReservationWalkLocate() {
 
   return (
     <>
-      <Topbar title="위치 선택" backUrl="/reservation/walk" sendText="다음" sendFunction={() => (locate.detailAddress === "" ? alertBox("상세 주소를 입력해주세요") : navigate("/reservation/walk/pet"))}></Topbar>
+      <Topbar title="위치 선택" backUrl="/reservation/walk/time" sendText="다음" sendFunction={() => (locate.detailAddress === "" ? alertBox("상세 주소를 입력해주세요") : navigate("/reservation/walk/pet"))}></Topbar>
       <div className="w-full h-screen flex flex-col justify-start p-6 ">
         <div className="mt-20 flex flex-col justify-center items-start">
           <h2 className="text-lg font-bold">현재 주소를 확인해 주세요</h2>

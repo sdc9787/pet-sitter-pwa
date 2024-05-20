@@ -93,7 +93,7 @@ function CommunityMain() {
     <>
       <div className="flex flex-col items-center justify-center">
         <Topbar title="커뮤니티"></Topbar>
-        <div className="flex flex-col my-20 gap-1">
+        <div className="flex flex-col my-20 gap-1 px-2">
           {communityPost.map((c: any, i: number) => {
             // const nowDate = new Date();
             // const nowUnixTimestamp = Math.floor(date.getTime() / 1000);
