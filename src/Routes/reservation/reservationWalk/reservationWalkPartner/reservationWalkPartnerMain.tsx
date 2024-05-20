@@ -27,6 +27,7 @@ function ReservationWalkPartnerMain() {
   const [page, setPage] = useState<number>(1);
   const [distance, setDistance] = useState<number>(5);
   const [walkList, setWalkList] = useState<WalkList[]>([]);
+  const [selectedWalkId, setSelectedWalkId] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
 
@@ -73,35 +74,42 @@ function ReservationWalkPartnerMain() {
   }, [remainingTimes]);
 
   useEffect(() => {
-    walkList.forEach((walk, index) => {
-      if (walk.latitude && walk.longitude) {
-        const mapContainer = document.getElementById(`map-${walk.id}`);
-        if (mapContainer) {
-          const mapOption = {
-            center: new kakao.maps.LatLng(walk.latitude, walk.longitude),
-            level: 3,
-          };
-          const map = new kakao.maps.Map(mapContainer, mapOption);
+    if (latitude && longitude) {
+      const mapContainer = document.getElementById("map");
+      if (mapContainer) {
+        const mapOption = {
+          center: new kakao.maps.LatLng(latitude, longitude),
+          level: 3,
+        };
+        const map = new kakao.maps.Map(mapContainer, mapOption);
+        const userPosition = new kakao.maps.LatLng(latitude, longitude);
+        const userMarker = new kakao.maps.Marker({ position: userPosition });
+        userMarker.setMap(map);
+
+        walkList.forEach((walk) => {
           const markerPosition = new kakao.maps.LatLng(walk.latitude, walk.longitude);
           const marker = new kakao.maps.Marker({ position: markerPosition });
           marker.setMap(map);
-        } else {
-          console.error("Map container not found");
-        }
+          kakao.maps.event.addListener(marker, "click", () => {
+            setSelectedWalkId(walk.id);
+          });
+        });
+      } else {
+        console.error("Map container not found");
       }
-    });
-  }, [walkList]);
+    }
+  }, [latitude, longitude, walkList]);
 
   return (
     <>
       <Topbar backUrl="/reservation" title="산책 매칭"></Topbar>
       <div className="mt-20">
+        <div id="map" style={{ width: "100%", height: "400px" }}></div>
         {walkList.map((item, index) => (
-          <div key={item.id} className="mb-4 p-4 border rounded shadow">
+          <div key={item.id} className={`mb-4 p-4 border rounded shadow ${selectedWalkId === item.id ? "bg-main" : ""}`} onClick={() => setSelectedWalkId(item.id)}>
             <h3 className="text-xl font-bold">{item.title}</h3>
             <p>{item.address}</p>
             <p>{item.detailAddress}</p>
-            <div id={`map-${item.id}`} style={{ width: "100%", height: "200px" }}></div>
             <p>남은 시간: {remainingTimes[index]}초</p>
           </div>
         ))}
