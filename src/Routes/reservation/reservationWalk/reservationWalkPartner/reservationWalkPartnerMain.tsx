@@ -14,17 +14,19 @@ interface GeolocationState {
 function ReservationWalkPartnerMain() {
   const alertBox = useAlert();
   const navigate = useNavigate();
-  const location: GeolocationState = useGeolocation();
+  const { latitude, longitude, error } = useGeolocation();
   const [page, setPage] = useState<number>(1);
   const [distance, setDistance] = useState<number>(5);
+  const [list, setList] = useState<any[]>([]);
 
   const reservationListApi = () => {
-    console.log(location);
+    console.log(latitude, longitude, page, distance);
     //예약 리스트 가져오기
     instanceJson
-      .post("/walk/list", { now_latitude: location.latitude, now_longitude: location.longitude, page: page, max_distance: distance })
+      .post("/walk/list", { now_latitude: latitude, now_longitude: longitude, page: page, max_distance: distance })
       .then((res) => {
-        console.log(res);
+        setList(res.data.response);
+        console.log(res.data.response);
       })
       .catch((err) => {
         if (err.response.status === 403) {
@@ -38,7 +40,7 @@ function ReservationWalkPartnerMain() {
 
   useEffect(() => {
     reservationListApi();
-  }, [location]);
+  }, [latitude, longitude]);
 
   return (
     <>
@@ -47,6 +49,7 @@ function ReservationWalkPartnerMain() {
         <button onClick={() => navigate("/reservation/walk/time")} className="mb-20 mt-20 px-20 py-4 bg-main text-white text-lg font-bold rounded-full">
           산책 예약
         </button>
+        <div>{list}</div>
       </div>
     </>
   );
