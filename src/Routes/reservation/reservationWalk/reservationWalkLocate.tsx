@@ -12,7 +12,7 @@ function ReservationWalkLocate() {
   const navigate = useNavigate();
   const alertBox = useAlert();
 
-  const { latitude, longitude, address, city, district, road, error } = useGeolocationWithAddress();
+  const { latitude, longitude, address, error } = useGeolocationWithAddress();
 
   useEffect(() => {
     if (error) {
@@ -47,10 +47,7 @@ function ReservationWalkLocate() {
         <div className="mt-20 flex flex-col justify-center items-start">
           <h2 className="text-lg font-bold">현재 주소를 확인해 주세요</h2>
           <div className="w-full mt-2 font-medium text-zinc-600 p-4 border-2 border-zinc-400 rounded-xl">
-            <div>{locate.address}</div>
-            <div>{city}</div>
-            <div>{district}</div>
-            <div>{road}</div>
+            <div className={locate.address === "" ? "text-zinc-400" : "text-zinc-600"}>{locate.address === "" ? "[현재 주소를 가져오지 못했습니다]" : locate.address}</div>
             <div className={locate.detailAddress === "" ? "text-zinc-400" : "text-zinc-600"}>{locate.detailAddress === "" ? "[상세 주소를 입력해주세요]" : locate.detailAddress}</div>
           </div>
         </div>
