@@ -1,31 +1,46 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Topbar from "../../../../Component/topbar/topbar";
 import instanceJson from "../../../../Component/axios/axiosJson";
-import { useGeolocation, useReverseGeoCoding, useGeolocationWithAddress } from "../../../../hook/useGeolocation/useGeolocation";
+import { useGeolocation } from "../../../../hook/useGeolocation/useGeolocation";
 import { useAlert } from "../../../../hook/useAlert/useAlert";
 import { useNavigate } from "react-router-dom";
 
-interface GeolocationState {
-  latitude: number | null;
-  longitude: number | null;
-  error: string | null;
+interface WalkList {
+  id: number;
+  petId: number;
+  userNickname: string;
+  walkTime: number;
+  title: string;
+  content: string;
+  distance: number;
+  address: string;
+  detailAddress: string;
+  latitude: number;
+  longitude: number;
+  createDate: string;
 }
 
 function ReservationWalkPartnerMain() {
   const alertBox = useAlert();
   const navigate = useNavigate();
-  const { latitude, longitude, error } = useGeolocation();
+  const { latitude, longitude } = useGeolocation();
   const [page, setPage] = useState<number>(1);
   const [distance, setDistance] = useState<number>(5);
-  const [list, setList] = useState();
+  const [walkList, setWalkList] = useState<WalkList[]>([]);
+  const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
 
   const reservationListApi = () => {
-    console.log(latitude, longitude, page, distance);
-    //예약 리스트 가져오기
     instanceJson
-      .post("/walk/list", { now_latitude: 37.378961, now_longitude: 126.929767, page: page, max_distance: distance })
+      .post("/walk/list", { now_latitude: latitude, now_longitude: longitude, page: page, max_distance: distance })
       .then((res) => {
-        console.log(res.data.content);
+        setWalkList(res.data.content);
+        const times = res.data.content.map((walk: WalkList) => {
+          const createdDate = new Date(walk.createDate);
+          const now = new Date();
+          return Math.floor((createdDate.getTime() + 5 * 60 * 1000 - now.getTime()) / 1000);
+        });
+        setRemainingTimes(times);
       })
       .catch((err) => {
         if (err.response.status === 403) {
@@ -38,17 +53,62 @@ function ReservationWalkPartnerMain() {
   };
 
   useEffect(() => {
-    reservationListApi();
-  }, [latitude, longitude]);
+    if (latitude !== null) {
+      reservationListApi();
+    }
+  }, [latitude]);
+
+  useEffect(() => {
+    if (remainingTimes.some((time) => time > 0)) {
+      intervalRef.current = setInterval(() => {
+        setRemainingTimes((prevTimes) => prevTimes.map((time) => time - 1));
+      }, 1000);
+    }
+
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [remainingTimes]);
+
+  useEffect(() => {
+    walkList.forEach((walk, index) => {
+      if (walk.latitude && walk.longitude) {
+        const mapContainer = document.getElementById(`map-${walk.id}`);
+        if (mapContainer) {
+          const mapOption = {
+            center: new kakao.maps.LatLng(walk.latitude, walk.longitude),
+            level: 3,
+          };
+          const map = new kakao.maps.Map(mapContainer, mapOption);
+          const markerPosition = new kakao.maps.LatLng(walk.latitude, walk.longitude);
+          const marker = new kakao.maps.Marker({ position: markerPosition });
+          marker.setMap(map);
+        } else {
+          console.error("Map container not found");
+        }
+      }
+    });
+  }, [walkList]);
 
   return (
     <>
       <Topbar backUrl="/reservation" title="산책 매칭"></Topbar>
-      <div>
-        <button className="fixed right-3 bottom-24 rounded-full bg-main p-1 text-white" onClick={() => navigate("/reservation/walk")}>
-          <i className="xi-plus-min xi-3x"></i>
-        </button>
+      <div className="mt-20">
+        {walkList.map((item, index) => (
+          <div key={item.id} className="mb-4 p-4 border rounded shadow">
+            <h3 className="text-xl font-bold">{item.title}</h3>
+            <p>{item.address}</p>
+            <p>{item.detailAddress}</p>
+            <div id={`map-${item.id}`} style={{ width: "100%", height: "200px" }}></div>
+            <p>남은 시간: {remainingTimes[index]}초</p>
+          </div>
+        ))}
       </div>
+      <button className="fixed right-3 bottom-24 rounded-full bg-main p-1 text-white" onClick={() => navigate("/reservation/walk")}>
+        <i className="xi-plus-min xi-3x"></i>
+      </button>
     </>
   );
 }
