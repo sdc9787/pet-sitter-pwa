@@ -25,8 +25,8 @@ function ReservationWalkPartnerMain() {
     instanceJson
       .post("/walk/list", { now_latitude: latitude, now_longitude: longitude, page: page, max_distance: distance })
       .then((res) => {
-        setList(res.data.response);
-        console.log(res.data.response);
+        setList(res.data);
+        console.log(res.data);
       })
       .catch((err) => {
         if (err.response.status === 403) {
