@@ -103,7 +103,7 @@ function ReservationWalkPartnerMain() {
   return (
     <>
       <Topbar backUrl="/reservation" title="산책 매칭"></Topbar>
-      <div className="mt-20">
+      <div className="w-full h-screen">
         <div id="map" style={{ width: "100%", height: "400px" }}></div>
         {walkList.map((item, index) => (
           <div key={item.id} className={`mb-4 p-4 border rounded shadow ${selectedWalkId === item.id ? "bg-main" : ""}`} onClick={() => setSelectedWalkId(item.id)}>
