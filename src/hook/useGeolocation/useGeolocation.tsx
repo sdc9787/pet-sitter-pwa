@@ -84,7 +84,7 @@ const useReverseGeoCoding = ({ latitude, longitude }: ReverseGeoCodingProps) => 
         geocoder.coord2Address(Number(longitude), Number(latitude), (res: any, status: any) => {
           if (latestRequestIdRef.current !== requestId) return;
 
-          if (status === window.kakao.maps.services.Status.OK) {
+          if (status === window.kakao.maps.services.Status.OK && res[0].road_address) {
             setAddress(res[0].road_address.address_name);
             setCity(res[0].road_address.region_1depth_name);
             setDistrict(res[0].road_address.region_2depth_name);
@@ -108,4 +108,4 @@ const useGeolocationWithAddress = () => {
   return { latitude, longitude, address, city, district, road, error };
 };
 
-export default useGeolocationWithAddress;
+export { useGeolocation, useReverseGeoCoding, useGeolocationWithAddress };

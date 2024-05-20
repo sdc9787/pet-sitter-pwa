@@ -4,6 +4,7 @@ import ReservationWalkLocate from "./reservationWalkLocate";
 import ReservationWalkPet from "./reservationWalkPet";
 import ReservationWalkPost from "./reservationWalkPost";
 import ReservationWalkMain from "./reservationWalkMain";
+import ReservationWalkPartner from "./reservationWalkPartner/reservationWalkPartner";
 
 function ReservationWalk() {
   return (
@@ -14,6 +15,7 @@ function ReservationWalk() {
         <Route path="/locate" element={<ReservationWalkLocate></ReservationWalkLocate>}></Route>
         <Route path="/pet" element={<ReservationWalkPet></ReservationWalkPet>}></Route>
         <Route path="/post" element={<ReservationWalkPost></ReservationWalkPost>}></Route>
+        <Route path="/partner/*" element={<ReservationWalkPartner></ReservationWalkPartner>}></Route>
       </Routes>
     </>
   );

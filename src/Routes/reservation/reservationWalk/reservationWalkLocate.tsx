@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Topbar from "../../../Component/topbar/topbar";
 import { useAlert } from "../../../hook/useAlert/useAlert";
 import { useEffect } from "react";
-import useGeolocationWithAddress from "../../../hook/useGeolocation/useGeolocation";
+import { useGeolocation, useReverseGeoCoding, useGeolocationWithAddress } from "../../../hook/useGeolocation/useGeolocation";
 
 function ReservationWalkLocate() {
   const dispatch = useDispatch();
