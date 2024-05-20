@@ -74,29 +74,27 @@ const useReverseGeoCoding = ({ latitude, longitude }: ReverseGeoCodingProps) => 
   const alertBox = useAlert();
 
   useEffect(() => {
-    const requestId = Date.now();
-    latestRequestIdRef.current = requestId;
+    if (latitude !== undefined && longitude !== undefined) {
+      const requestId = Date.now();
+      latestRequestIdRef.current = requestId;
 
-    window.kakao.maps.load(() => {
-      const geocoder = new window.kakao.maps.services.Geocoder();
+      window.kakao.maps.load(() => {
+        const geocoder = new window.kakao.maps.services.Geocoder();
 
-      const reverseGeocoding = (res: any, status: any) => {
-        if (status === window.kakao.maps.services.Status.OK) {
-          if (latestRequestIdRef.current === requestId) {
+        geocoder.coord2Address(Number(longitude), Number(latitude), (res: any, status: any) => {
+          if (latestRequestIdRef.current !== requestId) return;
+
+          if (status === window.kakao.maps.services.Status.OK) {
             setAddress(res[0].road_address.address_name);
             setCity(res[0].road_address.region_1depth_name);
             setDistrict(res[0].road_address.region_2depth_name);
             setRoad(res[0].road_address.road_name + res[0].road_address.main_building_no + (res[0].road_address.sub_building_no === "" ? "" : "-" + res[0].road_address.sub_building_no));
+          } else {
+            alertBox("주소를 가져오는데 실패했습니다.");
           }
-        } else {
-          alertBox("주소를 가져오는데 실패했습니다.");
-        }
-      };
-
-      if (latitude !== undefined && longitude !== undefined) {
-        geocoder.coord2Address(Number(longitude), Number(latitude), reverseGeocoding);
-      }
-    });
+        });
+      });
+    }
   }, [latitude, longitude]);
 
   return { address, city, district, road };
@@ -105,14 +103,6 @@ const useReverseGeoCoding = ({ latitude, longitude }: ReverseGeoCodingProps) => 
 //위도, 경도를 가져오는 hook과 주소로 변환하는 hook를 합친 hook
 const useGeolocationWithAddress = () => {
   const { latitude, longitude, error } = useGeolocation();
-  const [placeId, setPlaceId] = useState(Date.now());
-
-  useEffect(() => {
-    if (latitude && longitude) {
-      setPlaceId(Date.now());
-    }
-  }, [latitude, longitude]);
-
   const { address, city, district, road } = useReverseGeoCoding({ latitude: latitude!, longitude: longitude! });
 
   return { latitude, longitude, address, city, district, road, error };
