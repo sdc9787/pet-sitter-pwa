@@ -33,7 +33,7 @@ function ReservationWalkMain() {
     longitude: 0,
     createDate: "",
   });
-  const [walkListBool, setWalkListBool] = useState(false);
+  const [walkListBool, setWalkListBool] = useState(true);
   const [remainingTime, setRemainingTime] = useState(300);
   const navigate = useNavigate();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
@@ -42,6 +42,7 @@ function ReservationWalkMain() {
     instanceJson
       .get("/walk/myPost")
       .then((res) => {
+        setWalkListBool(false);
         setWalkData(res.data);
         const createdDate = new Date(res.data.createDate);
         const now = new Date();
@@ -78,7 +79,7 @@ function ReservationWalkMain() {
       intervalRef.current = setInterval(() => {
         setRemainingTime((prevTime) => prevTime - 1);
       }, 1000);
-    } else if (remainingTime === 0 && !walkListBool) {
+    } else if (remainingTime <= 0 && !walkListBool) {
       setWalkListBool(true);
     }
 

@@ -5,6 +5,7 @@ import Topbar from "../../../Component/topbar/topbar";
 import { useAlert } from "../../../hook/useAlert/useAlert";
 import useGeolocation from "../../../hook/useGeolocation/useGeolocation";
 import { useEffect } from "react";
+import useGeolocationWithAddress from "../../../hook/useGeolocation/useGeolocation";
 
 function ReservationWalkLocate() {
   const dispatch = useDispatch();
@@ -12,7 +13,7 @@ function ReservationWalkLocate() {
   const navigate = useNavigate();
   const alertBox = useAlert();
 
-  const { latitude, longitude, city, district, road, error } = useGeolocation();
+  const { latitude, longitude, address, error } = useGeolocationWithAddress();
 
   useEffect(() => {
     if (error) {
@@ -22,19 +23,19 @@ function ReservationWalkLocate() {
         setLocation({
           latitude: latitude,
           longitude: longitude,
-          address: `${city} ${district} ${road}`,
+          address: address,
           detailAddress: locate.detailAddress,
         })
       );
     }
-  }, [latitude, longitude, city, district, road, error]);
+  }, [latitude, longitude, address, error]);
 
   const handleDetailAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(
       setLocation({
         latitude: latitude,
         longitude: longitude,
-        address: `${city} ${district} ${road}`,
+        address: address,
         detailAddress: e.target.value,
       })
     );

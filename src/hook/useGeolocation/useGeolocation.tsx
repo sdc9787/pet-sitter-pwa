@@ -1,21 +1,20 @@
-import { useState, useEffect } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface GeolocationState {
   latitude: number | null;
   longitude: number | null;
-  city: string;
-  district: string;
-  road: string;
   error: string | null;
+}
+
+interface ReverseGeoCodingProps {
+  latitude: number;
+  longitude: number;
 }
 
 const useGeolocation = () => {
   const [state, setState] = useState<GeolocationState>({
     latitude: null,
     longitude: null,
-    city: "",
-    district: "",
-    road: "",
     error: null,
   });
 
@@ -23,87 +22,89 @@ const useGeolocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          setState((prevState) => ({
-            ...prevState,
+          setState({
             latitude: position.coords.latitude,
             longitude: position.coords.longitude,
-          }));
+            error: null,
+          });
         },
         (error) => {
-          setState((prevState) => ({
-            ...prevState,
-            error: "Error getting location",
-          }));
-          console.error("Error getting location:", error);
+          let errorMessage = "Error getting location";
+          switch (error.code) {
+            case error.PERMISSION_DENIED:
+              errorMessage = "User denied the request for Geolocation.";
+              break;
+            case error.POSITION_UNAVAILABLE:
+              errorMessage = "Location information is unavailable.";
+              break;
+            case error.TIMEOUT:
+              errorMessage = "The request to get user location timed out.";
+              break;
+          }
+          setState({
+            latitude: null,
+            longitude: null,
+            error: errorMessage,
+          });
+          console.error(errorMessage);
         }
       );
     } else {
-      setState((prevState) => ({
-        ...prevState,
+      setState({
+        latitude: null,
+        longitude: null,
         error: "Geolocation is not supported by this browser.",
-      }));
+      });
       console.error("Geolocation is not supported by this browser.");
     }
   }, []);
 
-  useEffect(() => {
-    const { latitude, longitude } = state;
-    if (latitude && longitude) {
-      // Replace with your chosen API's endpoint and API key
-      const API_KEY = `${import.meta.env.VITE_APP_GOOGLE_MAP_API_KEY}`;
-      const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${API_KEY}`;
-
-      fetch(url)
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.status === "OK") {
-            const result = data.results[0];
-            const addressComponents = result.address_components;
-
-            let city = "";
-            let district = "";
-            let road = "";
-
-            addressComponents.reverse().forEach((component: any) => {
-              if (component.types.includes("administrative_area_level_1")) {
-                city = component.long_name;
-              }
-              if (component.types.includes("locality")) {
-                district = component.long_name;
-              }
-              if (component.types.includes("sublocality_level_4")) {
-                road = component.long_name;
-              }
-              if (component.types.includes("premise")) {
-                road += " " + component.long_name;
-              }
-            });
-
-            setState((prevState) => ({
-              ...prevState,
-              city: city,
-              district: district,
-              road: road,
-            }));
-          } else {
-            setState((prevState) => ({
-              ...prevState,
-              error: "Error fetching address",
-            }));
-            console.error("Error fetching address:", data.status);
-          }
-        })
-        .catch((error) => {
-          setState((prevState) => ({
-            ...prevState,
-            error: "Error fetching address",
-          }));
-          console.error("Error fetching address:", error);
-        });
-    }
-  }, [state.latitude, state.longitude]);
-
   return state;
 };
 
-export default useGeolocation;
+const useReverseGeoCoding = ({ latitude, longitude }: ReverseGeoCodingProps) => {
+  const [address, setAddress] = useState("");
+  const latestRequestIdRef = useRef<number | null>(null);
+
+  useEffect(() => {
+    const requestId = Date.now();
+    latestRequestIdRef.current = requestId;
+
+    window.kakao.maps.load(() => {
+      const geocoder = new window.kakao.maps.services.Geocoder();
+
+      const reverseGeocoding = (res: any, status: any) => {
+        if (status === window.kakao.maps.services.Status.OK) {
+          if (latestRequestIdRef.current === requestId) {
+            setAddress(res[0].address.address_name);
+          }
+        } else {
+          console.error("주소 변환 실패!");
+        }
+      };
+
+      if (latitude !== undefined && longitude !== undefined) {
+        geocoder.coord2Address(Number(longitude), Number(latitude), reverseGeocoding);
+      }
+    });
+  }, [latitude, longitude]);
+
+  return { address };
+};
+
+const useGeolocationWithAddress = () => {
+  const { latitude, longitude, error } = useGeolocation();
+  const [placeId, setPlaceId] = useState(Date.now());
+
+  useEffect(() => {
+    if (latitude && longitude) {
+      setPlaceId(Date.now());
+    }
+  }, [latitude, longitude]);
+
+  const { address } = useReverseGeoCoding({ latitude: latitude!, longitude: longitude! });
+
+  return { latitude, longitude, address, error };
+};
+
+export default useGeolocationWithAddress;
