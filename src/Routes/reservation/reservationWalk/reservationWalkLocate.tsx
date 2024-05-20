@@ -3,7 +3,6 @@ import { RootState, setLocation } from "../../../Store/store";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../../../Component/topbar/topbar";
 import { useAlert } from "../../../hook/useAlert/useAlert";
-import useGeolocation from "../../../hook/useGeolocation/useGeolocation";
 import { useEffect } from "react";
 import useGeolocationWithAddress from "../../../hook/useGeolocation/useGeolocation";
 
@@ -13,8 +12,11 @@ function ReservationWalkLocate() {
   const navigate = useNavigate();
   const alertBox = useAlert();
 
-  const { latitude, longitude, address, error } = useGeolocationWithAddress();
+  const { latitude, longitude, address, city, district, road, error } = useGeolocationWithAddress();
 
+  console.log(city);
+  console.log(district);
+  console.log(road);
   useEffect(() => {
     if (error) {
       alertBox(error);
