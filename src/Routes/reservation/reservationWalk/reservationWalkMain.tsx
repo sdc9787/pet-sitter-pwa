@@ -92,7 +92,7 @@ function ReservationWalkMain() {
 
   return (
     <>
-      <Topbar title="산책 예약" backUrl="/reservation"></Topbar>
+      <Topbar title="산책 예약" backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : "/reservation/walk/partner"}></Topbar>
       <div className="w-full h-screen">
         {walkListBool ? (
           <div className="h-full flex flex-col gap-5 justify-center items-center">

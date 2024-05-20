@@ -23,10 +23,9 @@ function ReservationWalkPartnerMain() {
     console.log(latitude, longitude, page, distance);
     //예약 리스트 가져오기
     instanceJson
-      .post("/walk/list", { now_latitude: latitude, now_longitude: longitude, page: page, max_distance: distance })
+      .post("/walk/list", { now_latitude: 37.378961, now_longitude: 126.929767, page: page, max_distance: distance })
       .then((res) => {
-        setList(res.data);
-        console.log(res.data);
+        console.log(res.data.content);
       })
       .catch((err) => {
         if (err.response.status === 403) {
@@ -46,10 +45,9 @@ function ReservationWalkPartnerMain() {
     <>
       <Topbar backUrl="/reservation" title="산책 매칭"></Topbar>
       <div>
-        <button onClick={() => navigate("/reservation/walk/time")} className="mb-20 mt-20 px-20 py-4 bg-main text-white text-lg font-bold rounded-full">
-          산책 예약
+        <button className="fixed right-3 bottom-24 rounded-full bg-main p-1 text-white" onClick={() => navigate("/reservation/walk")}>
+          <i className="xi-plus-min xi-3x"></i>
         </button>
-        <div>{list}</div>
       </div>
     </>
   );
