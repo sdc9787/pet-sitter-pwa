@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../hook/useAlert/useAlert";
 import instanceJson from "../../../Component/axios/axiosJson";
+import Topbar from "../../../Component/topbar/topbar";
 
 const PinCheck = () => {
   const navigate = useNavigate(); //페이지 이동
@@ -75,6 +76,7 @@ const PinCheck = () => {
   return (
     <>
       <div className="z-30 w-full h-screen bg-white flex flex-col justify-between items-center">
+        <i className="fixed top-4 left-4 xi-angle-left-min xi-2x" onClick={() => navigate("/profile")}></i>
         <div>
           <div className="text-center mt-32 text-2xl font-black">PIN 비밀번호 입력</div>
           <div className="flex justify-center items-center mt-12">{renderPinDisplay()}</div>

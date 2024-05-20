@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from "react";
 import instanceJson from "../../../Component/axios/axiosJson";
 import Topbar from "../../../Component/topbar/topbar";
 import { useNavigate } from "react-router-dom";
+import { useAlert } from "../../../hook/useAlert/useAlert";
 
 interface Walk {
   id: number;
@@ -37,6 +38,7 @@ function ReservationWalkMain() {
   const [remainingTime, setRemainingTime] = useState(300);
   const navigate = useNavigate();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const alertBox = useAlert();
 
   useEffect(() => {
     instanceJson
@@ -80,6 +82,7 @@ function ReservationWalkMain() {
         setRemainingTime((prevTime) => prevTime - 1);
       }, 1000);
     } else if (remainingTime <= 0 && !walkListBool) {
+      alertBox("산책 시간이 종료되었습니다");
       setWalkListBool(true);
     }
 
@@ -92,7 +95,7 @@ function ReservationWalkMain() {
 
   return (
     <>
-      <Topbar title="산책 예약" backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : "/reservation/walk/partner"}></Topbar>
+      <Topbar title="산책 예약" sendText="취소" sendFunction={console.log} backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : "/reservation/walk/partner"}></Topbar>
       <div className="w-full h-screen">
         {walkListBool ? (
           <div className="h-full flex flex-col gap-5 justify-center items-center">
@@ -103,18 +106,21 @@ function ReservationWalkMain() {
             </button>
           </div>
         ) : (
-          <div className="h-full">
-            <div id="map" style={{ width: "100%", height: "400px" }}></div>
-            {walkData && (
-              <div className="p-4">
-                <div className="mb-4 p-4 border rounded shadow">
-                  <h3 className="text-xl font-bold">{walkData.title}</h3>
-                  <p>{walkData.address}</p>
-                  <p>{walkData.detailAddress}</p>
-                  <p>남은 시간: {remainingTime}초</p>
+          <div className="h-full flex flex-col justify-center items-center">
+            <div id="map" className="w-full shadow-topbar" style={{ flexGrow: 8 }}></div>
+            <div className="w-full p-4 flex flex-col items-start justify-between relative" style={{ flexGrow: 2 }}>
+              <h3 className="text-2xl font-bold">{walkData.title}</h3>
+              <p className="font-semibold">{walkData.content}</p>
+              <div className="w-full flex flex-col justify-center items-center gap-2">
+                <p className="font-semibold self-start">현재 주소 : {walkData.address}</p>
+                <p className="font-semibold self-start">상세 주소 : {walkData.detailAddress}</p>
+                <p className="font-semibold">남은 시간: {remainingTime}초</p>
+                <div className="flex gap-4 w-full mb-20">
+                  <button className="flex-1 font-extrabold bg-zinc-400 text-white py-3 rounded-lg">수정</button>
+                  <button className="flex-1 font-extrabold bg-main text-white py-3 rounded-lg">신청내역확인</button>
                 </div>
               </div>
-            )}
+            </div>
           </div>
         )}
       </div>
