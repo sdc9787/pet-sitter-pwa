@@ -17,7 +17,7 @@ function ReservationWalkPartnerMain() {
   const { latitude, longitude, error } = useGeolocation();
   const [page, setPage] = useState<number>(1);
   const [distance, setDistance] = useState<number>(5);
-  const [list, setList] = useState<any[]>([]);
+  const [list, setList] = useState();
 
   const reservationListApi = () => {
     console.log(latitude, longitude, page, distance);
