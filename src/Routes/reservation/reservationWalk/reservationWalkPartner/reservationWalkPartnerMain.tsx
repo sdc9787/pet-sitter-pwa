@@ -30,11 +30,13 @@ function ReservationWalkPartnerMain() {
   const [selectedWalkId, setSelectedWalkId] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
+  const [isAllTimersExpired, setIsAllTimersExpired] = useState<boolean>(false);
 
   const reservationListApi = () => {
     instanceJson
       .post("/walk/list", { now_latitude: latitude, now_longitude: longitude, page: page, max_distance: distance })
       .then((res) => {
+        console.log(res.data);
         setWalkList(res.data.content);
         const times = res.data.content.map((walk: WalkList) => {
           const createdDate = new Date(walk.createDate);
@@ -42,12 +44,14 @@ function ReservationWalkPartnerMain() {
           return Math.floor((createdDate.getTime() + 5 * 60 * 1000 - now.getTime()) / 1000);
         });
         setRemainingTimes(times);
+        setIsAllTimersExpired(times.every((time: any) => time <= 0));
       })
       .catch((err) => {
         if (err.response.status === 403) {
           alertBox("파트너쉽 권한이 없습니다.");
         } else if (err.response.status === 400) {
           alertBox("주변에 산책 매칭이 없습니다.");
+          setIsAllTimersExpired(true);
         }
         console.log(err);
       });
@@ -62,7 +66,12 @@ function ReservationWalkPartnerMain() {
   useEffect(() => {
     if (remainingTimes.some((time) => time > 0)) {
       intervalRef.current = setInterval(() => {
-        setRemainingTimes((prevTimes) => prevTimes.map((time) => time - 1));
+        setRemainingTimes((prevTimes) => {
+          const updatedTimes = prevTimes.map((time) => time - 1);
+          const allTimersExpired = updatedTimes.every((time) => time <= 0);
+          setIsAllTimersExpired(allTimersExpired);
+          return updatedTimes;
+        });
       }, 1000);
     }
 
@@ -74,7 +83,7 @@ function ReservationWalkPartnerMain() {
   }, [remainingTimes]);
 
   useEffect(() => {
-    if (latitude && longitude) {
+    if (latitude && longitude && walkList.length > 0) {
       const mapContainer = document.getElementById("map");
       if (mapContainer) {
         const mapOption = {
@@ -104,15 +113,23 @@ function ReservationWalkPartnerMain() {
     <>
       <Topbar backUrl="/reservation" title="산책 매칭"></Topbar>
       <div className="w-full h-screen">
-        <div id="map" style={{ width: "100%", height: "400px" }}></div>
-        {walkList.map((item, index) => (
-          <div key={item.id} className={`mb-4 p-4 border rounded shadow ${selectedWalkId === item.id ? "bg-main" : ""}`} onClick={() => setSelectedWalkId(item.id)}>
-            <h3 className="text-xl font-bold">{item.title}</h3>
-            <p>{item.address}</p>
-            <p>{item.detailAddress}</p>
-            <p>남은 시간: {remainingTimes[index]}초</p>
+        {isAllTimersExpired ? (
+          <div className="flex justify-center items-center h-full">
+            <p className="text-xl font-bold">산책 글이 없습니다</p>
           </div>
-        ))}
+        ) : (
+          <div className="h-full">
+            <div id="map" style={{ width: "100%", height: "400px" }}></div>
+            {walkList.map((item, index) => (
+              <div key={item.id} className={`mb-4 p-4 border rounded shadow ${selectedWalkId === item.id ? "bg-main" : ""}`} onClick={() => setSelectedWalkId(item.id)}>
+                <h3 className="text-xl font-bold">{item.title}</h3>
+                <p>{item.address}</p>
+                <p>{item.detailAddress}</p>
+                <p>남은 시간: {remainingTimes[index]}초</p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
       <button className="fixed right-3 bottom-24 rounded-full bg-main p-1 text-white" onClick={() => navigate("/reservation/walk")}>
         <i className="xi-plus-min xi-3x"></i>
