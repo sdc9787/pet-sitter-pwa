@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { useAlert } from "../useAlert/useAlert";
 
 interface GeolocationState {
   latitude: number | null;
@@ -70,6 +71,7 @@ const useReverseGeoCoding = ({ latitude, longitude }: ReverseGeoCodingProps) => 
   const [district, setDistrict] = useState("");
   const [road, setRoad] = useState("");
   const latestRequestIdRef = useRef<number | null>(null);
+  const alertBox = useAlert();
 
   useEffect(() => {
     const requestId = Date.now();
@@ -84,10 +86,10 @@ const useReverseGeoCoding = ({ latitude, longitude }: ReverseGeoCodingProps) => 
             setAddress(res[0].road_address.address_name);
             setCity(res[0].road_address.region_1depth_name);
             setDistrict(res[0].road_address.region_2depth_name);
-            setRoad(res[0].road_address.road_name + res[0].road_address.main_building_no + "-" + res[0].road_address.sub_building_no);
+            setRoad(res[0].road_address.road_name + res[0].road_address.main_building_no + (res[0].road_address.sub_building_no === "" ? null : "-" + res[0].road_address.sub_building_no));
           }
         } else {
-          console.error("주소 변환 실패!");
+          alertBox("주소를 가져오는데 실패했습니다.");
         }
       };
 
