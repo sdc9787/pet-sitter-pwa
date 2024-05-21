@@ -53,6 +53,7 @@ function ReservationWalkPost() {
       })
       .catch((error: any) => {
         if (error.response.data === "필수 펫 정보가 누락 되어 신청글 작성이 불가능 합니다") alertBox("펫정보가 누락되어 신청글 작성이 불가능합니다");
+        else alertBox(error.response.data);
         console.error(error);
       });
   };

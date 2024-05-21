@@ -45,7 +45,7 @@ function ProfileMain() {
     {
       title: "결제 정보",
       icon: "xi-credit-card",
-      navigate: "/profile/payment-info",
+      navigate: "/tossPay",
     },
     {
       title: "서비스 이용 내역",

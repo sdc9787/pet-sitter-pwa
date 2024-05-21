@@ -9,6 +9,7 @@ import { useEffect } from "react";
 import KakaoMap from "./Routes/map/map";
 import Reservation from "./Routes/reservation/reservation";
 import ReservationUtils from "./Routes/reservationUtils/reservationUtils";
+import TossPay from "./Routes/tosspay/tosspay";
 
 function App() {
   const navigate = useNavigate(); //페이지 이동
@@ -37,6 +38,8 @@ function App() {
           <Route path="/reservationUtils/*" element={<ReservationUtils></ReservationUtils>}></Route>
           {/* 지도 */}
           <Route path="/map" element={<KakaoMap></KakaoMap>}></Route>
+          {/*토스페이*/}
+          <Route path="/tossPay/*" element={<TossPay></TossPay>}></Route>
         </Routes>
       </div>
       <div className="TabBar font-custom">
