@@ -83,7 +83,7 @@ const useReverseGeoCoding = ({ latitude, longitude }: ReverseGeoCodingProps) => 
 
         geocoder.coord2Address(Number(longitude), Number(latitude), (res: any, status: any) => {
           if (latestRequestIdRef.current !== requestId) return;
-          console.log(status, res);
+          console.log(res[0]);
           if (status === window.kakao.maps.services.Status.OK && res[0].road_address) {
             setAddress(res[0].road_address.address_name);
             setCity(res[0].road_address.region_1depth_name);
