@@ -17,7 +17,7 @@ export function SuccessPage() {
 
     function confirm() {
       instanceJson
-        .post("/tossPay", requestData)
+        .post("/payment/tossPay", requestData)
         .then((response) => {
           const data = response.data;
           // TODO: 결제 성공 비즈니스 로직을 구현하세요.
