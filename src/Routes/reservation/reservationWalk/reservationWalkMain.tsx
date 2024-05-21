@@ -44,6 +44,7 @@ function ReservationWalkMain() {
     instanceJson
       .get("/walk/myPost")
       .then((res) => {
+        console.log(res.data);
         setWalkListBool(false);
         setWalkData(res.data);
         const createdDate = new Date(res.data.createDate);
@@ -93,9 +94,22 @@ function ReservationWalkMain() {
     };
   }, [remainingTime, walkListBool]);
 
+  //산책글 취소
+  function cancelWalk() {
+    instanceJson
+      .get(`/walk/delete/${walkData.id}`)
+      .then((res) => {
+        alertBox("산책이 취소되었습니다");
+        navigate("/reservation");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   return (
     <>
-      <Topbar title="산책 예약" sendText={walkListBool ? "" : "취소"} sendFunction={console.log} backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : "/reservation/walk/partner"}></Topbar>
+      <Topbar title="산책 예약" sendText={walkListBool ? "" : "취소"} sendFunction={cancelWalk} backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : "/reservation/walk/partner"}></Topbar>
       <div className="w-full h-screen">
         {walkListBool ? (
           <div className="h-full flex flex-col gap-5 justify-center items-center">

@@ -47,12 +47,12 @@ function ReservationWalkPost() {
     instanceJson
       .post("/walk/create/post", reservation)
       .then((r: any) => {
-        navigator("/reservation");
+        navigator("/reservation/walk");
         alertBox("산책글이 등록되었습니다");
         console.log(r);
       })
       .catch((error: any) => {
-        alertBox(error.response.data);
+        if (error.response.data === "필수 펫 정보가 누락 되어 신청글 작성이 불가능 합니다") alertBox("펫정보가 누락되어 신청글 작성이 불가능합니다");
         console.error(error);
       });
   };
