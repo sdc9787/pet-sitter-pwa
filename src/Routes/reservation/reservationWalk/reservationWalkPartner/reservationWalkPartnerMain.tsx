@@ -30,13 +30,14 @@ function ReservationWalkPartnerMain() {
   const [selectedWalkId, setSelectedWalkId] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
-  const [isAllTimersExpired, setIsAllTimersExpired] = useState<boolean>(false);
+  const [isAllTimersExpired, setIsAllTimersExpired] = useState<boolean>(true);
 
   const reservationListApi = () => {
     instanceJson
       .post("/walk/list", { now_latitude: latitude, now_longitude: longitude, page: page, max_distance: distance })
       .then((res) => {
         console.log(res.data);
+        setIsAllTimersExpired(false);
         setWalkList(res.data.content);
         const times = res.data.content.map((walk: WalkList) => {
           const createdDate = new Date(walk.createDate);

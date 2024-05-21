@@ -3,7 +3,7 @@ import axios from "axios";
 // Axios 인스턴스 생성
 const instanceMultipart = axios.create({
   baseURL: `${import.meta.env.VITE_APP_API_URL}`,
-  timeout: 7000,
+  timeout: 10000,
   headers: {
     "Content-Type": "multipart/form-data",
     "Content-Encoding": "charset=UTF-8",
