@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 
 const selector = "#payment-widget";
 
-const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
+const clientKey = "test_ck_Gv6LjeKD8aB7M20bpWWe3wYxAdXy";
 const customerKey = nanoid();
 
 export function CheckoutPage() {
@@ -30,11 +30,7 @@ export function CheckoutPage() {
       return;
     }
 
-    const paymentMethodsWidget = paymentWidget.renderPaymentMethods(
-      selector,
-      { value: price },
-      { variantKey: "DEFAULT" }
-    );
+    const paymentMethodsWidget = paymentWidget.renderPaymentMethods(selector, { value: price }, { variantKey: "DEFAULT" });
 
     paymentWidget.renderAgreement("#agreement", { variantKey: "AGREEMENT" });
 
@@ -78,19 +74,14 @@ export function CheckoutPage() {
         <div style={{ paddingLeft: "24px" }}>
           {/* 할인 쿠폰 */}
           <div className="checkable typography--p">
-            <label
-              htmlFor="coupon-box"
-              className="checkable__label typography--regular"
-            >
+            <label htmlFor="coupon-box" className="checkable__label typography--regular">
               <input
                 id="coupon-box"
                 className="checkable__input"
                 type="checkbox"
                 aria-checked="true"
                 onChange={(event) => {
-                  setPrice(
-                    event.target.checked ? price - 5_000 : price + 5_000
-                  );
+                  setPrice(event.target.checked ? price - 5_000 : price + 5_000);
                 }}
               />
               <span className="checkable__label-text">5,000원 쿠폰 적용</span>
@@ -99,11 +90,7 @@ export function CheckoutPage() {
         </div>
         <div className="result wrapper">
           {/* 결제하기 버튼 */}
-          <button
-            className="button"
-            style={{ marginTop: "30px" }}
-            onClick={handlePaymentRequest}
-          >
+          <button className="button" style={{ marginTop: "30px" }} onClick={handlePaymentRequest}>
             결제하기
           </button>
         </div>
