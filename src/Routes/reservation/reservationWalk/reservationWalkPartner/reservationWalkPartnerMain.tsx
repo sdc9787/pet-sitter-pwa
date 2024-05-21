@@ -112,26 +112,28 @@ function ReservationWalkPartnerMain() {
   return (
     <>
       <Topbar backUrl="/reservation" title="산책 매칭"></Topbar>
-      <div className="w-full h-screen">
+      <div className="w-full h-screen bg-gray-100">
         {isAllTimersExpired ? (
           <div className="flex justify-center items-center h-full">
             <p className="text-xl font-bold">산책 글이 없습니다</p>
           </div>
         ) : (
           <div className="h-full">
-            <div id="map" style={{ width: "100%", height: "400px" }}></div>
-            {walkList.map((item, index) => (
-              <div key={item.id} className={`mb-4 p-4 border rounded shadow ${selectedWalkId === item.id ? "bg-main" : ""}`} onClick={() => setSelectedWalkId(item.id)}>
-                <h3 className="text-xl font-bold">{item.title}</h3>
-                <p>{item.address}</p>
-                <p>{item.detailAddress}</p>
-                <p>남은 시간: {remainingTimes[index]}초</p>
-              </div>
-            ))}
+            <div id="map" className="w-full h-64 mb-4 shadow-lg rounded-lg"></div>
+            <div className="px-4">
+              {walkList.map((item, index) => (
+                <div key={item.id} className={`mb-4 p-4 border rounded-lg shadow-md cursor-pointer transition-transform transform hover:scale-105 ${selectedWalkId === item.id ? "bg-main text-white" : "bg-white"}`} onClick={() => setSelectedWalkId(item.id)}>
+                  <h3 className="text-lg font-bold">{item.title}</h3>
+                  <p className="text-sm">{item.address}</p>
+                  <p className="text-sm">{item.detailAddress}</p>
+                  <p className="text-sm text-red-500">남은 시간: {remainingTimes[index]}초</p>
+                </div>
+              ))}
+            </div>
           </div>
         )}
       </div>
-      <button className="fixed right-3 bottom-24 rounded-full bg-main p-1 text-white" onClick={() => navigate("/reservation/walk")}>
+      <button className="fixed right-3 bottom-24 rounded-full bg-main p-3 text-white shadow-lg" onClick={() => navigate("/reservation/walk")}>
         <i className="xi-plus-min xi-3x"></i>
       </button>
     </>

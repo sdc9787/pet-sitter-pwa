@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import instanceJson from "../../Component/axios/axiosJson";
 
 export function SuccessPage() {
   const navigate = useNavigate();
@@ -14,27 +15,25 @@ export function SuccessPage() {
       paymentKey: searchParams.get("paymentKey"),
     };
 
-    async function confirm() {
-      const response = await fetch("/confirm", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestData),
-      });
-
-      const json = await response.json();
-
-      if (!response.ok) {
-        // TODO: 결제 실패 비즈니스 로직을 구현하세요.
-        console.log(json);
-        navigate(`/fail?message=${json.message}&code=${json.code}`);
-        return;
-      }
-
-      // TODO: 결제 성공 비즈니스 로직을 구현하세요.
-      console.log(json);
+    function confirm() {
+      instanceJson
+        .post("/confirm", requestData)
+        .then((response) => {
+          const data = response.data;
+          // TODO: 결제 성공 비즈니스 로직을 구현하세요.
+          console.log(data);
+        })
+        .catch((err) => {
+          // TODO: 결제 실패 비즈니스 로직을 구현하세요.
+          if (err.response) {
+            console.log(err.response.data);
+            navigate(`/fail?message=${err.response.data.message}&code=${err.response.data.code}`);
+          } else {
+            console.error(err);
+          }
+        });
     }
+
     confirm();
   }, []);
 
@@ -42,16 +41,11 @@ export function SuccessPage() {
     <div className="result wrapper">
       <div className="box_section">
         <h2 style={{ padding: "20px 0px 10px 0px" }}>
-          <img
-            width="35px"
-            src="https://static.toss.im/3d-emojis/u1F389_apng.png"
-          />
+          <img width="35px" src="https://static.toss.im/3d-emojis/u1F389_apng.png" alt="success" />
           결제 성공
         </h2>
         <p>{`주문번호: ${searchParams.get("orderId")}`}</p>
-        <p>{`결제 금액: ${Number(
-          searchParams.get("amount")
-        ).toLocaleString()}원`}</p>
+        <p>{`결제 금액: ${Number(searchParams.get("amount")).toLocaleString()}원`}</p>
         <p>{`paymentKey: ${searchParams.get("paymentKey")}`}</p>
       </div>
     </div>
