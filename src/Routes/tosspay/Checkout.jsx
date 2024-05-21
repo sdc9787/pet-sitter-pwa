@@ -4,7 +4,7 @@ import { nanoid } from "nanoid";
 
 const selector = "#payment-widget";
 
-const clientKey = "test_ck_Gv6LjeKD8aB7M20bpWWe3wYxAdXy";
+const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = nanoid();
 
 export function CheckoutPage() {
@@ -56,9 +56,9 @@ export function CheckoutPage() {
         orderName: "토스 티셔츠 외 2건",
         customerName: "김토스",
         customerEmail: "customer123@gmail.com",
-        customerMobilePhone: "01012341234",
-        successUrl: `${window.location.origin}/success`,
-        failUrl: `${window.location.origin}/fail`,
+        customerMobilePhone: "01071279703",
+        successUrl: `${window.location.origin}/tossPay/success`,
+        failUrl: `${window.location.origin}/tossPay/fail`,
       });
     } catch (error) {
       console.error("Error requesting payment:", error);
