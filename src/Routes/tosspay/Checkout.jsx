@@ -10,7 +10,7 @@ const customerKey = nanoid();
 export function CheckoutPage() {
   const [paymentWidget, setPaymentWidget] = useState(null);
   const paymentMethodsWidgetRef = useRef(null);
-  const [price, setPrice] = useState(50_000);
+  const [price, setPrice] = useState(50_000); //수정
 
   useEffect(() => {
     const fetchPaymentWidget = async () => {
@@ -66,28 +66,12 @@ export function CheckoutPage() {
   };
 
   return (
-    <div className="wrapper">
-      <div className="box_section">
+    <div className="w-full wrapper">
+      <div className="box_section h-screen">
         {/* 결제 UI, 이용약관 UI 영역 */}
         <div id="payment-widget" />
         <div id="agreement" />
-        <div style={{ paddingLeft: "24px" }}>
-          {/* 할인 쿠폰 */}
-          <div className="checkable typography--p">
-            <label htmlFor="coupon-box" className="checkable__label typography--regular">
-              <input
-                id="coupon-box"
-                className="checkable__input"
-                type="checkbox"
-                aria-checked="true"
-                onChange={(event) => {
-                  setPrice(event.target.checked ? price - 5_000 : price + 5_000);
-                }}
-              />
-              <span className="checkable__label-text">5,000원 쿠폰 적용</span>
-            </label>
-          </div>
-        </div>
+        <div style={{ paddingLeft: "24px" }} />
         <div className="result wrapper">
           {/* 결제하기 버튼 */}
           <button className="button" style={{ marginTop: "30px" }} onClick={handlePaymentRequest}>

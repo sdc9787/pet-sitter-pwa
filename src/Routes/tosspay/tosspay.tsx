@@ -2,6 +2,7 @@ import { Route, Routes } from "react-router-dom";
 import { CheckoutPage } from "./Checkout";
 import { SuccessPage } from "./Success";
 import { FailPage } from "./Fail";
+import "./tosspay.css";
 
 function TossPay() {
   return (

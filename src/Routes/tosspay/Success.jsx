@@ -44,9 +44,9 @@ export function SuccessPage() {
           <img width="35px" src="https://static.toss.im/3d-emojis/u1F389_apng.png" alt="success" />
           결제 성공
         </h2>
-        <p>{`주문번호: ${searchParams.get("orderId")}`}</p>
+        {/* <p>{`주문번호: ${searchParams.get("orderId")}`}</p> */}
         <p>{`결제 금액: ${Number(searchParams.get("amount")).toLocaleString()}원`}</p>
-        <p>{`paymentKey: ${searchParams.get("paymentKey")}`}</p>
+        {/* <p>{`paymentKey: ${searchParams.get("paymentKey")}`}</p> */}
       </div>
     </div>
   );
