@@ -4,6 +4,7 @@ import instanceJson from "../../../../Component/axios/axiosJson";
 import { useGeolocation } from "../../../../hook/useGeolocation/useGeolocation";
 import { useAlert } from "../../../../hook/useAlert/useAlert";
 import { useNavigate } from "react-router-dom";
+import ActionBtn from "../../../../Component/actionBtn/actionBtn";
 
 interface WalkList {
   id: number;
@@ -128,7 +129,7 @@ function ReservationWalkPartnerMain() {
       <div className="w-full h-screen bg-gray-100">
         {isAllTimersExpired ? (
           <div className="flex justify-center items-center h-full">
-            <p className="text-xl font-bold">산책 글이 없습니다</p>
+            <p className="text-xl font-bold">주변에 산책 글이 없습니다</p>
           </div>
         ) : (
           <div className="h-full">
@@ -146,9 +147,22 @@ function ReservationWalkPartnerMain() {
           </div>
         )}
       </div>
-      <button className="fixed right-3 bottom-24 rounded-full bg-main p-3 text-white shadow-lg" onClick={() => navigate("/reservation/walk")}>
-        <i className="xi-plus-min xi-3x"></i>
-      </button>
+      <ActionBtn
+        buttonCount={2}
+        button1Props={{
+          text: "신청글 작성",
+          color: "bg-zinc-400",
+          onClick: () => {
+            navigate("/reservation/walk");
+          },
+        }}
+        button2Props={{
+          text: "예약 신청",
+          color: "bg-main",
+          onClick: () => {
+            navigate("/reservation/walk");
+          },
+        }}></ActionBtn>
     </>
   );
 }

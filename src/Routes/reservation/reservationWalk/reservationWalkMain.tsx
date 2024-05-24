@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../hook/useAlert/useAlert";
 import { useDispatch } from "react-redux";
 import { setWalkDataAll, setWalkTime } from "../../../Store/store";
+import ActionButtons from "../../../Component/actionBtn/actionBtn";
+import ActionBtn from "../../../Component/actionBtn/actionBtn";
 
 interface Walk {
   id: number;
@@ -134,14 +136,19 @@ function ReservationWalkMain() {
                 <p className="font-medium text-gray-600">상세 주소: {walkData.detailAddress}</p>
               </div>
               <p className="font-semibold text-red-500 mb-4">남은 시간: {remainingTime}초</p>
-              <div className="flex gap-4 w-full mb-20">
-                <button onClick={() => navigate(`/reservation/walk/edit/time/${walkData.id}`)} className="flex-1 font-bold bg-zinc-400 text-white py-3 rounded-lg">
-                  수정
-                </button>
-                <button onClick={() => navigate(`/reservation/walk/applier`)} className="flex-1 font-bold bg-main text-white py-3 rounded-lg">
-                  신청내역확인
-                </button>
-              </div>
+              <ActionBtn
+                buttonCount={2}
+                button1Props={{
+                  text: "수정",
+                  onClick: () => navigate(`/reservation/walk/edit/time/${walkData.id}`),
+                  color: "bg-zinc-400",
+                }}
+                button2Props={{
+                  text: "신청내역확인",
+                  onClick: () => navigate(`/reservation/walk/applier`),
+                  color: "bg-main",
+                }}
+              />
             </div>
           </div>
         )}
