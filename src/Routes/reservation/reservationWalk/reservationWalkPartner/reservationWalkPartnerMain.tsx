@@ -33,6 +33,7 @@ function ReservationWalkPartnerMain() {
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
   const [isAllTimersExpired, setIsAllTimersExpired] = useState<boolean>(true);
 
+  //파트너가 산책글 작성했는지 확인
   useEffect(() => {
     instanceJson
       .get("/walk/myPost")
@@ -45,6 +46,7 @@ function ReservationWalkPartnerMain() {
       });
   }, []);
 
+  //예약 리스트 불러오기
   const reservationListApi = () => {
     instanceJson
       .post("/walk/list", { now_latitude: latitude, now_longitude: longitude, page: page, max_distance: distance })
@@ -71,12 +73,14 @@ function ReservationWalkPartnerMain() {
       });
   };
 
+  //위치정보가 있을 때만 실행
   useEffect(() => {
     if (latitude !== null) {
       reservationListApi();
     }
   }, [latitude]);
 
+  //1초마다 시간 감소(타이머)
   useEffect(() => {
     if (remainingTimes.some((time) => time > 0)) {
       intervalRef.current = setInterval(() => {
@@ -96,6 +100,7 @@ function ReservationWalkPartnerMain() {
     };
   }, [remainingTimes]);
 
+  //카카오맵
   useEffect(() => {
     if (latitude && longitude && walkList.length > 0) {
       const mapContainer = document.getElementById("map");
@@ -122,6 +127,23 @@ function ReservationWalkPartnerMain() {
       }
     }
   }, [latitude, longitude, walkList]);
+
+  //예약 신청
+  const requestReservation = () => {
+    if (selectedWalkId) {
+      instanceJson
+        .get(`walk/apply/${selectedWalkId}`)
+        .then((res) => {
+          alertBox("예약 신청이 완료되었습니다");
+          navigate("/reservation");
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    } else {
+      alertBox("예약할 산책을 선택해주세요");
+    }
+  };
 
   return (
     <>
@@ -160,7 +182,7 @@ function ReservationWalkPartnerMain() {
           text: "예약 신청",
           color: "bg-main",
           onClick: () => {
-            navigate("/reservation/walk");
+            requestReservation();
           },
         }}></ActionBtn>
     </>
