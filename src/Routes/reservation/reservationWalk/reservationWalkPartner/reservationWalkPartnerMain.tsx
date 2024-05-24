@@ -32,6 +32,18 @@ function ReservationWalkPartnerMain() {
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
   const [isAllTimersExpired, setIsAllTimersExpired] = useState<boolean>(true);
 
+  useEffect(() => {
+    instanceJson
+      .get("/walk/myPost")
+      .then((res) => {
+        navigate("/reservation/walk");
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+        }
+      });
+  }, []);
+
   const reservationListApi = () => {
     instanceJson
       .post("/walk/list", { now_latitude: latitude, now_longitude: longitude, page: page, max_distance: distance })

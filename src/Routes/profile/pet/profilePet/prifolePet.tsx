@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Topbar from "../../../../Component/topbar/topbar";
 import instanceJson from "../../../../Component/axios/axiosJson";
 import { useAlert } from "../../../../hook/useAlert/useAlert";
+import TabBar from "../../../../Component/tabbar/tabbar";
 
 function PetProfile() {
   const navigator = useNavigate(); //페이지 이동
@@ -64,6 +65,7 @@ function PetProfile() {
           <span className="pr-2 font-bold text-sm">펫 등록</span>
         </button>
       </div>
+      <TabBar></TabBar>
     </>
   );
 }

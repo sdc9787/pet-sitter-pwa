@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { stringify } from "querystring";
 import Topbar from "../../../Component/topbar/topbar";
+import TabBar from "../../../Component/tabbar/tabbar";
 
 function ProfileMain() {
   const navigate = useNavigate(); //페이지 이동
@@ -137,6 +138,7 @@ function ProfileMain() {
           );
         })}
       </div>
+      <TabBar></TabBar>
     </>
   );
 }

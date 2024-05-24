@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Topbar from "../../../Component/topbar/topbar";
 import instanceJson from "../../../Component/axios/axiosJson";
+import TabBar from "../../../Component/tabbar/tabbar";
 
 type Post = {
   id: number;
@@ -137,6 +138,7 @@ function CommunityMain() {
           <i className="xi-pen xi-2x"></i>
         </button>
       </div>
+      <TabBar></TabBar>
     </>
   );
 }

@@ -3,6 +3,8 @@ import instanceJson from "../../../Component/axios/axiosJson";
 import Topbar from "../../../Component/topbar/topbar";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../hook/useAlert/useAlert";
+import { useDispatch } from "react-redux";
+import { setWalkDataAll, setWalkTime } from "../../../Store/store";
 
 interface Walk {
   id: number;
@@ -39,11 +41,13 @@ function ReservationWalkMain() {
   const navigate = useNavigate();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const alertBox = useAlert();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     instanceJson
       .get("/walk/myPost")
       .then((res) => {
+        dispatch(setWalkDataAll(res.data));
         console.log(res.data);
         setWalkListBool(false);
         setWalkData(res.data);
@@ -109,7 +113,7 @@ function ReservationWalkMain() {
 
   return (
     <>
-      <Topbar title="산책 예약" sendText={walkListBool ? "" : "취소"} sendFunction={cancelWalk} backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : "/reservation/walk/partner"}></Topbar>
+      <Topbar title="산책 예약" sendText={walkListBool ? "" : "취소"} sendFunction={cancelWalk} backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : walkListBool ? "/reservation/walk/partner" : "/reservation"}></Topbar>
       <div className="w-full h-screen bg-gray-100">
         {walkListBool ? (
           <div className="h-full flex flex-col gap-5 justify-center items-center">
@@ -131,8 +135,12 @@ function ReservationWalkMain() {
               </div>
               <p className="font-semibold text-red-500 mb-4">남은 시간: {remainingTime}초</p>
               <div className="flex gap-4 w-full mb-20">
-                <button className="flex-1 font-bold bg-zinc-400 text-white py-3 rounded-lg">수정</button>
-                <button className="flex-1 font-bold bg-main text-white py-3 rounded-lg">신청내역확인</button>
+                <button onClick={() => navigate(`/reservation/walk/edit/time/${walkData.id}`)} className="flex-1 font-bold bg-zinc-400 text-white py-3 rounded-lg">
+                  수정
+                </button>
+                <button onClick={() => navigate(`/reservation/walk/applier`)} className="flex-1 font-bold bg-main text-white py-3 rounded-lg">
+                  신청내역확인
+                </button>
               </div>
             </div>
           </div>

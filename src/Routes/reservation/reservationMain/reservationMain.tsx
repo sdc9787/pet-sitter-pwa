@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import ReservationMainCard from "./reservationMainCard";
+import TabBar from "../../../Component/tabbar/tabbar";
 
 function ReservationMain() {
   const navigator = useNavigate();
@@ -21,6 +22,7 @@ function ReservationMain() {
           </div>
         </div>
       </div>
+      <TabBar></TabBar>
     </div>
   );
 }

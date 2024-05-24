@@ -39,7 +39,6 @@ instanceJson.interceptors.response.use(
     }
     if (error.response.status === 402) {
       // 402 에러 발생시 localStorage에 있는 모든 정보를 삭제후 로그인 페이지로 이동
-      localStorage.clear();
       const navigate = useNavigate();
       navigate("/oauth/login");
     }

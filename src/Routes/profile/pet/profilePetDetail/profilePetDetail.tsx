@@ -330,11 +330,11 @@ function PetProfileDetail() {
           ) : null}
         </>
       )}
-      <div className="z-40 bg-white w-full flex justify-around items-center fixed bottom-0 left-0 right-0 h-20">
-        <span onClick={() => setPageState(true)} className={(pageState ? "border-black " : "border-white ") + "border-t-2 flex justify-center items-center w-full h-full font-bold "}>
+      <div className="z-40 bg-white w-full flex justify-around items-center fixed bottom-0 left-0 right-0 h-14">
+        <span onClick={() => setPageState(true)} className={(pageState ? "border-black " : "border-white text-gray ") + "border-t-2 flex justify-center items-center w-full h-full font-bold "}>
           기본 정보
         </span>
-        <span onClick={() => setPageState(false)} className={(!pageState ? "border-black " : "border-white ") + "border-t-2 flex justify-center items-center w-full h-full font-bold "}>
+        <span onClick={() => setPageState(false)} className={(!pageState ? "border-black " : "border-white text-gray ") + "border-t-2 flex justify-center items-center w-full h-full font-bold "}>
           추가 정보
         </span>
       </div>

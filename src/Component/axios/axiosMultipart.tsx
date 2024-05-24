@@ -1,4 +1,5 @@
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 // Axios 인스턴스 생성
 const instanceMultipart = axios.create({
@@ -35,6 +36,11 @@ instanceMultipart.interceptors.response.use(
       localStorage.setItem("Authorization", error.response.headers.authorization);
       // 401 에러 발생시 재요청
       return instanceMultipart.request(error.config);
+    }
+    if (error.response.status === 402) {
+      // 402 에러 발생시 localStorage에 있는 모든 정보를 삭제후 로그인 페이지로 이동
+      const navigate = useNavigate();
+      navigate("/oauth/login");
     }
     return Promise.reject(error);
   }

@@ -2,7 +2,16 @@ import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialTabbarState: { state: number } = { state: 0 };
 const initialAlertboxState: { state: boolean; text: string } = { state: false, text: "" };
-const initialReservationState: { petId: number; walkTime: number; latitude: number; longitude: number; address: string; detailAddress: string; title: string; content: string } = { petId: 0, walkTime: 30, latitude: 0, longitude: 0, address: "", detailAddress: "", title: "", content: "" };
+const initialReservationState: { petId: number; walkTime: number; latitude: number; longitude: number; address: string; detailAddress: string; title: string; content: string; id?: number } = {
+  petId: 0,
+  walkTime: 30,
+  latitude: 0,
+  longitude: 0,
+  address: "",
+  detailAddress: "",
+  title: "",
+  content: "",
+};
 
 //탭바
 let tabbar = createSlice({
@@ -51,6 +60,16 @@ let reservation = createSlice({
       state.title = action.payload.title;
       state.content = action.payload.content;
     },
+    setWalkDataAll: (state, action) => {
+      state.petId = action.payload.petId;
+      state.walkTime = action.payload.walkTime;
+      state.latitude = action.payload.latitude;
+      state.longitude = action.payload.longitude;
+      state.address = action.payload.address;
+      state.detailAddress = action.payload.detailAddress;
+      state.title = action.payload.title;
+      state.content = action.payload.content;
+    },
   },
 });
 
@@ -66,6 +85,6 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export let { selectedTab } = tabbar.actions;
 export let { alertOn, alertOff } = alertbox.actions;
-export let { setWalkTime, setLocation, setPetId, setTitleAndContent } = reservation.actions;
+export let { setWalkTime, setLocation, setPetId, setTitleAndContent, setWalkDataAll } = reservation.actions;
 
 export default store;

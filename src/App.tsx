@@ -42,9 +42,6 @@ function App() {
           <Route path="/tossPay/*" element={<TossPay></TossPay>}></Route>
         </Routes>
       </div>
-      <div className="TabBar font-custom">
-        <TabBar></TabBar>
-      </div>
       {/* 알림창 */}
       <AlertText />
     </>

@@ -13,8 +13,8 @@ function ReservationWalkPost() {
   const navigator = useNavigate();
   const reservation = useSelector((state: RootState) => state.reservation);
 
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
+  const [title, setTitle] = useState(useSelector((state: RootState) => state.reservation.title));
+  const [content, setContent] = useState(useSelector((state: RootState) => state.reservation.content));
 
   //산책 게시글 작성 함수
   const sendFunction = () => {
@@ -69,6 +69,7 @@ function ReservationWalkPost() {
         <div className="w-full flex flex-col items-center justify-center">
           {/* 제목 박스 */}
           <input
+            value={title}
             className="w-full p-2 rounded-md border border-gray"
             placeholder="제목을 입력해주세요"
             onChange={(e) => {
@@ -77,6 +78,7 @@ function ReservationWalkPost() {
           />
           {/* 게시글 작성 박스 */}
           <textarea
+            value={content}
             className="w-full h-96 p-2 mt-2 border border-gray rounded-md"
             placeholder="산책시 특별한 주의 사항을 적어주세요"
             onChange={(e) => {

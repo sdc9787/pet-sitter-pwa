@@ -18,7 +18,7 @@ function TabBar() {
 
   return (
     <>
-      <div className="z-20 flex justify-around items-center fixed bottom-0 w-screen border-t border-bdgray bg-white">
+      <div className="font-custom z-20 flex justify-around items-center fixed bottom-0 w-screen border-t border-bdgray bg-white">
         {tabbar.IconTrue.map((a, i) => {
           return (
             <div
