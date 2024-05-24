@@ -145,7 +145,7 @@ function ReservationWalkMain() {
                 }}
                 button2Props={{
                   text: "신청내역확인",
-                  onClick: () => navigate(`/reservation/walk/applier`),
+                  onClick: () => navigate(`/reservation/walk/applier/${walkData.id}`),
                   color: "bg-main",
                 }}
               />

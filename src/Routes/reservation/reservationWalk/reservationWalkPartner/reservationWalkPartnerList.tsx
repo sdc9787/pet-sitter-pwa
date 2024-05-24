@@ -1,7 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import Topbar from "../../../../Component/topbar/topbar";
 import instanceJson from "../../../../Component/axios/axiosJson";
-import { useGeolocation, useReverseGeoCoding, useGeolocationWithAddress } from "../../../../hook/useGeolocation/useGeolocation";
+import { useGeolocation } from "../../../../hook/useGeolocation/useGeolocation";
 import { useAlert } from "../../../../hook/useAlert/useAlert";
 import { useNavigate } from "react-router-dom";
 import ActionBtn from "../../../../Component/actionBtn/actionBtn";
@@ -24,9 +24,10 @@ interface WalkList {
 function ReservationWalkPartnerList() {
   const alertBox = useAlert();
   const navigate = useNavigate();
-  const [applyList, setApplyList] = useState<WalkList[]>([]); //신청한 산책 리스트
+  const [applyList, setApplyList] = useState<WalkList[]>([]); // 신청한 산책 리스트
   const [selectedWalkId, setSelectedWalkId] = useState<number | null>(null);
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
+  const [noVisibleItems, setNoVisibleItems] = useState<boolean>(false);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const { latitude, longitude } = useGeolocation();
 
@@ -52,7 +53,7 @@ function ReservationWalkPartnerList() {
     }
   }, [latitude, longitude]);
 
-  //1초마다 시간 감소(타이머)
+  // 1초마다 시간 감소(타이머)
   useEffect(() => {
     if (remainingTimes.some((time) => time > 0)) {
       intervalRef.current = setInterval(() => {
@@ -65,6 +66,7 @@ function ReservationWalkPartnerList() {
             setApplyList((prevList) => prevList.filter((item, index) => updatedTimes[index] > 0));
           }
 
+          setNoVisibleItems(updatedTimes.every((time) => time <= 0));
           return updatedTimes;
         });
       }, 1000);
@@ -77,7 +79,7 @@ function ReservationWalkPartnerList() {
     };
   }, [remainingTimes]);
 
-  //예약취소
+  // 예약취소
   const cancelReservation = () => {
     if (selectedWalkId) {
       instanceJson
@@ -99,23 +101,30 @@ function ReservationWalkPartnerList() {
       <div className="w-full h-screen bg-gray-100">
         <div className="mt-20">
           <div className="px-4">
-            {applyList.map((item, index) => (
-              <div
-                key={item.id}
-                className={`mb-4 p-4 border ${selectedWalkId === item.id ? "border-blue-500 shadow-lg" : "border-gray-300 shadow-md"} rounded-lg cursor-pointer`}
-                onClick={() => {
-                  if (selectedWalkId === item.id) {
-                    setSelectedWalkId(null); // 선택을 취소합니다.
-                  } else {
-                    setSelectedWalkId(item.id); // 새로운 항목을 선택합니다.
-                  }
-                }}>
-                <h3 className="text-lg font-bold">{item.title}</h3>
-                <p className="text-sm">{item.address}</p>
-                <p className="text-sm">{item.detailAddress}</p>
-                <p className="text-sm text-red-500">남은 시간: {remainingTimes[index]}초</p>
-              </div>
-            ))}
+            {noVisibleItems ? (
+              <div className="text-center text-gray-500">신청 내역이 없습니다.</div>
+            ) : (
+              applyList.map(
+                (item, index) =>
+                  remainingTimes[index] > 0 && (
+                    <div
+                      key={item.id}
+                      className={`mb-4 p-4 border ${selectedWalkId === item.id ? "border-blue-500 shadow-lg" : "border-gray-300 shadow-md"} rounded-lg cursor-pointer`}
+                      onClick={() => {
+                        if (selectedWalkId === item.id) {
+                          setSelectedWalkId(null); // 선택을 취소합니다.
+                        } else {
+                          setSelectedWalkId(item.id); // 새로운 항목을 선택합니다.
+                        }
+                      }}>
+                      <h3 className="text-lg font-bold">{item.title}</h3>
+                      <p className="text-sm">{item.address}</p>
+                      <p className="text-sm">{item.detailAddress}</p>
+                      <p className="text-sm text-red-500">남은 시간: {remainingTimes[index]}초</p>
+                    </div>
+                  )
+              )
+            )}
           </div>
         </div>
       </div>

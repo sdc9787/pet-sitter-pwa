@@ -19,7 +19,7 @@ function ReservationWalk() {
         <Route path="/post" element={<ReservationWalkPost></ReservationWalkPost>}></Route>
         <Route path="/partner/*" element={<ReservationWalkPartner></ReservationWalkPartner>}></Route>
         <Route path="/edit/*" element={<ReservationWalkEdit></ReservationWalkEdit>}></Route>
-        <Route path="/applier" element={<ReservationWalkApplier></ReservationWalkApplier>}></Route>
+        <Route path="/applier/:id" element={<ReservationWalkApplier></ReservationWalkApplier>}></Route>
       </Routes>
     </>
   );
