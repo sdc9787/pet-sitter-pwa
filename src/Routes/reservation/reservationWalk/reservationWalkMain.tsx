@@ -135,7 +135,7 @@ function ReservationWalkMain() {
                 <p className="font-medium text-gray-600">현재 주소: {walkData.address}</p>
                 <p className="font-medium text-gray-600">상세 주소: {walkData.detailAddress}</p>
               </div>
-              <p className="font-semibold text-red-500 mb-4">남은 시간: {remainingTime}초</p>
+              <p className="font-semibold text-red-500 mb-20">남은 시간: {remainingTime}초</p>
               <ActionBtn
                 buttonCount={2}
                 button1Props={{
