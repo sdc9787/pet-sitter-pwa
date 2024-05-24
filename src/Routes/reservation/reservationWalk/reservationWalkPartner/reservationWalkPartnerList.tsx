@@ -29,7 +29,6 @@ function ReservationWalkPartnerList() {
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const { latitude, longitude } = useGeolocation();
-  const [isAllTimersExpired, setIsAllTimersExpired] = useState<boolean>(true);
 
   useEffect(() => {
     if (latitude && longitude) {
@@ -37,7 +36,6 @@ function ReservationWalkPartnerList() {
         .post("/walk/myApply", { now_latitude: latitude, now_longitude: longitude })
         .then((res) => {
           console.log(res.data);
-          setIsAllTimersExpired(false);
           setApplyList(res.data);
           const times = res.data.map((walk: WalkList) => {
             const createdDate = new Date(walk.createDate);
@@ -45,7 +43,6 @@ function ReservationWalkPartnerList() {
             return Math.floor((createdDate.getTime() + 5 * 60 * 1000 - now.getTime()) / 1000);
           });
           setRemainingTimes(times);
-          setIsAllTimersExpired(times.every((time: any) => time <= 0));
         })
         .catch((err) => {
           if (err.response.status === 400) {
@@ -62,7 +59,12 @@ function ReservationWalkPartnerList() {
         setRemainingTimes((prevTimes) => {
           const updatedTimes = prevTimes.map((time) => time - 1);
           const allTimersExpired = updatedTimes.every((time) => time <= 0);
-          setIsAllTimersExpired(allTimersExpired);
+
+          // 타이머가 0 초가 되면 해당 항목을 applyList에서 제거합니다.
+          if (allTimersExpired) {
+            setApplyList((prevList) => prevList.filter((item, index) => updatedTimes[index] > 0));
+          }
+
           return updatedTimes;
         });
       }, 1000);
@@ -93,12 +95,21 @@ function ReservationWalkPartnerList() {
 
   return (
     <>
-      <Topbar backUrl="/reservation" title="산책 매칭"></Topbar>
+      <Topbar backUrl="/reservation" title="매칭 신청 내역"></Topbar>
       <div className="w-full h-screen bg-gray-100">
         <div className="mt-20">
           <div className="px-4">
             {applyList.map((item, index) => (
-              <div key={item.id} className={`mb-4 p-4 border rounded-lg shadow-md cursor-pointer transition-transform transform hover:scale-105 ${selectedWalkId === item.id ? "bg-main text-white" : "bg-white"}`} onClick={() => setSelectedWalkId(item.id)}>
+              <div
+                key={item.id}
+                className={`mb-4 p-4 border ${selectedWalkId === item.id ? "border-blue-500 shadow-lg" : "border-gray-300 shadow-md"} rounded-lg cursor-pointer`}
+                onClick={() => {
+                  if (selectedWalkId === item.id) {
+                    setSelectedWalkId(null); // 선택을 취소합니다.
+                  } else {
+                    setSelectedWalkId(item.id); // 새로운 항목을 선택합니다.
+                  }
+                }}>
                 <h3 className="text-lg font-bold">{item.title}</h3>
                 <p className="text-sm">{item.address}</p>
                 <p className="text-sm">{item.detailAddress}</p>

@@ -28,25 +28,26 @@ function ReservationWalkPartnerMain() {
   const [page, setPage] = useState<number>(1);
   const [distance, setDistance] = useState<number>(5);
   const [walkList, setWalkList] = useState<WalkList[]>([]);
+  const [applyList, setApplyList] = useState<WalkList[]>([]); // 신청한 산책 리스트
   const [selectedWalkId, setSelectedWalkId] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
   const [isAllTimersExpired, setIsAllTimersExpired] = useState<boolean>(true);
 
-  //파트너가 산책글 작성했는지 확인
+  // 파트너가 산책글 작성했는지 확인
   useEffect(() => {
     instanceJson
       .get("/walk/myPost")
-      .then((res) => {
+      .then(() => {
         navigate("/reservation/walk");
       })
       .catch((err) => {
         if (err.response.status === 400) {
         }
       });
-  }, []);
+  }, [navigate]);
 
-  //예약 리스트 불러오기
+  // 예약 리스트 불러오기
   const reservationListApi = () => {
     instanceJson
       .post("/walk/list", { now_latitude: latitude, now_longitude: longitude, page: page, max_distance: distance })
@@ -73,14 +74,35 @@ function ReservationWalkPartnerMain() {
       });
   };
 
-  //위치정보가 있을 때만 실행
+  const reservationList = () => {
+    instanceJson
+      .post("/walk/myApply", { now_latitude: latitude, now_longitude: longitude })
+      .then((res) => {
+        console.log(res.data);
+        setApplyList(res.data);
+        const times = res.data.map((walk: WalkList) => {
+          const createdDate = new Date(walk.createDate);
+          const now = new Date();
+          return Math.floor((createdDate.getTime() + 5 * 60 * 1000 - now.getTime()) / 1000);
+        });
+        setRemainingTimes(times);
+      })
+      .catch((err) => {
+        if (err.response.status === 400) {
+          navigate("/reservation/walk/partner");
+        }
+      });
+  };
+
+  // 위치정보가 있을 때만 실행
   useEffect(() => {
     if (latitude !== null) {
       reservationListApi();
+      reservationList();
     }
   }, [latitude]);
 
-  //1초마다 시간 감소(타이머)
+  // 1초마다 시간 감소(타이머)
   useEffect(() => {
     if (remainingTimes.some((time) => time > 0)) {
       intervalRef.current = setInterval(() => {
@@ -100,7 +122,7 @@ function ReservationWalkPartnerMain() {
     };
   }, [remainingTimes]);
 
-  //카카오맵
+  // 카카오맵
   useEffect(() => {
     if (latitude && longitude && walkList.length > 0) {
       const mapContainer = document.getElementById("map");
@@ -128,14 +150,14 @@ function ReservationWalkPartnerMain() {
     }
   }, [latitude, longitude, walkList]);
 
-  //예약 신청
+  // 예약 신청
   const requestReservation = () => {
     if (selectedWalkId) {
       instanceJson
         .get(`walk/apply/${selectedWalkId}`)
         .then((res) => {
           alertBox("예약 신청이 완료되었습니다");
-          navigate("/reservation");
+          navigate("/reservation/walk/partner/list");
         })
         .catch((err) => {
           console.error(err);
@@ -145,9 +167,17 @@ function ReservationWalkPartnerMain() {
     }
   };
 
+  // Check if there are any visible walk list items
+  useEffect(() => {
+    const visibleWalkList = walkList.filter((item, index) => item.id !== applyList[index]?.id);
+    if (visibleWalkList.length === 0) {
+      setIsAllTimersExpired(true);
+    }
+  }, [walkList, applyList, remainingTimes]);
+
   return (
     <>
-      <Topbar backUrl="/reservation" title="산책 매칭"></Topbar>
+      <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭"></Topbar>
       <div className="w-full h-screen bg-gray-100">
         {isAllTimersExpired ? (
           <div className="flex justify-center items-center h-full">
@@ -157,14 +187,25 @@ function ReservationWalkPartnerMain() {
           <div className="h-full">
             <div id="map" className="w-full h-64 mb-4 shadow-lg rounded-lg"></div>
             <div className="px-4">
-              {walkList.map((item, index) => (
-                <div key={item.id} className={`mb-4 p-4 border rounded-lg shadow-md cursor-pointer transition-transform transform hover:scale-105 ${selectedWalkId === item.id ? "bg-main text-white" : "bg-white"}`} onClick={() => setSelectedWalkId(item.id)}>
-                  <h3 className="text-lg font-bold">{item.title}</h3>
-                  <p className="text-sm">{item.address}</p>
-                  <p className="text-sm">{item.detailAddress}</p>
-                  <p className="text-sm text-red-500">남은 시간: {remainingTimes[index]}초</p>
-                </div>
-              ))}
+              {walkList.map((item, index) =>
+                item.id !== applyList[index]?.id ? (
+                  <div
+                    key={item.id}
+                    className={`mb-4 p-4 border ${selectedWalkId === item.id ? "border-blue-500 shadow-lg" : "border-gray-300 shadow-md"} rounded-lg cursor-pointer`}
+                    onClick={() => {
+                      if (selectedWalkId === item.id) {
+                        setSelectedWalkId(null); // 선택을 취소합니다.
+                      } else {
+                        setSelectedWalkId(item.id); // 새로운 항목을 선택합니다.
+                      }
+                    }}>
+                    <h3 className="text-lg font-bold">{item.title}</h3>
+                    <p className="text-sm">{item.address}</p>
+                    <p className="text-sm">{item.detailAddress}</p>
+                    <p className="text-sm text-red-500">남은 시간: {remainingTimes[index]}초</p>
+                  </div>
+                ) : null
+              )}
             </div>
           </div>
         )}
