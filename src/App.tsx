@@ -33,6 +33,7 @@ function App() {
           {/* 커뮤니티 */}
           <Route path="/community/*" element={<Community></Community>}></Route>
           {/* 예약(홈) */}
+          <Route path="/" element={<Reservation></Reservation>}></Route>
           <Route path="/reservation/*" element={<Reservation></Reservation>}></Route>
           {/* 예약 내역*/}
           <Route path="/reservationUtils/*" element={<ReservationUtils></ReservationUtils>}></Route>
