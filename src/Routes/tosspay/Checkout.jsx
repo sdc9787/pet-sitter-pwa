@@ -12,15 +12,16 @@ const customerKey = uuidv4();
 export function CheckoutPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [phoneNumber, setPhoneNumber] = useState(""); //핸드폰 번호
-  const [userName, setUserName] = useState(""); //이름
+  const [phoneNumber, setPhoneNumber] = useState(""); // 핸드폰 번호
+  const [userName, setUserName] = useState(""); // 이름
   const [price, setPrice] = useState(0); // 초기값 설정
-  const alertBox = useAlert(); //알림창
+  const [isUserInfoLoaded, setIsUserInfoLoaded] = useState(false); // 사용자 정보 로드 여부
+  const alertBox = useAlert(); // 알림창
 
-  const [paymentWidget, setPaymentWidget] = useState(null); //결제 위젯
-  const paymentMethodsWidgetRef = useRef(null); //결제 위젯
+  const [paymentWidget, setPaymentWidget] = useState(null); // 결제 위젯
+  const paymentMethodsWidgetRef = useRef(null); // 결제 위젯
 
-  //페이지가 로드될때 핸드폰 번호 가져오기
+  // 페이지가 로드될 때 핸드폰 번호 가져오기
   useEffect(() => {
     instanceJson
       .get("/payment/getUserInfo")
@@ -30,6 +31,7 @@ export function CheckoutPage() {
         console.log(cleanedPhoneNumber);
         setUserName(res.data.name);
         setPhoneNumber(cleanedPhoneNumber);
+        setIsUserInfoLoaded(true); // 사용자 정보 로드 완료
       })
       .catch((err) => {
         console.log(err);
@@ -90,7 +92,7 @@ export function CheckoutPage() {
     });
     try {
       await paymentWidget?.requestPayment({
-        orderId,
+        orderId: orderId,
         orderName: price + "포인트",
         customerEmail: "sdc9787@naver.com",
         customerName: userName,
@@ -113,7 +115,7 @@ export function CheckoutPage() {
         <div style={{ paddingLeft: "24px" }} />
         <div className="result wrapper">
           {/* 결제하기 버튼 */}
-          <button className="button" style={{ marginTop: "30px" }} onClick={handlePaymentRequest}>
+          <button className={`button ${isUserInfoLoaded ? "" : "bg-gray-500 cursor-not-allowed"}`} style={{ marginTop: "30px" }} onClick={isUserInfoLoaded ? handlePaymentRequest : undefined} disabled={!isUserInfoLoaded}>
             결제하기
           </button>
         </div>
