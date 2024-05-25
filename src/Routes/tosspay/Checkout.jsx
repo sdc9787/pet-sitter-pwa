@@ -15,6 +15,7 @@ export function CheckoutPage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [phoneNumber, setPhoneNumber] = useState(""); //핸드폰 번호
+  const [userName, setUserName] = useState(""); //이름
   const [price, setPrice] = useState(0); // 초기값 설정
   const alertBox = useAlert(); //알림창
 
@@ -27,8 +28,9 @@ export function CheckoutPage() {
       .get("/payment/getUserInfo")
       .then((res) => {
         console.log(res.data);
-        // let cleanedPhoneNumber = res.data.replace(/-/g, "");
-        // console.log(cleanedPhoneNumber);
+        let cleanedPhoneNumber = res.data.replace(/-/g, "");
+        console.log(cleanedPhoneNumber);
+        setUserName(res.data.name);
         setPhoneNumber(res.data.phoneNumber);
       })
       .catch((err) => {
@@ -38,7 +40,7 @@ export function CheckoutPage() {
 
   useEffect(() => {
     if (location.state) {
-      setPrice(location.state);
+      setPrice(Number(location.state));
     }
   }, [location.state]);
 
@@ -81,19 +83,21 @@ export function CheckoutPage() {
     const orderId = nanoid(); // 각 결제 요청마다 새로운 고유한 orderId를 생성합니다.
     // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
     // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
-    try {
-      await instanceJson.post("/payment/beforePayment", { orderId: orderId, amount: price });
+    instanceJson.post("/payment/beforePayment", { orderId: orderId, amount: price });
 
+    try {
       await paymentWidget?.requestPayment({
         orderId,
-        orderName: "토스 티셔츠 외 2건",
-        customerName: "김토스",
+        orderName: price + "포인트",
+        customerEmail: "sdc9787@naver.com",
+        customerName: userName,
         customerMobilePhone: phoneNumber,
         successUrl: `${window.location.origin}/tossPay/success`,
         failUrl: `${window.location.origin}/tossPay/fail`,
       });
     } catch (error) {
-      console.error("결제 요청 중 오류 발생:", error);
+      // alertBox(error);
+      // console.error("결제 요청 중 오류 발생:", error);
     }
   };
 
