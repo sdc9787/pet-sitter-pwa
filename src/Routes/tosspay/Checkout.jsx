@@ -81,6 +81,7 @@ export function CheckoutPage() {
     const orderId = nanoid(); // 각 결제 요청마다 새로운 고유한 orderId를 생성합니다.
     // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
     // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
+    console.log(orderId);
     console.log(price);
     console.log(userName);
     console.log(phoneNumber);
