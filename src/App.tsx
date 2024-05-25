@@ -16,7 +16,7 @@ function App() {
 
   useEffect(() => {
     if (localStorage.getItem("Authorization")) {
-      navigate("/reservation");
+      // navigate("/reservation");
     } else {
       navigate("/oauth/login");
     }
