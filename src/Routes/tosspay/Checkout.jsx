@@ -85,6 +85,9 @@ export function CheckoutPage() {
     console.log(price);
     console.log(userName);
     console.log(phoneNumber);
+    await instanceJson.post("/payment/beforePayment", { orderId: orderId, amount: price }).then((res) => {
+      console.log(res);
+    });
     try {
       await paymentWidget?.requestPayment({
         orderId,
@@ -94,9 +97,6 @@ export function CheckoutPage() {
         customerMobilePhone: phoneNumber,
         successUrl: `${window.location.origin}/tossPay/success`,
         failUrl: `${window.location.origin}/tossPay/fail`,
-      });
-      await instanceJson.post("/payment/beforePayment", { orderId: orderId, amount: price }).then((res) => {
-        console.log(res);
       });
     } catch (error) {
       // alertBox(error);
