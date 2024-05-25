@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState, setWalkTime } from "../../../../Store/store";
 import Topbar from "../../../../Component/topbar/topbar";
+import { time } from "console";
 
 function ReservationWalkEditTime() {
   const dispatch = useDispatch();
@@ -10,8 +11,8 @@ function ReservationWalkEditTime() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const handleTimeChange = (time: number) => {
-    dispatch(setWalkTime(time));
+  const handleTimeChange = (index: number) => {
+    dispatch(setWalkTime({ walkTime: timeList[index], amount: priceList[index] }));
   };
 
   const timeList = [30, 60, 90, 120];
@@ -32,7 +33,7 @@ function ReservationWalkEditTime() {
           {timeList.map((time, index) => {
             return (
               <div key={index} className="flex flex-col justify-center items-center">
-                <div onClick={() => handleTimeChange(time)} key={index} className={`font-bold w-20 h-20 flex justify-center items-center border border-zinc-300 rounded-full border-gray-300 ${walkTime === time ? "bg-main border-main text-white" : "text-zinc-400"}`}>
+                <div onClick={() => handleTimeChange(index)} key={index} className={`font-bold w-20 h-20 flex justify-center items-center border border-zinc-300 rounded-full border-gray-300 ${walkTime === time ? "bg-main border-main text-white" : "text-zinc-400"}`}>
                   {time}분
                 </div>
                 <span className="text-sm mt-2">{priceList[index].toLocaleString()}원</span>

@@ -2,7 +2,7 @@ import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialTabbarState: { state: number } = { state: 0 };
 const initialAlertboxState: { state: boolean; text: string } = { state: false, text: "" };
-const initialReservationState: { petId: number; walkTime: number; latitude: number; longitude: number; address: string; detailAddress: string; title: string; content: string; id?: number } = {
+const initialReservationState: { petId: number; walkTime: number; latitude: number; longitude: number; address: string; detailAddress: string; title: string; content: string; id?: number; amount: number } = {
   petId: 0,
   walkTime: 30,
   latitude: 0,
@@ -11,6 +11,7 @@ const initialReservationState: { petId: number; walkTime: number; latitude: numb
   detailAddress: "",
   title: "",
   content: "",
+  amount: 0,
 };
 
 //탭바
@@ -45,7 +46,8 @@ let reservation = createSlice({
   initialState: initialReservationState,
   reducers: {
     setWalkTime: (state, action) => {
-      state.walkTime = action.payload;
+      state.walkTime = action.payload.walkTime;
+      state.amount = action.payload.amount;
     },
     setLocation: (state, action) => {
       state.latitude = action.payload.latitude;

@@ -10,12 +10,12 @@ function ReservationWalkTime() {
   const walkTime = useSelector((state: RootState) => state.reservation.walkTime);
   const navigate = useNavigate();
 
-  const handleTimeChange = (time: number) => {
-    dispatch(setWalkTime(time));
+  const handleTimeChange = (index: number) => {
+    dispatch(setWalkTime({ walkTime: walkTime[index], amount: priceList[index] }));
   };
 
   const timeList = [30, 60, 90, 120];
-  const priceList = [15000, 25000, 35000, 45000];
+  const priceList = [15000, 25000, 30000, 35000];
   const textList = [
     ["가벼운 산책이 필요한 강아지에게 추천", "노견이거나 실외 배변이 필요한 경우", "산책 후 간단한 배식, 환경 정리만 요청 가능"],
     ["적당한 산책 시간이 필요한 강아지에게 추천", "활동적인 강아지에게 적절한 시간", "산책 후 배식, 놀이, 배변, 환경 정리 요청 가능"],
@@ -32,7 +32,7 @@ function ReservationWalkTime() {
           {timeList.map((time, index) => {
             return (
               <div key={index} className="flex flex-col justify-center items-center">
-                <div onClick={() => handleTimeChange(time)} key={index} className={`font-bold w-20 h-20 flex justify-center items-center border border-zinc-300 rounded-full border-gray-300 ${walkTime === time ? "bg-main border-main text-white" : "text-zinc-400"}`}>
+                <div onClick={() => handleTimeChange(index)} key={index} className={`font-bold w-20 h-20 flex justify-center items-center border border-zinc-300 rounded-full border-gray-300 ${walkTime === time ? "bg-main border-main text-white" : "text-zinc-400"}`}>
                   {time}분
                 </div>
                 <span className="text-sm mt-2">{priceList[index].toLocaleString()}원</span>
