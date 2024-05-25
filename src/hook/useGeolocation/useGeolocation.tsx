@@ -89,6 +89,11 @@ const useReverseGeoCoding = ({ latitude, longitude }: ReverseGeoCodingProps) => 
             setCity(res[0].road_address.region_1depth_name);
             setDistrict(res[0].road_address.region_2depth_name);
             setRoad(res[0].road_address.road_name + res[0].road_address.main_building_no + (res[0].road_address.sub_building_no === "" ? "" : "-" + res[0].road_address.sub_building_no));
+          } else if (status === window.kakao.maps.services.Status.OK && res[0].address) {
+            setAddress(res[0].address.address_name);
+            setCity(res[0].address.region_1depth_name);
+            setDistrict(res[0].address.region_2depth_name);
+            // setRoad(res[0].address.main_building_no + (res[0].address.sub_building_no === "" ? "" : "-" + res[0].address.sub_building_no));
           } else {
             alertBox("주소를 가져오는데 실패했습니다.");
           }

@@ -27,10 +27,10 @@ function ReservationWalkPost() {
       alertBox("위치 정보가 잘못되었습니다");
       return;
     }
-    // if (reservation.address === "") {
-    //   alertBox("위치 정보가 잘못되었습니다");
-    //   return;
-    // }
+    if (reservation.address === "") {
+      alertBox("위치 정보가 잘못되었습니다");
+      return;
+    }
     if (reservation.detailAddress === "") {
       alertBox("상세 주소를 입력해주세요");
       return;
