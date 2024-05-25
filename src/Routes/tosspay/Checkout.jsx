@@ -24,10 +24,11 @@ export function CheckoutPage() {
   //페이지가 로드될때 핸드폰 번호 가져오기
   useEffect(() => {
     instanceJson
-      .get("/payment/getPhoneNumber")
+      .get("/payment/getUserInfo")
       .then((res) => {
-        let cleanedPhoneNumber = res.data.replace(/-/g, "");
-        console.log(cleanedPhoneNumber);
+        console.log(res.data);
+        // let cleanedPhoneNumber = res.data.replace(/-/g, "");
+        // console.log(cleanedPhoneNumber);
         setPhoneNumber(res.data.phoneNumber);
       })
       .catch((err) => {
