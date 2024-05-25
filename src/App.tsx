@@ -5,21 +5,66 @@ import { AlertText } from "./hook/useAlert/useAlert";
 import Profile from "./Routes/profile/profile";
 import Community from "./Routes/community/community";
 import Oauth from "./Routes/oauth/oauth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import KakaoMap from "./Routes/map/map";
 import Reservation from "./Routes/reservation/reservation";
 import ReservationUtils from "./Routes/reservationUtils/reservationUtils";
 import TossPay from "./Routes/tosspay/tosspay";
+import { EventSourcePolyfill } from "event-source-polyfill";
+
+type EventData = {
+  // 이벤트 데이터의 타입을 정의하세요.
+  // 예를 들어:
+  id: number;
+  message: string;
+  // ...
+};
 
 function App() {
   const navigate = useNavigate(); //페이지 이동
 
+  const [events, setEvents] = useState<EventData[]>([]);
+
   useEffect(() => {
-    if (localStorage.getItem("Authorization")) {
+    //토큰 유효성 검사
+    const token = localStorage.getItem("Authorization");
+    const refreshToken = localStorage.getItem("refresh_token");
+    if (token) {
       // navigate("/reservation");
     } else {
       navigate("/oauth/login");
     }
+
+    // 이벤트 소스 연결
+    if (!token || !refreshToken) {
+      // 토큰이 없는 경우 처리
+      console.error("Missing token or refresh token");
+      return;
+    }
+
+    // 이벤트 소스 연결
+    const eventSource = new EventSourcePolyfill(`${import.meta.env.VITE_APP_API_URL}/sse/match-events`, {
+      headers: {
+        Authorization: token,
+        "X-Refresh-Token": refreshToken,
+        "Content-Type": "application/json",
+        "Content-Encoding": "charset=UTF-8",
+      },
+    });
+
+    eventSource.onmessage = (event) => {
+      const newEvent: EventData = JSON.parse(event.data);
+      setEvents((prevEvents) => [...prevEvents, newEvent]);
+    };
+
+    eventSource.onerror = (err) => {
+      console.error("EventSource failed:", err);
+      eventSource.close();
+    };
+
+    return () => {
+      eventSource.close();
+    };
   }, []);
 
   return (
