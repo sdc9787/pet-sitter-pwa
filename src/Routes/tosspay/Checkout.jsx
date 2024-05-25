@@ -6,8 +6,6 @@ import { nanoid } from "nanoid";
 import instanceJson from "../../Component/axios/axiosJson";
 import { useAlert } from "../../hook/useAlert/useAlert";
 
-const selector = "#payment-widget";
-
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
 const customerKey = uuidv4();
 
@@ -28,10 +26,10 @@ export function CheckoutPage() {
       .get("/payment/getUserInfo")
       .then((res) => {
         console.log(res.data);
-        let cleanedPhoneNumber = res.data.replace(/-/g, "");
+        let cleanedPhoneNumber = res.data.phoneNumber.replace(/-/g, "");
         console.log(cleanedPhoneNumber);
         setUserName(res.data.name);
-        setPhoneNumber(res.data.phoneNumber);
+        setPhoneNumber(cleanedPhoneNumber);
       })
       .catch((err) => {
         console.log(err);
@@ -62,7 +60,7 @@ export function CheckoutPage() {
       return;
     }
 
-    const paymentMethodsWidget = paymentWidget.renderPaymentMethods(selector, { value: price }, { variantKey: "DEFAULT" });
+    const paymentMethodsWidget = paymentWidget.renderPaymentMethods("#payment-widget", { value: price }, { variantKey: "DEFAULT" });
 
     paymentWidget.renderAgreement("#agreement", { variantKey: "AGREEMENT" });
 
