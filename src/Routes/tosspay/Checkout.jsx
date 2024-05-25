@@ -1,16 +1,45 @@
 import React, { useEffect, useRef, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { loadPaymentWidget, ANONYMOUS } from "@tosspayments/payment-widget-sdk";
+import { v4 as uuidv4 } from "uuid";
 import { nanoid } from "nanoid";
+import instanceJson from "../../Component/axios/axiosJson";
+import { useAlert } from "../../hook/useAlert/useAlert";
 
 const selector = "#payment-widget";
 
 const clientKey = "test_gck_docs_Ovk5rk1EwkEbP0W43n07xlzm";
-const customerKey = nanoid();
+const customerKey = uuidv4();
 
 export function CheckoutPage() {
-  const [paymentWidget, setPaymentWidget] = useState(null);
-  const paymentMethodsWidgetRef = useRef(null);
-  const [price, setPrice] = useState(50_000); //수정
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [phoneNumber, setPhoneNumber] = useState(""); //핸드폰 번호
+  const [price, setPrice] = useState(0); // 초기값 설정
+  const alertBox = useAlert(); //알림창
+
+  const [paymentWidget, setPaymentWidget] = useState(null); //결제 위젯
+  const paymentMethodsWidgetRef = useRef(null); //결제 위젯
+
+  //페이지가 로드될때 핸드폰 번호 가져오기
+  useEffect(() => {
+    instanceJson
+      .get("/payment/getPhoneNumber")
+      .then((res) => {
+        let cleanedPhoneNumber = res.data.replace(/-/g, "");
+        console.log(cleanedPhoneNumber);
+        setPhoneNumber(res.data.phoneNumber);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    if (location.state) {
+      setPrice(location.state);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     const fetchPaymentWidget = async () => {
@@ -18,7 +47,7 @@ export function CheckoutPage() {
         const loadedWidget = await loadPaymentWidget(clientKey, customerKey);
         setPaymentWidget(loadedWidget);
       } catch (error) {
-        console.error("Error fetching payment widget:", error);
+        console.error("결제 위젯을 가져오는 중 오류 발생:", error);
       }
     };
 
@@ -48,20 +77,22 @@ export function CheckoutPage() {
   }, [price]);
 
   const handlePaymentRequest = async () => {
-    // TODO: 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
+    const orderId = nanoid(); // 각 결제 요청마다 새로운 고유한 orderId를 생성합니다.
+    // 결제를 요청하기 전에 orderId, amount를 서버에 저장하세요.
     // 결제 과정에서 악의적으로 결제 금액이 바뀌는 것을 확인하는 용도입니다.
     try {
+      await instanceJson.post("/payment/beforePayment", { orderId: orderId, amount: price });
+
       await paymentWidget?.requestPayment({
-        orderId: nanoid(),
+        orderId,
         orderName: "토스 티셔츠 외 2건",
         customerName: "김토스",
-        customerEmail: "customer123@gmail.com",
-        customerMobilePhone: "01071279703",
+        customerMobilePhone: phoneNumber,
         successUrl: `${window.location.origin}/tossPay/success`,
         failUrl: `${window.location.origin}/tossPay/fail`,
       });
     } catch (error) {
-      console.error("Error requesting payment:", error);
+      console.error("결제 요청 중 오류 발생:", error);
     }
   };
 

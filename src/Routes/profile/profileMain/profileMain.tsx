@@ -91,7 +91,9 @@ function ProfileMain() {
           <div className="text-center font-bold text-lg">현재 남은 포인트 : </div>
           <div className="text-center font-bold text-lg">{point}p</div>
           <button className="bg-main text-white p-2 rounded-lg font-semibold mr-2">사용내역</button>
-          <button className="bg-main text-white p-2 rounded-lg font-semibold ml-2">충전</button>
+          <button onClick={() => navigate("/tossPay")} className="bg-main text-white p-2 rounded-lg font-semibold ml-2">
+            충전
+          </button>
         </div>
 
         {/* Todo - map으로 구현  */}
