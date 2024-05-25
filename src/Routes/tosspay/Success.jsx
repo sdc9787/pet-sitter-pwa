@@ -11,7 +11,7 @@ export function SuccessPage() {
     // 클라이언트에서 결제 금액을 조작하는 행위를 방지할 수 있습니다.
     const requestData = {
       orderId: searchParams.get("orderId"),
-      amount: searchParams.get("amount"),
+      amount: Number(searchParams.get("amount")),
       paymentKey: searchParams.get("paymentKey"),
     };
 
