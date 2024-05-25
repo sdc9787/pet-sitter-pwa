@@ -4,14 +4,24 @@ import { useNavigate } from "react-router-dom";
 import { stringify } from "querystring";
 import Topbar from "../../../Component/topbar/topbar";
 import TabBar from "../../../Component/tabbar/tabbar";
+import instanceJson from "../../../Component/axios/axiosJson";
 
 function ProfileMain() {
   const navigate = useNavigate(); //페이지 이동
   const [profileName, setProfileName] = useState<string>(""); //프로필 이름
-  const [point, setPoint] = useState<number>(2000); //포인트
+  const [point, setPoint] = useState<number>(0); //포인트
 
   useEffect(() => {
     setProfileName(window.localStorage.getItem("nickname") || "");
+    instanceJson
+      .get("/mypage/coin")
+      .then((res) => {
+        console.log(res.data);
+        setPoint(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   const handleLogout = () => {
