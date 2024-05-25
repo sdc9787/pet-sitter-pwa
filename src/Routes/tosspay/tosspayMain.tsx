@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ActionBtn from "../../Component/actionBtn/actionBtn";
 import Topbar from "../../Component/topbar/topbar";
+import instanceJson from "../../Component/axios/axiosJson";
 
 const cookieOptions = [
   { quantity: 1000, price: 1000 },
@@ -14,8 +15,21 @@ const cookieOptions = [
 ];
 
 function TosspayMain() {
-  const point = 1; //백에서 받아오기
+  const [point, setPoint] = useState<number>(0); //포인트
   const navigate = useNavigate();
+
+  useEffect(() => {
+    //포인트 받아오기
+    instanceJson
+      .get("/mypage/coin")
+      .then((res) => {
+        console.log(res.data);
+        setPoint(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   return (
     <>

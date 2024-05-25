@@ -16,6 +16,7 @@ export function SuccessPage() {
     };
 
     function confirm() {
+      console.log(requestData);
       instanceJson
         .post("/payment/tossPay", requestData)
         .then((response) => {
@@ -27,7 +28,7 @@ export function SuccessPage() {
           // TODO: 결제 실패 비즈니스 로직을 구현하세요.
           if (err.response) {
             console.log(err.response.data);
-            navigate(`tossPay/fail?message=${err.response.data.message}&code=${err.response.data.code}`);
+            navigate(`/tossPay/fail?message=${err.response.data.message}&code=${err.response.data.code}`);
           } else {
             console.error(err);
           }
