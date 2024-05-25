@@ -3,7 +3,6 @@ import Topbar from "../../../Component/topbar/topbar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState, setWalkTime } from "../../../Store/store";
-import { useEffect } from "react";
 
 function ReservationWalkTime() {
   const dispatch = useDispatch();
@@ -11,7 +10,7 @@ function ReservationWalkTime() {
   const navigate = useNavigate();
 
   const handleTimeChange = (index: number) => {
-    dispatch(setWalkTime({ walkTime: walkTime[index], amount: priceList[index] }));
+    dispatch(setWalkTime({ walkTime: timeList[index], amount: priceList[index] }));
   };
 
   const timeList = [30, 60, 90, 120];
