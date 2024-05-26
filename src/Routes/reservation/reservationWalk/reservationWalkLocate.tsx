@@ -28,16 +28,17 @@ function ReservationWalkLocate() {
           detailAddress: locate.detailAddress,
         })
       );
+      setCenterLatLng({ latitude, longitude });
     }
   }, [latitude, longitude, address, error]);
 
   useEffect(() => {
-    if (latitude && longitude) {
+    if (centerLatLng) {
       const mapContainer = document.getElementById("map"); // 지도를 표시할 div
 
       if (!mapContainer) return;
       const mapOption = {
-        center: new kakao.maps.LatLng(latitude, longitude), // 지도의 중심좌표를 geolocation으로 설정
+        center: new kakao.maps.LatLng(centerLatLng.latitude, centerLatLng.longitude), // 지도의 중심좌표를 centerLatLng으로 설정
         level: 3, // 지도의 확대 레벨
       };
 
@@ -64,7 +65,7 @@ function ReservationWalkLocate() {
         }, 1000); // 1000ms의 딜레이를 줍니다
       });
     }
-  }, [latitude, longitude]);
+  }, [centerLatLng]);
 
   useEffect(() => {
     if (centerLatLng) {
@@ -98,14 +99,17 @@ function ReservationWalkLocate() {
   }, [centerLatLng]);
 
   const handleDetailAddress = (e: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(
-      setLocation({
-        latitude: latitude || 0,
-        longitude: longitude || 0,
-        address: address || "",
-        detailAddress: e.target.value,
-      })
-    );
+    if (centerLatLng) {
+      const { latitude, longitude } = centerLatLng;
+      dispatch(
+        setLocation({
+          latitude,
+          longitude,
+          address: locate.address,
+          detailAddress: e.target.value,
+        })
+      );
+    }
   };
 
   return (
