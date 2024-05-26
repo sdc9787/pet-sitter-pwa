@@ -197,7 +197,7 @@ function ReservationWalkPartnerMain() {
             <p className="text-xl font-bold">주변에 산책 글이 없습니다</p>
             {/*테스트용 */}
             <input type="text" onChange={(e) => setPostIdInput(Number(e.target.value))} />
-            <button onClick={() => handleWalkStart}>산책 시작</button>
+            <button onClick={() => handleWalkStart()}>산책 시작</button>
           </div>
         ) : (
           <div className="h-full">
@@ -225,7 +225,7 @@ function ReservationWalkPartnerMain() {
             </div>
             {/*테스트용 */}
             <input type="text" onChange={(e) => setPostIdInput(Number(e.target.value))} />
-            <button onClick={() => handleWalkStart}>산책 시작</button>
+            <button onClick={() => handleWalkStart()}>산책 시작</button>
           </div>
         )}
       </div>
