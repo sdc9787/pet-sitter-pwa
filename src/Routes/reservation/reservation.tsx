@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom";
-import ReservationMain from "./reservationMain/reservationMain";
+import ReservationMain from "./reservationMain";
 import ReservationWalk from "./reservationWalk/reservationWalk";
 import ReservationCare from "./reservationCare/reservationCare";
 

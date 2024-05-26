@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../hook/useAlert/useAlert";
 import { useDispatch } from "react-redux";
 import { setWalkDataAll, setWalkTime } from "../../../Store/store";
-import ActionButtons from "../../../Component/actionBtn/actionBtn";
 import ActionBtn from "../../../Component/actionBtn/actionBtn";
 
 interface Walk {

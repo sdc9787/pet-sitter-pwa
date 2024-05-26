@@ -1,8 +1,13 @@
+import { Route, Routes } from "react-router-dom";
+import ReservationCareMain from "./reservationCareMain";
+
 function ReservationCare() {
   return (
-    <div>
-      <div>ReservationCare</div>
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<ReservationCareMain></ReservationCareMain>}></Route>
+      </Routes>
+    </>
   );
 }
 
