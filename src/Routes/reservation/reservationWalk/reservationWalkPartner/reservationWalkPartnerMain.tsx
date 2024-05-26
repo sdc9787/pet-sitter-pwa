@@ -193,7 +193,7 @@ function ReservationWalkPartnerMain() {
       <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭"></Topbar>
       <div className="w-full h-screen bg-gray-100">
         {isAllTimersExpired ? (
-          <div className="flex justify-center items-center h-full">
+          <div className="flex flex-col justify-center items-center h-full">
             <p className="text-xl font-bold">주변에 산책 글이 없습니다</p>
             {/*테스트용 */}
             <input type="text" onChange={(e) => setPostIdInput(Number(e.target.value))} />
