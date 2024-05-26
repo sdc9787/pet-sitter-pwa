@@ -35,36 +35,36 @@ function App() {
       navigate("/oauth/login");
     }
 
-    // 이벤트 소스 연결
-    if (!token || !refreshToken) {
-      // 토큰이 없는 경우 처리
-      console.error("Missing token or refresh token");
-      return;
-    }
+    // // 이벤트 소스 연결
+    // if (!token || !refreshToken) {
+    //   // 토큰이 없는 경우 처리
+    //   console.error("Missing token or refresh token");
+    //   return;
+    // }
 
-    // 이벤트 소스 연결
-    const eventSource = new EventSourcePolyfill(`${import.meta.env.VITE_APP_API_URL}/sse/match-events`, {
-      headers: {
-        Authorization: token,
-        "X-Refresh-Token": refreshToken,
-        "Content-Type": "application/json",
-        "Content-Encoding": "charset=UTF-8",
-      },
-    });
+    // // 이벤트 소스 연결
+    // const eventSource = new EventSourcePolyfill(`${import.meta.env.VITE_APP_API_URL}/sse/match-events`, {
+    //   headers: {
+    //     Authorization: token,
+    //     "X-Refresh-Token": refreshToken,
+    //     "Content-Type": "application/json",
+    //     "Content-Encoding": "charset=UTF-8",
+    //   },
+    // });
 
-    eventSource.onmessage = (event) => {
-      const newEvent: EventData = JSON.parse(event.data);
-      setEvents((prevEvents) => [...prevEvents, newEvent]);
-    };
+    // eventSource.onmessage = (event) => {
+    //   const newEvent: EventData = JSON.parse(event.data);
+    //   setEvents((prevEvents) => [...prevEvents, newEvent]);
+    // };
 
-    eventSource.onerror = (err) => {
-      console.error("EventSource failed:", err);
-      eventSource.close();
-    };
+    // eventSource.onerror = (err) => {
+    //   console.error("EventSource failed:", err);
+    //   eventSource.close();
+    // };
 
-    return () => {
-      eventSource.close();
-    };
+    // return () => {
+    //   eventSource.close();
+    // };
   }, []);
 
   return (

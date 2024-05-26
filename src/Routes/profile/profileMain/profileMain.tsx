@@ -99,7 +99,7 @@ function ProfileMain() {
         <div className="text-center text-3xl font-bold mb-6">{profileName}</div>
         <div className="grid grid-rows-2 grid-cols-2 m-6 border-2 rounded-lg border-main p-4 bg-white">
           <div className="text-center font-bold text-lg">현재 남은 포인트 : </div>
-          <div className="text-center font-bold text-lg">{point}p</div>
+          <div className="text-center font-bold text-lg">{point.toLocaleString()}</div>
           <button className="bg-main text-white p-2 rounded-lg font-semibold mr-2">사용내역</button>
           <button onClick={() => navigate("/tossPay")} className="bg-main text-white p-2 rounded-lg font-semibold ml-2">
             충전

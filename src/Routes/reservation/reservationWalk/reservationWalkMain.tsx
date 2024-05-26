@@ -123,7 +123,7 @@ function ReservationWalkMain() {
         setWalkListBool(true);
       })
       .catch((err) => {
-        console.error(err);
+        alertBox(err.response.data);
       });
   }
 
@@ -143,13 +143,19 @@ function ReservationWalkMain() {
           <div className="h-full flex flex-col justify-center items-center">
             <div id="map" className="w-full shadow-topbar" style={{ flexGrow: 8 }}></div>
             <div className="w-full p-4 flex flex-col items-start justify-between relative bg-white shadow-lg rounded-lg" style={{ flexGrow: 2 }}>
+              {/*테스트용 */}
+              <button className="bg-main" onClick={() => completeWalk()}>
+                산책완료
+              </button>
               <h3 className="text-2xl font-bold text-main mb-2">{walkData.title}</h3>
+
               <p className="font-medium text-gray-700 mb-4">{walkData.content}</p>
               <div className="w-full flex flex-col justify-center items-start gap-2 mb-4">
                 <p className="font-medium text-gray-600">현재 주소: {walkData.address}</p>
                 <p className="font-medium text-gray-600">상세 주소: {walkData.detailAddress}</p>
               </div>
               <p className="font-semibold text-red-500 mb-20">남은 시간: {remainingTime}초</p>
+
               <ActionBtn
                 buttonCount={2}
                 button1Props={{
