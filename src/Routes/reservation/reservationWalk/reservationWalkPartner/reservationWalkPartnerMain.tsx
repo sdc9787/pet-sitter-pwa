@@ -34,6 +34,8 @@ function ReservationWalkPartnerMain() {
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
   const [isAllTimersExpired, setIsAllTimersExpired] = useState<boolean>(true);
 
+  const [postIdInput, setPostIdInput] = useState<number>(0); // 테스트용
+
   // 파트너가 산책글 작성했는지 확인
   useEffect(() => {
     instanceJson
@@ -175,6 +177,17 @@ function ReservationWalkPartnerMain() {
     }
   }, [walkList, applyList, remainingTimes]);
 
+  //산책 시작 버튼
+  const handleWalkStart = () => {
+    instanceJson
+      .get(`/walk/start/${postIdInput}`)
+      .then((res) => {
+        alertBox("산책 시작");
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  };
   return (
     <>
       <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭"></Topbar>
@@ -182,6 +195,9 @@ function ReservationWalkPartnerMain() {
         {isAllTimersExpired ? (
           <div className="flex justify-center items-center h-full">
             <p className="text-xl font-bold">주변에 산책 글이 없습니다</p>
+            {/*테스트용 */}
+            <input type="text" onChange={(e) => setPostIdInput(Number(e.target.value))} />
+            <button onClick={() => handleWalkStart}>산책 시작</button>
           </div>
         ) : (
           <div className="h-full">
@@ -207,6 +223,9 @@ function ReservationWalkPartnerMain() {
                 ) : null
               )}
             </div>
+            {/*테스트용 */}
+            <input type="text" onChange={(e) => setPostIdInput(Number(e.target.value))} />
+            <button onClick={() => handleWalkStart}>산책 시작</button>
           </div>
         )}
       </div>

@@ -114,6 +114,19 @@ function ReservationWalkMain() {
       });
   }
 
+  //산책 완료 버튼
+  function completeWalk() {
+    instanceJson
+      .get(`/walk/complete/${walkData.id}`)
+      .then((res) => {
+        alertBox("산책이 완료되었습니다");
+        setWalkListBool(true);
+      })
+      .catch((err) => {
+        console.error(err);
+      });
+  }
+
   return (
     <>
       <Topbar title="산책 예약" sendText={walkListBool ? "" : "취소"} sendFunction={cancelWalk} backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : walkListBool ? "/reservation/walk/partner" : "/reservation"}></Topbar>
