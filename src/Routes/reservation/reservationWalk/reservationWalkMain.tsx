@@ -83,22 +83,23 @@ function ReservationWalkMain() {
     }
   }, [walkData]);
 
-  useEffect(() => {
-    if (remainingTime > 0) {
-      intervalRef.current = setInterval(() => {
-        setRemainingTime((prevTime) => prevTime - 1);
-      }, 1000);
-    } else if (remainingTime <= 0 && !walkListBool) {
-      alertBox("산책 시간이 종료되었습니다");
-      setWalkListBool(true);
-    }
+  // 현재 매칭된 상태인지 체크후 실행
+  // useEffect(() => {
+  //   if (remainingTime > 0) {
+  //     intervalRef.current = setInterval(() => {
+  //       setRemainingTime((prevTime) => prevTime - 1);
+  //     }, 1000);
+  //   } else if (remainingTime <= 0 && !walkListBool) {
+  //     alertBox("산책 시간이 종료되었습니다");
+  //     setWalkListBool(true);
+  //   }
 
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-    };
-  }, [remainingTime, walkListBool]);
+  //   return () => {
+  //     if (intervalRef.current) {
+  //       clearInterval(intervalRef.current);
+  //     }
+  //   };
+  // }, [remainingTime, walkListBool]);
 
   //산책글 취소
   function cancelWalk() {
