@@ -1,8 +1,8 @@
 function ReservationCareMain() {
   return (
-    <div>
-      <div>ReservationCareMain1</div>
-    </div>
+    <>
+      <h1></h1>
+    </>
   );
 }
 

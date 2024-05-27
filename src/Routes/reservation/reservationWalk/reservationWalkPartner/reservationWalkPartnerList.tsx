@@ -24,6 +24,7 @@ interface WalkList {
 function ReservationWalkPartnerList() {
   const alertBox = useAlert();
   const navigate = useNavigate();
+  const [loding, setLoading] = useState<boolean>(true);
   const [applyList, setApplyList] = useState<WalkList[]>([]); // 신청한 산책 리스트
   const [selectedWalkId, setSelectedWalkId] = useState<number | null>(null);
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
@@ -36,6 +37,7 @@ function ReservationWalkPartnerList() {
       instanceJson
         .post("/walk/myApply", { now_latitude: latitude, now_longitude: longitude })
         .then((res) => {
+          setLoading(false);
           console.log(res.data);
           setApplyList(res.data);
           const times = res.data.map((walk: WalkList) => {
@@ -98,52 +100,60 @@ function ReservationWalkPartnerList() {
   return (
     <>
       <Topbar backUrl="/reservation" title="매칭 신청 내역"></Topbar>
-      <div className="w-full h-screen bg-gray-100">
-        <div className="mt-20">
-          <div className="px-4">
-            {noVisibleItems ? (
-              <div className="text-center text-gray-500">신청 내역이 없습니다.</div>
-            ) : (
-              applyList.map(
-                (item, index) =>
-                  remainingTimes[index] > 0 && (
-                    <div
-                      key={item.id}
-                      className={`mb-4 p-4 border ${selectedWalkId === item.id ? "border-blue-500 shadow-lg" : "border-gray-300 shadow-md"} rounded-lg cursor-pointer`}
-                      onClick={() => {
-                        if (selectedWalkId === item.id) {
-                          setSelectedWalkId(null); // 선택을 취소합니다.
-                        } else {
-                          setSelectedWalkId(item.id); // 새로운 항목을 선택합니다.
-                        }
-                      }}>
-                      <h3 className="text-lg font-bold">{item.title}</h3>
-                      <p className="text-sm">{item.address}</p>
-                      <p className="text-sm">{item.detailAddress}</p>
-                      <p className="text-sm text-red-500">남은 시간: {remainingTimes[index]}초</p>
-                    </div>
-                  )
-              )
-            )}
-          </div>
+      {loding ? (
+        <div className="w-full h-screen flex justify-center items-center">
+          <i className="xi-spinner-3 xi-spin xi-3x"></i>
         </div>
-      </div>
-      <ActionBtn
-        buttonCount={2}
-        button1Props={{
-          text: "예약 취소",
-          color: "bg-red-500",
-          onClick: () => {
-            cancelReservation();
-          },
-        }}
-        button2Props={{
-          text: "추가 예약하기",
-          color: "bg-main",
-          onClick: () => {
-            navigate("/reservation/walk/partner");
-          },
-        }}></ActionBtn>
+      ) : (
+        <>
+          <div className="w-full h-screen bg-gray-100">
+            <div className="mt-20">
+              <div className="px-4">
+                {noVisibleItems ? (
+                  <div className="text-center text-gray-500">신청 내역이 없습니다.</div>
+                ) : (
+                  applyList.map(
+                    (item, index) =>
+                      remainingTimes[index] > 0 && (
+                        <div
+                          key={item.id}
+                          className={`mb-4 p-4 border ${selectedWalkId === item.id ? "border-blue-500 shadow-lg" : "border-gray-300 shadow-md"} rounded-lg cursor-pointer`}
+                          onClick={() => {
+                            if (selectedWalkId === item.id) {
+                              setSelectedWalkId(null); // 선택을 취소합니다.
+                            } else {
+                              setSelectedWalkId(item.id); // 새로운 항목을 선택합니다.
+                            }
+                          }}>
+                          <h3 className="text-lg font-bold">{item.title}</h3>
+                          <p className="text-sm">{item.address}</p>
+                          <p className="text-sm">{item.detailAddress}</p>
+                          <p className="text-sm text-red-500">남은 시간: {remainingTimes[index]}초</p>
+                        </div>
+                      )
+                  )
+                )}
+              </div>
+            </div>
+          </div>
+          <ActionBtn
+            buttonCount={2}
+            button1Props={{
+              text: "예약 취소",
+              color: "bg-red-500",
+              onClick: () => {
+                cancelReservation();
+              },
+            }}
+            button2Props={{
+              text: "추가 예약하기",
+              color: "bg-main",
+              onClick: () => {
+                navigate("/reservation/walk/partner");
+              },
+            }}></ActionBtn>
+        </>
+      )}
     </>
   );
 }
