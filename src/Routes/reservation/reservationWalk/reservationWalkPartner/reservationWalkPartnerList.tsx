@@ -5,6 +5,7 @@ import { useGeolocation } from "../../../../hook/useGeolocation/useGeolocation";
 import { useAlert } from "../../../../hook/useAlert/useAlert";
 import { useNavigate } from "react-router-dom";
 import ActionBtn from "../../../../Component/actionBtn/actionBtn";
+import Loding from "../../../../Component/loding/loding";
 
 interface WalkList {
   id: number;
@@ -101,9 +102,7 @@ function ReservationWalkPartnerList() {
     <>
       <Topbar backUrl="/reservation" title="매칭 신청 내역"></Topbar>
       {loding ? (
-        <div className="w-full h-screen flex justify-center items-center">
-          <i className="xi-spinner-3 xi-spin xi-3x"></i>
-        </div>
+        <Loding></Loding>
       ) : (
         <>
           <div className="w-full h-screen bg-gray-100">
