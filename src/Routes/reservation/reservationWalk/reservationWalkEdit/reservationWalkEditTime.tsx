@@ -7,7 +7,7 @@ import { time } from "console";
 
 function ReservationWalkEditTime() {
   const dispatch = useDispatch();
-  const walkTime = useSelector((state: RootState) => state.reservation.walkTime);
+  const walkTime = useSelector((state: RootState) => state.reservationWalk.walkTime);
   const navigate = useNavigate();
   const { id } = useParams();
 

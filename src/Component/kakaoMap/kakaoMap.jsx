@@ -3,6 +3,7 @@ import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 import * as S from "./kakao.styled";
 import Modal from "./mapModal";
 import { useMediaQuery } from "react-responsive";
+import Loding from "../loding/loding";
 
 const { kakao } = window;
 
@@ -215,7 +216,7 @@ const Kakao = () => {
     searchPlaces(state.center, 1);
   }, [map]);
 
-  if (state.isLoading) return <div>Loading...</div>;
+  if (state.isLoading) return <Loding></Loding>;
 
   return (
     <>

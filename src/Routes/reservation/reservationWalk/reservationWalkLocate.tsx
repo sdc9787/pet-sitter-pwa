@@ -8,7 +8,7 @@ import { useGeolocationWithAddress } from "../../../hook/useGeolocation/useGeolo
 
 function ReservationWalkLocate() {
   const dispatch = useDispatch();
-  const locate = useSelector((state: RootState) => state.reservation);
+  const locate = useSelector((state: RootState) => state.reservationWalk);
   const navigate = useNavigate();
   const alertBox = useAlert();
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);

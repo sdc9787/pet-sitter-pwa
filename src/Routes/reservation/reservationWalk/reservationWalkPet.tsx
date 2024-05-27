@@ -15,7 +15,7 @@ function ReservationWalkPet() {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
   const [petProfile, setPetProfile] = useState([]); //펫 정보
 
-  const petId = useSelector((state: RootState) => state.reservation.petId); //펫 아이디
+  const petId = useSelector((state: RootState) => state.reservationWalk.petId); //펫 아이디
 
   //펫 정보 가져오기
   useEffect(() => {

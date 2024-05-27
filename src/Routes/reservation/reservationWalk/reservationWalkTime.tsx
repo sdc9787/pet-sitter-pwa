@@ -6,7 +6,7 @@ import { RootState, setWalkTime } from "../../../Store/store";
 
 function ReservationWalkTime() {
   const dispatch = useDispatch();
-  const walkTime = useSelector((state: RootState) => state.reservation.walkTime);
+  const walkTime = useSelector((state: RootState) => state.reservationWalk.walkTime);
   const navigate = useNavigate();
 
   const handleTimeChange = (index: number) => {

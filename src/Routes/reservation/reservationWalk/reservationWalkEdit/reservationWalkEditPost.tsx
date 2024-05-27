@@ -12,7 +12,7 @@ function ReservationWalkEditPost() {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  const reservationState = useSelector((state: RootState) => state.reservation);
+  const reservationState = useSelector((state: RootState) => state.reservationWalk);
   const [reservation, setReservation] = useState(reservationState);
   const [title, setTitle] = useState(reservationState.title);
   const [content, setContent] = useState(reservationState.content);

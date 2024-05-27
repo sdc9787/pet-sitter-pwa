@@ -11,10 +11,10 @@ function ReservationWalkPost() {
   const dispatch = useDispatch();
   const alertBox = useAlert();
   const navigator = useNavigate();
-  const reservation = useSelector((state: RootState) => state.reservation);
+  const reservation = useSelector((state: RootState) => state.reservationWalk);
 
-  const [title, setTitle] = useState(useSelector((state: RootState) => state.reservation.title));
-  const [content, setContent] = useState(useSelector((state: RootState) => state.reservation.content));
+  const [title, setTitle] = useState(useSelector((state: RootState) => state.reservationWalk.title));
+  const [content, setContent] = useState(useSelector((state: RootState) => state.reservationWalk.content));
 
   //산책 게시글 작성 함수
   const sendFunction = () => {

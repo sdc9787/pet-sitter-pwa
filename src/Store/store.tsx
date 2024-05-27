@@ -1,8 +1,9 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+// 초기 상태 정의
 const initialTabbarState: { state: number } = { state: 0 };
 const initialAlertboxState: { state: boolean; text: string } = { state: false, text: "" };
-const initialReservationState: { petId: number; walkTime: number; latitude: number; longitude: number; address: string; detailAddress: string; title: string; content: string; id?: number; amount: number } = {
+const initialReservationWalkState: { petId: number; walkTime: number; latitude: number; longitude: number; address: string; detailAddress: string; title: string; content: string; id?: number; amount: number } = {
   petId: 0,
   walkTime: 30,
   latitude: 0,
@@ -14,7 +15,21 @@ const initialReservationState: { petId: number; walkTime: number; latitude: numb
   amount: 0,
 };
 
-//탭바
+// 새로운 예약 케어 상태 정의
+const initialReservationCareState = {
+  title: "",
+  content: "",
+  administrativeAddress1: "",
+  administrativeAddress2: "",
+  streetNameAddress: "",
+  detailAddress: "",
+  images: [] as File[], // 이미지 파일을 배열로 정의
+  unavailableDates: [] as string[],
+  latitude: 0,
+  longitude: 0,
+};
+
+// 탭바
 let tabbar = createSlice({
   name: "tabbar",
   initialState: initialTabbarState,
@@ -25,7 +40,7 @@ let tabbar = createSlice({
   },
 });
 
-//알림창
+// 알림창
 let alertbox = createSlice({
   name: "alertbox",
   initialState: initialAlertboxState,
@@ -40,10 +55,10 @@ let alertbox = createSlice({
   },
 });
 
-//산책 예약 정보
-let reservation = createSlice({
-  name: "reservation",
-  initialState: initialReservationState,
+// 산책 예약 정보
+let reservationWalk = createSlice({
+  name: "reservationWalk",
+  initialState: initialReservationWalkState,
   reducers: {
     setWalkTime: (state, action) => {
       state.walkTime = action.payload.walkTime;
@@ -75,11 +90,48 @@ let reservation = createSlice({
   },
 });
 
+// 예약 케어 정보
+let reservationCare = createSlice({
+  name: "reservationCare",
+  initialState: initialReservationCareState,
+  reducers: {
+    setTitleAndContent: (state, action: PayloadAction<{ title: string; content: string }>) => {
+      state.title = action.payload.title;
+      state.content = action.payload.content;
+    },
+    setAddress: (
+      state,
+      action: PayloadAction<{
+        administrativeAddress1: string;
+        administrativeAddress2: string;
+        streetNameAddress: string;
+        detailAddress: string;
+        latitude: number;
+        longitude: number;
+      }>
+    ) => {
+      state.administrativeAddress1 = action.payload.administrativeAddress1;
+      state.administrativeAddress2 = action.payload.administrativeAddress2;
+      state.streetNameAddress = action.payload.streetNameAddress;
+      state.detailAddress = action.payload.detailAddress;
+      state.latitude = action.payload.latitude;
+      state.longitude = action.payload.longitude;
+    },
+    setImages: (state, action: PayloadAction<File[]>) => {
+      state.images = action.payload;
+    },
+    setUnavailableDate: (state, action: PayloadAction<string[]>) => {
+      state.unavailableDates = action.payload;
+    },
+  },
+});
+
 let store = configureStore({
   reducer: {
     tabbar: tabbar.reducer,
     alertbox: alertbox.reducer,
-    reservation: reservation.reducer,
+    reservationWalk: reservationWalk.reducer,
+    reservationCare: reservationCare.reducer,
   },
 });
 
@@ -87,6 +139,7 @@ export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export let { selectedTab } = tabbar.actions;
 export let { alertOn, alertOff } = alertbox.actions;
-export let { setWalkTime, setLocation, setPetId, setTitleAndContent, setWalkDataAll } = reservation.actions;
+export let { setWalkTime, setLocation, setPetId, setTitleAndContent: setWalkTitleAndContent, setWalkDataAll } = reservationWalk.actions;
+export let { setTitleAndContent, setAddress, setImages, setUnavailableDate } = reservationCare.actions;
 
 export default store;

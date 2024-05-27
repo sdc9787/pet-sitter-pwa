@@ -38,7 +38,6 @@ function ReservationWalkPartnerList() {
       instanceJson
         .post("/walk/myApply", { now_latitude: latitude, now_longitude: longitude })
         .then((res) => {
-          setLoading(false);
           console.log(res.data);
           setApplyList(res.data);
           const times = res.data.map((walk: WalkList) => {
@@ -52,6 +51,9 @@ function ReservationWalkPartnerList() {
           if (err.response.status === 400) {
             navigate("/reservation/walk/partner");
           }
+        })
+        .finally(() => {
+          setLoading(false);
         });
     }
   }, [latitude, longitude]);

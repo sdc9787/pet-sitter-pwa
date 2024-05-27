@@ -8,7 +8,7 @@ import { useGeolocationWithAddress } from "../../../../hook/useGeolocation/useGe
 
 function ReservationWalkLocate() {
   const dispatch = useDispatch();
-  const locate = useSelector((state: RootState) => state.reservation);
+  const locate = useSelector((state: RootState) => state.reservationWalk);
   const navigate = useNavigate();
   const alertBox = useAlert();
   const { id } = useParams();
