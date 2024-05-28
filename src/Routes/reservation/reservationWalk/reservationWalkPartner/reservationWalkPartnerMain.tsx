@@ -135,10 +135,6 @@ function ReservationWalkPartnerMain() {
     }
   }, [matchingState]);
 
-  useEffect(() => {
-    setLoading(false);
-  }, [matchingList]);
-
   // 1초마다 시간 감소(타이머)
   useEffect(() => {
     if (remainingTimes.some((time) => time > 0)) {
