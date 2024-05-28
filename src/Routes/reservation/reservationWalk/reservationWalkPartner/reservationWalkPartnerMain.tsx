@@ -86,9 +86,6 @@ function ReservationWalkPartnerMain() {
           setIsAllTimersExpired(true);
         }
         console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
       });
   };
 
@@ -110,6 +107,9 @@ function ReservationWalkPartnerMain() {
         if (err.response.status === 400) {
           navigate("/reservation/walk/partner");
         }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
