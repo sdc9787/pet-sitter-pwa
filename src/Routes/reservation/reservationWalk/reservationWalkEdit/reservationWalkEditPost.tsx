@@ -51,7 +51,13 @@ function ReservationWalkEditPost() {
     if (!validateReservation()) {
       return;
     }
-    const updatedReservation = { ...reservation, id: Number(id) };
+    const updatedReservation = {
+      ...reservation,
+      title: title,
+      content: content,
+      id: Number(id),
+    };
+
     setReservation(updatedReservation);
 
     instanceJson
