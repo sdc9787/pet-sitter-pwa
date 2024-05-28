@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import instanceJson from "../../../Component/axios/axiosJson";
 import Topbar from "../../../Component/topbar/topbar";
 import { useParams } from "react-router-dom";
+import { useAlert } from "../../../hook/useAlert/useAlert";
 
 interface Applier {
   id: number;
@@ -13,6 +14,7 @@ interface Applier {
 }
 
 function ReservationWalkApplier() {
+  const alertBox = useAlert();
   const [appliers, setAppliers] = useState<Applier[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -28,6 +30,7 @@ function ReservationWalkApplier() {
         setLoading(false);
       })
       .catch((error: any) => {
+        alertBox("신청자 정보를 불러오는데 실패했습니다.");
         setError(error.response.data);
         setLoading(false);
       });

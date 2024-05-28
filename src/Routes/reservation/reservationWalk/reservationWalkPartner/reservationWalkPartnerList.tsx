@@ -102,11 +102,11 @@ function ReservationWalkPartnerList() {
 
   return (
     <>
-      <Topbar backUrl="/reservation" title="매칭 신청 내역"></Topbar>
       {loding ? (
         <Loding></Loding>
       ) : (
         <>
+          <Topbar backUrl="/reservation" title="매칭 신청 내역"></Topbar>
           <div className="w-full h-screen bg-gray-100">
             <div className="mt-20">
               <div className="px-4">

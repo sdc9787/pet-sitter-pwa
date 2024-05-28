@@ -20,6 +20,7 @@ interface Walk {
   latitude: number;
   longitude: number;
   createDate: string;
+  startTime: string; // Added to match response structure
 }
 
 function ReservationWalkMain() {
@@ -36,11 +37,16 @@ function ReservationWalkMain() {
     latitude: 0,
     longitude: 0,
     createDate: "",
+    startTime: "",
   });
   const [walkListBool, setWalkListBool] = useState(true);
   const [remainingTime, setRemainingTime] = useState(300);
+  const [matchingTime, setMatchingTime] = useState<number>(0);
+  const [matchingTimeRemaining, setMatchingTimeRemaining] = useState<number>(0); // New state for matchingTime remaining
+  const [userState, setUserState] = useState<number>(0);
   const navigate = useNavigate();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const matchingIntervalRef = useRef<NodeJS.Timeout | null>(null); // New ref for matchingTime interval
   const alertBox = useAlert();
   const dispatch = useDispatch();
 
@@ -48,6 +54,7 @@ function ReservationWalkMain() {
     instanceJson
       .get("/walk/myPost")
       .then((res) => {
+        setUserState(res.data.status);
         dispatch(setWalkDataAll(res.data));
         console.log(res.data);
         setWalkListBool(false);
@@ -56,6 +63,10 @@ function ReservationWalkMain() {
         const now = new Date();
         const diff = Math.floor((createdDate.getTime() + 5 * 60 * 1000 - now.getTime()) / 1000);
         setRemainingTime(diff);
+        const matchingTime = new Date(res.data.startTime);
+        const diff2 = Math.floor((now.getTime() - matchingTime.getTime()) / 1000);
+        setMatchingTime(diff2);
+        setMatchingTimeRemaining(diff2); // Initialize matchingTimeRemaining
       })
       .catch((err) => {
         if (err.response.data === "작성한 게시글이 없습니다") setWalkListBool(true);
@@ -82,23 +93,38 @@ function ReservationWalkMain() {
     }
   }, [walkData]);
 
-  // 현재 매칭된 상태인지 체크후 실행
-  // useEffect(() => {
-  //   if (remainingTime > 0) {
-  //     intervalRef.current = setInterval(() => {
-  //       setRemainingTime((prevTime) => prevTime - 1);
-  //     }, 1000);
-  //   } else if (remainingTime <= 0 && !walkListBool) {
-  //     alertBox("산책 시간이 종료되었습니다");
-  //     setWalkListBool(true);
-  //   }
+  // Timer for remaining time
+  useEffect(() => {
+    if (remainingTime > 0) {
+      intervalRef.current = setInterval(() => {
+        setRemainingTime((prevTime) => prevTime - 1);
+      }, 1000);
+    } else if (remainingTime <= 0 && !walkListBool && userState !== 2) {
+      alertBox("산책 시간이 종료되었습니다");
+      setWalkListBool(true);
+    }
 
-  //   return () => {
-  //     if (intervalRef.current) {
-  //       clearInterval(intervalRef.current);
-  //     }
-  //   };
-  // }, [remainingTime, walkListBool]);
+    return () => {
+      if (intervalRef.current) {
+        clearInterval(intervalRef.current);
+      }
+    };
+  }, [remainingTime, walkListBool]);
+
+  // Timer for matching time
+  useEffect(() => {
+    if (userState === 2 && matchingTime > 0) {
+      matchingIntervalRef.current = setInterval(() => {
+        setMatchingTimeRemaining((prevTime) => prevTime + 1);
+      }, 1000);
+    }
+
+    return () => {
+      if (matchingIntervalRef.current) {
+        clearInterval(matchingIntervalRef.current);
+      }
+    };
+  }, [userState, matchingTime]);
 
   //산책글 취소
   function cancelWalk() {
@@ -126,11 +152,23 @@ function ReservationWalkMain() {
       });
   }
 
+  //문제 이용시 문의 버튼
+  function reportWalk() {
+    instanceJson
+      .post(`/walk/incomplete/${walkData.id}`, { reason: "문제신고" })
+      .then((res) => {
+        alertBox("문제가 신고되었습니다");
+      })
+      .catch((err) => {
+        alertBox(err.response.data);
+      });
+  }
+
   return (
     <>
-      <Topbar title="산책 예약" sendText={walkListBool ? "" : "취소"} sendFunction={cancelWalk} backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : walkListBool ? "/reservation/walk/partner" : "/reservation"}></Topbar>
+      <Topbar title="산책 예약" sendText={userState == 0 ? "취소" : ""} sendFunction={cancelWalk} backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : walkListBool ? "/reservation/walk/partner" : "/reservation"}></Topbar>
       <div className="w-full h-screen bg-gray-100">
-        {walkListBool ? (
+        {walkListBool == true && !matchingTimeRemaining ? (
           <div className="h-full flex flex-col gap-5 justify-center items-center">
             <span className="text-xl font-semibold">아직 예약이 없습니다</span>
             <span>지금 바로 예약해보세요</span>
@@ -142,32 +180,57 @@ function ReservationWalkMain() {
           <div className="h-full flex flex-col justify-center items-center">
             <div id="map" className="w-full shadow-topbar" style={{ flexGrow: 8 }}></div>
             <div className="w-full p-4 flex flex-col items-start justify-between relative bg-white shadow-lg rounded-lg" style={{ flexGrow: 2 }}>
-              {/*테스트용 */}
-              <button className="bg-main" onClick={() => completeWalk()}>
-                산책완료
-              </button>
               <h3 className="text-2xl font-bold text-main mb-2">{walkData.title}</h3>
-
               <p className="font-medium text-gray-700 mb-4">{walkData.content}</p>
               <div className="w-full flex flex-col justify-center items-start gap-2 mb-4">
                 <p className="font-medium text-gray-600">현재 주소: {walkData.address}</p>
                 <p className="font-medium text-gray-600">상세 주소: {walkData.detailAddress}</p>
               </div>
-              <p className="font-semibold text-red-500 mb-20">남은 시간: {remainingTime}초</p>
 
-              <ActionBtn
-                buttonCount={2}
-                button1Props={{
-                  text: "수정",
-                  onClick: () => navigate(`/reservation/walk/edit/time/${walkData.id}`),
-                  color: "bg-zinc-400",
-                }}
-                button2Props={{
-                  text: "신청내역확인",
-                  onClick: () => navigate(`/reservation/walk/applier/${walkData.id}`),
-                  color: "bg-main",
-                }}
-              />
+              {userState == 2 ? (
+                <p className="font-semibold text-blue-500 mb-20">
+                  <span>매칭 시간: {Math.floor(matchingTimeRemaining / 60)}분/</span>
+                  <span>{walkData.walkTime}분</span>
+                </p>
+              ) : (
+                <p className="font-semibold text-red-500 mb-20">남은 시간: {remainingTime}초</p>
+              )}
+              {userState == 0 ? (
+                <ActionBtn
+                  buttonCount={2}
+                  button1Props={{
+                    text: "수정",
+                    onClick: () => navigate(`/reservation/walk/edit/time/${walkData.id}`),
+                    color: "bg-zinc-400",
+                  }}
+                  button2Props={{
+                    text: "신청내역확인",
+                    onClick: () => navigate(`/reservation/walk/applier/${walkData.id}`),
+                    color: "bg-main",
+                  }}
+                />
+              ) : userState == 1 ? (
+                <ActionBtn
+                  buttonCount={1}
+                  button1Props={{
+                    text: "파트너 대기중",
+                    onClick: () => alertBox("파트너가 수락할때까지 기다려주세요"),
+                    color: "bg-zinc-400",
+                  }}></ActionBtn>
+              ) : (
+                <ActionBtn
+                  buttonCount={2}
+                  button1Props={{
+                    text: "문제신고",
+                    onClick: () => reportWalk(),
+                    color: "bg-red-500",
+                  }}
+                  button2Props={{
+                    text: "인계완료",
+                    onClick: () => completeWalk(),
+                    color: "bg-main",
+                  }}></ActionBtn>
+              )}
             </div>
           </div>
         )}

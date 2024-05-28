@@ -223,9 +223,6 @@ function ReservationWalkPartnerMain() {
                 ) : null
               )}
             </div>
-            {/*테스트용 */}
-            <input type="text" onChange={(e) => setPostIdInput(Number(e.target.value))} />
-            <button onClick={() => handleWalkStart()}>산책 시작</button>
           </div>
         )}
       </div>

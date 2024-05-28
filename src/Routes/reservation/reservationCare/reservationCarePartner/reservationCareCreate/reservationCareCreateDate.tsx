@@ -54,7 +54,7 @@ const ReservationCareCreateDate: React.FC = () => {
   return (
     <>
       <Topbar backUrl="/reservation/care" title="돌봄 글 작성" />
-      <div className="mt-20">
+      <div className="mt-16">
         <Calendar onChange={handleDateChange} value={value} minDate={minDate} maxDate={maxDate} formatDay={(locale, date) => date.toLocaleString("en", { day: "numeric" })} tileClassName={tileClassName} />
         <div className="mt-4">
           <h3>선택한 불가능한 날짜들:</h3>
