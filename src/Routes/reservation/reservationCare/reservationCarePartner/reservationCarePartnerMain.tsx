@@ -4,7 +4,7 @@ import instanceJson from "../../../../Component/axios/axiosJson";
 import Topbar from "../../../../Component/topbar/topbar";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../../hook/useAlert/useAlert";
-import Loding from "../../../../Component/loding/loding";
+import Loding from "../../../../Component/loading/loading";
 
 function ReservationCarePartnerMain() {
   const navigate = useNavigate();

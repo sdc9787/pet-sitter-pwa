@@ -3,7 +3,7 @@ import { CustomOverlayMap, Map, MapMarker } from "react-kakao-maps-sdk";
 import * as S from "./kakao.styled";
 import Modal from "./mapModal";
 import { useMediaQuery } from "react-responsive";
-import Loding from "../loding/loding";
+import Loding from "../loading/loading";
 
 const { kakao } = window;
 

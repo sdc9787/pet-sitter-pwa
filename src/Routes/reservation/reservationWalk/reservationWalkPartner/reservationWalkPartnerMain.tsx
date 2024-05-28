@@ -5,7 +5,7 @@ import { useGeolocation } from "../../../../hook/useGeolocation/useGeolocation";
 import { useAlert } from "../../../../hook/useAlert/useAlert";
 import { useNavigate } from "react-router-dom";
 import ActionBtn from "../../../../Component/actionBtn/actionBtn";
-import Loding from "../../../../Component/loding/loding";
+import Loading from "../../../../Component/loading/loading";
 
 interface WalkList {
   id: number;
@@ -249,7 +249,7 @@ function ReservationWalkPartnerMain() {
 
   // 로딩페이지
   if (loading == true) {
-    return <Loding></Loding>;
+    return <Loading></Loading>;
   }
 
   return (

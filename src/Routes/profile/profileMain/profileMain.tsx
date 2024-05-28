@@ -5,11 +5,14 @@ import { stringify } from "querystring";
 import Topbar from "../../../Component/topbar/topbar";
 import TabBar from "../../../Component/tabbar/tabbar";
 import instanceJson from "../../../Component/axios/axiosJson";
+import Loading from "../../../Component/loading/loading";
 
 function ProfileMain() {
   const navigate = useNavigate(); //페이지 이동
+  const [loading, setLoading] = useState<boolean>(true); //로딩
   const [profileName, setProfileName] = useState<string>(""); //프로필 이름
   const [point, setPoint] = useState<number>(0); //포인트
+  const [review, setReview] = useState<number>(0); //리뷰
 
   useEffect(() => {
     setProfileName(window.localStorage.getItem("nickname") || "");
@@ -18,6 +21,18 @@ function ProfileMain() {
       .then((res) => {
         console.log(res.data);
         setPoint(res.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+
+    instanceJson
+      .get("/review/walk/myWrite")
+      .then((res) => {
+        setReview(res.data.walkReviewList.length);
       })
       .catch((error) => {
         console.error(error);
@@ -91,6 +106,10 @@ function ProfileMain() {
     },
   ];
 
+  if (loading) {
+    return <Loading></Loading>;
+  }
+
   return (
     <>
       <div className="w-full h-full pb-20 flex flex-col justify-center mt-24">
@@ -100,7 +119,9 @@ function ProfileMain() {
         <div className="grid grid-rows-2 grid-cols-2 m-6 border-2 rounded-lg border-main p-4 bg-white">
           <div className="text-center font-bold text-lg">현재 남은 포인트 : </div>
           <div className="text-center font-bold text-lg">{point.toLocaleString()}</div>
-          <button className="bg-main text-white p-2 rounded-lg font-semibold mr-2">사용내역</button>
+          <button onClick={() => navigate("/tossPay/list")} className="bg-main text-white p-2 rounded-lg font-semibold mr-2">
+            사용내역
+          </button>
           <button onClick={() => navigate("/tossPay")} className="bg-main text-white p-2 rounded-lg font-semibold ml-2">
             충전
           </button>
@@ -109,17 +130,20 @@ function ProfileMain() {
         {/* Todo - map으로 구현  */}
         {/* 내가 남긴 리뷰, 이용중인 서비스, 즐겨찾기 */}
         <div className="flex justify-center items-center">
-          <div className="flex flex-col justify-center items-center w-1/3">
-            <div className="text-3xl font-bold mb-1">0</div>
+          <div onClick={() => navigate("/profile/review")} className="flex flex-col justify-center items-center w-1/3">
+            <div className="text-3xl font-bold mb-1">{review}</div>
             <span className="text-xs font-medium text-gray">내가 남긴 리뷰</span>
           </div>
-          <div className="flex flex-col justify-center items-center w-1/3">
+          {localStorage.getItem("partnership") == "1" ? (
+            <div className="flex flex-col justify-center items-center w-1/3">
+              <div className="text-3xl font-bold mb-1">0</div>
+              <span className="text-xs font-medium text-gray">내가 받은 리뷰</span>
+            </div>
+          ) : null}
+
+          <div onClick={() => navigate("/profile/usage")} className="flex flex-col justify-center items-center w-1/3">
             <div className="text-3xl font-bold mb-1">0</div>
-            <span className="text-xs font-medium text-gray">이용중인 서비스</span>
-          </div>
-          <div className="flex flex-col justify-center items-center w-1/3">
-            <div className="text-3xl font-bold mb-1">0</div>
-            <span className="text-xs font-medium text-gray">즐겨찾기</span>
+            <span className="text-xs font-medium text-gray">이용내역</span>
           </div>
         </div>
 

@@ -3,6 +3,7 @@ import instanceJson from "../../../Component/axios/axiosJson";
 import Topbar from "../../../Component/topbar/topbar";
 import { useNavigate, useParams } from "react-router-dom";
 import { useAlert } from "../../../hook/useAlert/useAlert";
+import Loading from "../../../Component/loading/loading";
 
 interface Applier {
   id: number;
@@ -53,9 +54,7 @@ function ReservationWalkApplier() {
     <>
       <Topbar backUrl="/reservation/walk" title="신청내역확인"></Topbar>
       {loading ? (
-        <div className="flex justify-center items-center w-full h-screen px-6">
-          <p>Loading...</p>
-        </div>
+        <Loading></Loading>
       ) : appliers.length == 0 ? (
         <div className="flex justify-center items-center w-full h-screen px-6">
           <p className="text-center text-gray-500 font-bold text-xl">신청자가 없습니다.</p>

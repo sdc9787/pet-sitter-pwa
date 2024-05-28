@@ -5,7 +5,7 @@ import { useGeolocation } from "../../../../hook/useGeolocation/useGeolocation";
 import { useAlert } from "../../../../hook/useAlert/useAlert";
 import { useNavigate } from "react-router-dom";
 import ActionBtn from "../../../../Component/actionBtn/actionBtn";
-import Loding from "../../../../Component/loding/loding";
+import Loading from "../../../../Component/loading/loading";
 
 interface WalkList {
   id: number;
@@ -25,7 +25,7 @@ interface WalkList {
 function ReservationWalkPartnerList() {
   const alertBox = useAlert();
   const navigate = useNavigate();
-  const [loding, setLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [applyList, setApplyList] = useState<WalkList[]>([]); // 신청한 산책 리스트
   const [selectedWalkId, setSelectedWalkId] = useState<number | null>(null);
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
@@ -102,8 +102,8 @@ function ReservationWalkPartnerList() {
 
   return (
     <>
-      {loding ? (
-        <Loding></Loding>
+      {loading ? (
+        <Loading></Loading>
       ) : (
         <>
           <Topbar backUrl="/reservation" title="매칭 신청 내역"></Topbar>

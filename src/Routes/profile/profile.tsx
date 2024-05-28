@@ -7,6 +7,8 @@ import PetRegister from "./pet/profilePetRegister/profilePetRegister";
 import EditPassword from "./profileEditPassword/profileEditPassword";
 import PetRegister2 from "./pet/profilePetRegister2/profilePetRegister2";
 import PetProfileDetail from "./pet/profilePetDetail/profilePetDetail";
+import WalkReviewList from "./reviewList/reviewList";
+import Usage from "./usage/usage";
 
 function Profile() {
   return (
@@ -20,6 +22,8 @@ function Profile() {
         <Route path="/petRegister" element={<PetRegister></PetRegister>}></Route>
         <Route path="/petRegister2/:id" element={<PetRegister2></PetRegister2>}></Route>
         <Route path="/pincheck" element={<PinCheck></PinCheck>}></Route>
+        <Route path="/review/*" element={<WalkReviewList></WalkReviewList>}></Route>
+        <Route path="/usage/*" element={<Usage></Usage>}></Route>
       </Routes>
     </>
   );

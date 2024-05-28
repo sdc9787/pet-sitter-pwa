@@ -78,7 +78,7 @@ export function SuccessPage() {
           text: "추가 충전하기",
           color: "bg-main",
           onClick: () => {
-            navigate("/profile/tossPay");
+            navigate("/tossPay");
           },
         }}></ActionBtn>
     </>
