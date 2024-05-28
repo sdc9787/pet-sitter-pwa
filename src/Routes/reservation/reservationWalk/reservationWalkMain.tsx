@@ -169,7 +169,7 @@ function ReservationWalkMain() {
     <>
       <Topbar title="산책 예약" sendText={userState == 0 && !walkListBool ? "취소" : ""} sendFunction={cancelWalk} backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : walkListBool ? "/reservation/walk/partner" : "/reservation"}></Topbar>
       <div className="w-full h-screen bg-gray-100">
-        {walkListBool == true && matchingTimeRemaining < 1 ? (
+        {walkListBool == true && remainingTime < 1 ? (
           <div className="h-full flex flex-col gap-5 justify-center items-center">
             <span className="text-xl font-semibold">아직 예약이 없습니다</span>
             <span>지금 바로 예약해보세요</span>
