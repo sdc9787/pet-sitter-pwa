@@ -52,31 +52,32 @@ function ReservationWalkApplier() {
   return (
     <>
       <Topbar backUrl="/reservation/walk" title="신청내역확인"></Topbar>
-      <div className="flex justify-center items-center w-full h-screen px-6">
-        {loading ? (
+
+      {loading ? (
+        <div className="flex justify-center items-center w-full h-screen px-6">
           <p>Loading...</p>
-        ) : error ? (
-          <p className="text-red-500">{error}</p>
-        ) : appliers.length == 0 ? (
+        </div>
+      ) : appliers.length == 0 ? (
+        <div className="flex justify-center items-center w-full h-screen px-6">
           <p className="text-center text-gray-500 font-bold text-xl">신청자가 없습니다.</p>
-        ) : (
-          <ul className="w-full mt-20">
-            {appliers.map((applier, index) => (
-              <li key={applier.id} className="w-full flex items-center p-4 bg-white rounded-lg shadow-md">
-                <img src={applier.profileImage} alt={`${applier.name} 프로필 이미지`} className="w-16 h-16 rounded-full object-cover mr-4" />
-                <div className="flex-grow">
-                  <h3 className="text-lg font-bold">{applier.name}</h3>
-                  <p className="text-gray-600">평점: {applier.rating} / 5</p>
-                  <p className="text-gray-600">리뷰: {applier.reviewCount}</p>
-                </div>
-                <button onClick={() => handleApplierSelection(index)} className="px-4 py-2 bg-blue-500 text-white rounded-lg">
-                  수락
-                </button>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+        </div>
+      ) : (
+        <ul className="w-full mt-20">
+          {appliers.map((applier, index) => (
+            <li key={applier.id} className="w-full flex items-center p-4 bg-white rounded-lg shadow-md">
+              <img src={applier.profileImage} alt={`${applier.name} 프로필 이미지`} className="w-16 h-16 rounded-full object-cover mr-4" />
+              <div className="flex-grow">
+                <h3 className="text-lg font-bold">{applier.name}</h3>
+                <p className="text-gray-600">평점: {applier.rating} / 5</p>
+                <p className="text-gray-600">리뷰: {applier.reviewCount}</p>
+              </div>
+              <button onClick={() => handleApplierSelection(index)} className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+                수락
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
     </>
   );
 }
