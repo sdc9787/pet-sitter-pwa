@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import instanceJson from "../../../Component/axios/axiosJson";
 import Topbar from "../../../Component/topbar/topbar";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useAlert } from "../../../hook/useAlert/useAlert";
 
 interface Applier {
@@ -14,6 +14,7 @@ interface Applier {
 }
 
 function ReservationWalkApplier() {
+  const navigate = useNavigate();
   const alertBox = useAlert();
   const [appliers, setAppliers] = useState<Applier[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -40,7 +41,8 @@ function ReservationWalkApplier() {
     instanceJson
       .post("/walk/accept", { waiter_list_id: Number(appliers[index].id), post_id: Number(id), waiter_id: Number(appliers[index].userId) })
       .then((res: any) => {
-        console.log(res.data);
+        alertBox("매칭이 성사되었습니다");
+        navigate("/reservation/walk");
       })
       .catch((error: any) => {
         console.log(error.response.data);
@@ -50,13 +52,13 @@ function ReservationWalkApplier() {
   return (
     <>
       <Topbar backUrl="/reservation/walk" title="신청내역확인"></Topbar>
-      <div className="w-full h-screen px-6">
+      <div className="flex justify-center items-center w-full h-screen px-6">
         {loading ? (
           <p>Loading...</p>
         ) : error ? (
           <p className="text-red-500">{error}</p>
-        ) : appliers.length === 0 ? (
-          <p className="text-center text-gray-500">신청자가 없습니다.</p>
+        ) : appliers.length == 0 ? (
+          <p className="text-center text-gray-500 font-bold text-xl">신청자가 없습니다.</p>
         ) : (
           <ul className="w-full mt-20">
             {appliers.map((applier, index) => (

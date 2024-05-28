@@ -43,10 +43,10 @@ function ReservationWalkPartnerMain() {
       .then(() => {
         navigate("/reservation/walk");
       })
-      .catch((err) => {
-        if (err.response.status === 400) {
-        }
-      });
+      .catch((err) => {});
+    instanceJson.get("/mypage/status").then((res) => {
+      console.log(res);
+    });
   }, [navigate]);
 
   // 예약 리스트 불러오기

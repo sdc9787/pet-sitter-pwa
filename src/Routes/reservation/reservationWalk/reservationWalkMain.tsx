@@ -99,7 +99,7 @@ function ReservationWalkMain() {
       intervalRef.current = setInterval(() => {
         setRemainingTime((prevTime) => prevTime - 1);
       }, 1000);
-    } else if (remainingTime <= 0 && !walkListBool && userState !== 2) {
+    } else if (remainingTime <= 0 && !walkListBool && userState == 0) {
       alertBox("산책 시간이 종료되었습니다");
       setWalkListBool(true);
     }
@@ -192,8 +192,10 @@ function ReservationWalkMain() {
                   <span>매칭 시간: {Math.floor(matchingTimeRemaining / 60)}분/</span>
                   <span>{walkData.walkTime}분</span>
                 </p>
-              ) : (
+              ) : userState == 0 ? (
                 <p className="font-semibold text-red-500 mb-20">남은 시간: {remainingTime}초</p>
+              ) : (
+                <p className="font-semibold text-blue-500 mb-20">파트너 수락 대기중...</p>
               )}
               {userState == 0 ? (
                 <ActionBtn
@@ -213,9 +215,9 @@ function ReservationWalkMain() {
                 <ActionBtn
                   buttonCount={1}
                   button1Props={{
-                    text: "파트너 대기중",
-                    onClick: () => alertBox("파트너가 수락할때까지 기다려주세요"),
-                    color: "bg-zinc-400",
+                    text: "문제신고",
+                    onClick: () => reportWalk(),
+                    color: "bg-red-500",
                   }}></ActionBtn>
               ) : (
                 <ActionBtn
