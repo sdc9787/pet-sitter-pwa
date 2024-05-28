@@ -145,6 +145,7 @@ function ReservationWalkMain() {
       .get(`/walk/complete/${walkData.id}`)
       .then((res) => {
         alertBox("산책이 완료되었습니다");
+        navigate("/reservation");
         setWalkListBool(true);
       })
       .catch((err) => {

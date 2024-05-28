@@ -5,6 +5,7 @@ import { useGeolocation } from "../../../../hook/useGeolocation/useGeolocation";
 import { useAlert } from "../../../../hook/useAlert/useAlert";
 import { useNavigate } from "react-router-dom";
 import ActionBtn from "../../../../Component/actionBtn/actionBtn";
+import Loding from "../../../../Component/loding/loding";
 
 interface WalkList {
   id: number;
@@ -19,9 +20,11 @@ interface WalkList {
   latitude: number;
   longitude: number;
   createDate: string;
+  walkerNickname: string;
 }
 
 function ReservationWalkPartnerMain() {
+  const [loading, setLoading] = useState<boolean>(true);
   const alertBox = useAlert();
   const navigate = useNavigate();
   const { latitude, longitude } = useGeolocation();
@@ -29,12 +32,16 @@ function ReservationWalkPartnerMain() {
   const [distance, setDistance] = useState<number>(5);
   const [walkList, setWalkList] = useState<WalkList[]>([]);
   const [applyList, setApplyList] = useState<WalkList[]>([]); // 신청한 산책 리스트
+  const [matchingList, setMatchingList] = useState<WalkList>(); // 매칭된 산책 리스트
   const [selectedWalkId, setSelectedWalkId] = useState<number | null>(null);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [remainingTimes, setRemainingTimes] = useState<number[]>([]);
   const [isAllTimersExpired, setIsAllTimersExpired] = useState<boolean>(true);
-
-  const [postIdInput, setPostIdInput] = useState<number>(0); // 테스트용
+  // 0: 아무것도 아닌 상태, 1: 매칭만 완료(이용자가 수락버튼 누른상태), 2: 현재 산책중(파트너가 시작버튼 누른상태)
+  const [matchingState, setMatchingState] = useState<number>(4);
+  const [matchingTime, setMatchingTime] = useState<number>(0);
+  const [matchingTimeRemaining, setMatchingTimeRemaining] = useState<number>(0); // New state for matchingTime remaining
+  const matchingIntervalRef = useRef<NodeJS.Timeout | null>(null); // New ref for matchingTime interval
 
   // 파트너가 산책글 작성했는지 확인
   useEffect(() => {
@@ -45,9 +52,15 @@ function ReservationWalkPartnerMain() {
       })
       .catch((err) => {});
     instanceJson.get("/mypage/status").then((res) => {
+      console.log(res.data);
       const status = res.data.partnerWalk;
+      //이용자가 매칭을 눌렀을때
+      if (status === "산책매칭없음") setMatchingState(0);
+      if (status === "매칭만완료") setMatchingState(1);
+      //파트너가 산책 시작 버튼을 눌렀을때
+      else if (status === "현재산책중") setMatchingState(2);
     });
-  }, [navigate]);
+  }, []);
 
   // 예약 리스트 불러오기
   const reservationListApi = () => {
@@ -73,9 +86,13 @@ function ReservationWalkPartnerMain() {
           setIsAllTimersExpired(true);
         }
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
+  //뒤로가기 버튼때문에 만든 함수
   const reservationList = () => {
     instanceJson
       .post("/walk/myApply", { now_latitude: latitude, now_longitude: longitude })
@@ -96,13 +113,28 @@ function ReservationWalkPartnerMain() {
       });
   };
 
-  // 위치정보가 있을 때만 실행
+  // 매칭상태에 따라 다른 api 호출
   useEffect(() => {
-    if (latitude !== null) {
+    if (latitude !== null && matchingState === 0) {
       reservationListApi();
       reservationList();
+    } else if (matchingState !== 0) {
+      instanceJson
+        .get("/walk/myApply/progress")
+        .then((res) => {
+          setMatchingList(res.data);
+          const now = new Date();
+          const matchingTime = new Date(res.data.startTime);
+          const diff2 = Math.floor((now.getTime() - matchingTime.getTime()) / 1000);
+          setMatchingTime(diff2);
+          setMatchingTimeRemaining(diff2); // Initialize matchingTimeRemaining
+          console.log(res.data);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
-  }, [latitude]);
+  }, [matchingState]);
 
   // 1초마다 시간 감소(타이머)
   useEffect(() => {
@@ -126,9 +158,9 @@ function ReservationWalkPartnerMain() {
 
   // 카카오맵
   useEffect(() => {
-    if (latitude && longitude && walkList.length > 0) {
+    if (latitude && longitude) {
       const mapContainer = document.getElementById("map");
-      if (mapContainer) {
+      if (mapContainer && matchingState === 0 && walkList) {
         const mapOption = {
           center: new kakao.maps.LatLng(latitude, longitude),
           level: 3,
@@ -146,11 +178,23 @@ function ReservationWalkPartnerMain() {
             setSelectedWalkId(walk.id);
           });
         });
+      } else if (mapContainer && matchingState !== 0 && matchingList) {
+        const mapOption = {
+          center: new kakao.maps.LatLng(matchingList.latitude, matchingList.longitude),
+          level: 3,
+        };
+        const map = new kakao.maps.Map(mapContainer, mapOption);
+        const userPosition = new kakao.maps.LatLng(latitude, longitude);
+        const userMarker = new kakao.maps.Marker({ position: userPosition });
+        userMarker.setMap(map);
+        const markerPosition = new kakao.maps.LatLng(matchingList.latitude, matchingList.longitude);
+        const marker = new kakao.maps.Marker({ position: markerPosition });
+        marker.setMap(map);
       } else {
         console.error("Map container not found");
       }
     }
-  }, [latitude, longitude, walkList]);
+  }, [latitude, longitude, walkList, matchingList]);
 
   // 예약 신청
   const requestReservation = () => {
@@ -180,68 +224,147 @@ function ReservationWalkPartnerMain() {
   //산책 시작 버튼
   const handleWalkStart = () => {
     instanceJson
-      .get(`/walk/start/${postIdInput}`)
+      .get(`/walk/start/${matchingList?.id}`)
       .then((res) => {
         alertBox("산책 시작");
+        setMatchingState(2);
       })
       .catch((err) => {
         console.error(err);
       });
   };
+
+  useEffect(() => {
+    if (matchingState === 2 && matchingTime > 0) {
+      matchingIntervalRef.current = setInterval(() => {
+        setMatchingTimeRemaining((prevTime) => prevTime + 1);
+      }, 1000);
+    }
+
+    return () => {
+      if (matchingIntervalRef.current) {
+        clearInterval(matchingIntervalRef.current);
+      }
+    };
+  }, [matchingState, matchingTime]);
   return (
     <>
-      <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭"></Topbar>
-      <div className="w-full h-screen bg-gray-100">
-        {isAllTimersExpired ? (
-          <div className="flex flex-col justify-center items-center h-full">
-            <p className="text-xl font-bold">주변에 산책 글이 없습니다</p>
-            {/*테스트용 */}
-            <input type="text" onChange={(e) => setPostIdInput(Number(e.target.value))} />
-            <button onClick={() => handleWalkStart()}>산책 시작</button>
-          </div>
-        ) : (
-          <div className="h-full">
-            <div id="map" className="w-full h-64 mb-4 shadow-lg rounded-lg"></div>
-            <div className="px-4">
-              {walkList.map((item, index) =>
-                item.id !== applyList[index]?.id ? (
-                  <div
-                    key={item.id}
-                    className={`mb-4 p-4 border ${selectedWalkId === item.id ? "border-blue-500 shadow-lg" : "border-gray-300 shadow-md"} rounded-lg cursor-pointer`}
-                    onClick={() => {
-                      if (selectedWalkId === item.id) {
-                        setSelectedWalkId(null); // 선택을 취소합니다.
-                      } else {
-                        setSelectedWalkId(item.id); // 새로운 항목을 선택합니다.
-                      }
-                    }}>
-                    <h3 className="text-lg font-bold">{item.title}</h3>
-                    <p className="text-sm">{item.address}</p>
-                    <p className="text-sm">{item.detailAddress}</p>
-                    <p className="text-sm text-red-500">남은 시간: {remainingTimes[index]}초</p>
+      {loading ? (
+        <Loding></Loding>
+      ) : (
+        <>
+          <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭"></Topbar>
+          <div className="w-full h-screen bg-gray-100">
+            {isAllTimersExpired == true && matchingState == 0 ? (
+              <div className="flex flex-col justify-center items-center h-full">
+                <p className="text-xl font-bold">주변에 산책 글이 없습니다</p>
+              </div>
+            ) : matchingState == 1 ? ( //매칭된 산책글이 있을때
+              <div className="h-full flex flex-col justify-center items-center">
+                <div id="map" className="w-full shadow-topbar" style={{ flexGrow: 8 }}></div>
+                <div className="w-full p-4 flex flex-col items-start justify-between relative bg-white shadow-lg rounded-lg" style={{ flexGrow: 2 }}>
+                  <h3 className="text-2xl font-bold text-main mb-2">{matchingList?.title}</h3>
+                  <p className="font-medium text-gray-700 mb-4">{matchingList?.content}</p>
+                  <div className="w-full flex flex-col justify-center items-start gap-2 mb-4">
+                    <p className="font-medium text-gray-600">현재 주소: {matchingList?.address}</p>
+                    <p className="font-medium text-gray-600">상세 주소: {matchingList?.detailAddress}</p>
+                    <p className="font-medium text-gray-600">이용자 닉네임: {matchingList?.walkerNickname}</p>
                   </div>
-                ) : null
-              )}
-            </div>
+                  <p className="flex flex-col justify-center items-center gap-2 self-center font-semibold  mb-20">
+                    <span className="text-blue-500">
+                      이용자 수락 완료 시작 대기중 <i className="xi-spinner-1 xi-spin"></i>
+                    </span>
+                    <span className="font-extrabold text-red-500">강이지를 인계 받은 후 시작 버튼을 눌러주세요</span>
+                  </p>
+                </div>
+              </div>
+            ) : matchingState == 2 ? ( //산책중일때
+              <div className="h-full flex flex-col justify-center items-center">
+                <div id="map" className="w-full shadow-topbar" style={{ flexGrow: 8 }}></div>
+                <div className="w-full p-4 flex flex-col items-start justify-between relative bg-white shadow-lg rounded-lg" style={{ flexGrow: 2 }}>
+                  <h3 className="self-center text-2xl font-bold text-main mb-2">산책을 시작하였습니다</h3>
+                  <div className="w-full flex flex-col justify-center items-start gap-2 mb-4">
+                    <p className="font-medium text-gray-600">현재 주소: {matchingList?.address}</p>
+                    <p className="font-medium text-gray-600">상세 주소: {matchingList?.detailAddress}</p>
+                    <p className="font-medium text-gray-600">이용자 닉네임: {matchingList?.walkerNickname}</p>
+                  </div>
+                  <p className="flex flex-col justify-center items-center gap-2 self-center font-semibold  mb-20">
+                    <p className="font-semibold text-blue-500">
+                      <span>매칭 시간: {Math.floor(matchingTimeRemaining / 60)}분/</span>
+                      <span>{matchingList?.walkTime}분</span>
+                    </p>
+                    <span className="font-extrabold text-red-500">산책을 안전하게 진행해 주세요</span>
+                  </p>
+                </div>
+              </div>
+            ) : (
+              <div className="h-full">
+                <div id="map" className="w-full h-64 mb-4 shadow-lg rounded-lg"></div>
+                <div className="px-4">
+                  {walkList.map((item, index) =>
+                    item.id !== applyList[index]?.id ? (
+                      <div
+                        key={item.id}
+                        className={`mb-4 p-4 border ${selectedWalkId === item.id ? "border-blue-500 shadow-lg" : "border-gray-300 shadow-md"} rounded-lg cursor-pointer`}
+                        onClick={() => {
+                          if (selectedWalkId === item.id) {
+                            setSelectedWalkId(null); // 선택을 취소합니다.
+                          } else {
+                            setSelectedWalkId(item.id); // 새로운 항목을 선택합니다.
+                          }
+                        }}>
+                        <h3 className="text-lg font-bold">{item.title}</h3>
+                        <p className="text-sm">{item.address}</p>
+                        <p className="text-sm">{item.detailAddress}</p>
+                        <p className="text-sm text-red-500">남은 시간: {remainingTimes[index]}초</p>
+                      </div>
+                    ) : null
+                  )}
+                </div>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-      <ActionBtn
-        buttonCount={2}
-        button1Props={{
-          text: "신청글 작성",
-          color: "bg-zinc-400",
-          onClick: () => {
-            navigate("/reservation/walk");
-          },
-        }}
-        button2Props={{
-          text: "예약 신청",
-          color: "bg-main",
-          onClick: () => {
-            requestReservation();
-          },
-        }}></ActionBtn>
+          {matchingState == 0 ? (
+            <ActionBtn
+              buttonCount={2}
+              button1Props={{
+                text: "신청글 작성",
+                color: "bg-zinc-400",
+                onClick: () => {
+                  navigate("/reservation/walk");
+                },
+              }}
+              button2Props={{
+                text: "예약 신청",
+                color: "bg-main",
+                onClick: () => {
+                  requestReservation();
+                },
+              }}></ActionBtn>
+          ) : matchingState == 1 ? ( //이용자가 수락버튼을 눌렀을때
+            <ActionBtn
+              buttonCount={1}
+              button1Props={{
+                text: "산책 시작",
+                color: "bg-main",
+                onClick: () => {
+                  handleWalkStart();
+                },
+              }}></ActionBtn>
+          ) : (
+            // 파트너가 산책 시작 버튼을 눌렀을때
+            <ActionBtn
+              buttonCount={1}
+              button1Props={{
+                text: "산책진행중",
+                color: "bg-zinc-400",
+                onClick: () => {
+                  alertBox("산책이 진행중입니다");
+                },
+              }}></ActionBtn>
+          )}
+        </>
+      )}
     </>
   );
 }
