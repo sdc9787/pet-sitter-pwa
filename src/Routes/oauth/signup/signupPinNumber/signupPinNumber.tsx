@@ -49,7 +49,7 @@ const SignUpPinNumber = (props: any) => {
             console.log(r);
             localStorage.setItem("nickname", nickname);
             alertBox("회원가입에 성공했습니다");
-            navigate("/home");
+            navigate("/reservation");
           })
           .catch((error: any) => {
             console.error(error);

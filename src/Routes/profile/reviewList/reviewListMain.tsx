@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Topbar from "../../../Component/topbar/topbar";
 import instanceJson from "../../../Component/axios/axiosJson";
 import ActionBtn from "../../../Component/actionBtn/actionBtn";
+import { useNavigate } from "react-router-dom";
 
 type WalkReviewListType = {
   id: number;
@@ -28,6 +29,7 @@ type CareReviewListType = {
 };
 
 function WalkReviewListMain() {
+  const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("산책");
   const [careReviewList, setCareReviewList] = useState<CareReviewListType[]>([]);
   const [walkReviewList, setWalkReviewList] = useState<WalkReviewListType[]>([]);
@@ -58,16 +60,16 @@ function WalkReviewListMain() {
   }, []);
 
   //탭 상태 변경
-  const handleTabClick = (tab: any) => {
+  const handleTabClick = (tab: string) => {
     setSelectedTab(tab);
   };
 
   return (
     <>
       <Topbar backUrl="/profile" title="내가 쓴 리뷰" />
-      <div className="flex flex-col justify-start items-center w-full h-screen gap-4">
-        <div className="relative w-full mt-16 h-12 bg-white z-50 text-center flex justify-evenly items-center">
-          <div className={`absolute top-0  h-full w-1/3 transition-transform duration-300 ${selectedTab === "산책" ? "transform -translate-x-2/3" : "transform translate-x-2/3"} bg-white border-b-4 border-black`} />
+      <div className="flex flex-col justify-start items-center w-full h-screen gap-4 overflow-x-hidden">
+        <div className="relative w-full mt-18 h-12 bg-white text-center flex justify-evenly items-center">
+          <div className={`absolute top-0 h-full w-1/3 transition-transform duration-300 ${selectedTab === "산책" ? "transform -translate-x-2/3" : "transform translate-x-2/3"} bg-white border-b-4 border-black`} />
           <div className={`text-xl transition-all ease-in-out duration-300 font-bold w-1/3 py-3 z-10 ${selectedTab === "산책" ? "text-black" : "text-zinc-400"}`} onClick={() => handleTabClick("산책")}>
             산책
           </div>
@@ -75,8 +77,8 @@ function WalkReviewListMain() {
             돌봄
           </div>
         </div>
-        <div className="relative w-full h-full flex items-center justify-center ">
-          <div className={`absolute top-0 text-center w-full h-full transition-transform duration-300 ${selectedTab === "산책" ? "transform translate-x-0" : "transform -translate-x-full"}`}>
+        <div className="relative w-full h-full flex flex-col items-center justify-start overflow-x-hidden">
+          <div className={`absolute top-0 left-0 w-full transition-transform duration-300 ${selectedTab === "산책" ? "transform translate-x-0" : "transform -translate-x-full"}`}>
             {walkReviewList.length > 0 ? (
               walkReviewList.map((review) => (
                 <div key={review.id} className="flex flex-col items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
@@ -96,7 +98,7 @@ function WalkReviewListMain() {
               </div>
             )}
           </div>
-          <div className={`absolute top-0 text-center w-full h-full transition-transform duration-300 ${selectedTab === "돌봄" ? "transform translate-x-0" : "transform translate-x-full"}`}>
+          <div className={`absolute top-0 left-0 w-full transition-transform duration-300 ${selectedTab === "돌봄" ? "transform translate-x-0" : "transform translate-x-full"}`}>
             {careReviewList.length > 0 ? (
               careReviewList.map((review) => (
                 <div key={review.id} className="flex flex-col items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
@@ -119,18 +121,11 @@ function WalkReviewListMain() {
         </div>
       </div>
       <ActionBtn
-        buttonCount={2}
+        buttonCount={1}
         button1Props={{
-          text: "이용 내역",
+          text: "리뷰 작성하러 가기",
           onClick: () => {
-            console.log("리뷰 작성 버튼 클릭");
-          },
-          color: "bg-zinc-400",
-        }}
-        button2Props={{
-          text: "리뷰 작성",
-          onClick: () => {
-            console.log("리뷰 작성 버튼 클릭");
+            navigate("/profile/usage/user");
           },
           color: "bg-main",
         }}></ActionBtn>

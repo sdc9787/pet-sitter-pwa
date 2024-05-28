@@ -37,6 +37,9 @@ module.exports = {
         "-40": "-40",
         "-50": "-50",
       },
+      margin: {
+        18: "4.5rem",
+      },
     },
     corePlugins: {
       // ...

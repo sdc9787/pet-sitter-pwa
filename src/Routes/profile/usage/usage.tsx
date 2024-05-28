@@ -1,11 +1,13 @@
 import { Route, Routes } from "react-router-dom";
-import UsageList from "./usageList";
+import UsagePartnerList from "./usagePartnerList";
+import UsageUserList from "./usageUserList";
 
 function Usage() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<UsageList></UsageList>}></Route>
+        <Route path="/user" element={<UsageUserList></UsageUserList>}></Route>
+        <Route path="/partner" element={<UsagePartnerList></UsagePartnerList>}></Route>
       </Routes>
     </>
   );

@@ -141,7 +141,7 @@ function ProfileMain() {
             </div>
           ) : null}
 
-          <div onClick={() => navigate("/profile/usage")} className="flex flex-col justify-center items-center w-1/3">
+          <div onClick={() => navigate("/profile/usage/user")} className="flex flex-col justify-center items-center w-1/3">
             <div className="text-3xl font-bold mb-1">0</div>
             <span className="text-xs font-medium text-gray">이용내역</span>
           </div>
