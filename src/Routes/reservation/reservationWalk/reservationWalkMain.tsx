@@ -167,7 +167,7 @@ function ReservationWalkMain() {
 
   return (
     <>
-      <Topbar title="산책 예약" sendText={userState == 0 ? "취소" : ""} sendFunction={cancelWalk} backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : walkListBool ? "/reservation/walk/partner" : "/reservation"}></Topbar>
+      <Topbar title="산책 예약" sendText={userState == 0 && !walkListBool ? "취소" : ""} sendFunction={cancelWalk} backUrl={Number(localStorage.getItem("partnership")) === 0 ? "/reservation" : walkListBool ? "/reservation/walk/partner" : "/reservation"}></Topbar>
       <div className="w-full h-screen bg-gray-100">
         {walkListBool == true && !matchingTimeRemaining ? (
           <div className="h-full flex flex-col gap-5 justify-center items-center">
