@@ -134,6 +134,7 @@ function ReservationWalkMain() {
       .then((res) => {
         alertBox("산책 매칭이 취소되었습니다");
         setWalkListBool(true);
+        navigate("/reservation");
       })
       .catch((err) => {
         console.error(err);
@@ -160,6 +161,7 @@ function ReservationWalkMain() {
       .post(`/walk/incomplete/${walkData.id}`, { reason: "문제신고" })
       .then((res) => {
         alertBox("문제가 신고되었습니다");
+        navigate("/reservation");
       })
       .catch((err) => {
         alertBox(err.response.data);

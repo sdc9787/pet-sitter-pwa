@@ -238,7 +238,7 @@ function ReservationWalkPartnerMain() {
   };
 
   useEffect(() => {
-    if (matchingState === 2 && matchingTime > 0) {
+    if (matchingState === 2 && matchingTime == 0) {
       matchingIntervalRef.current = setInterval(() => {
         setMatchingTimeRemaining((prevTime) => prevTime + 1);
       }, 1000);
