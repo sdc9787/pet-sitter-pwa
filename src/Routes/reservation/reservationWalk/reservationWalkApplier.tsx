@@ -52,7 +52,6 @@ function ReservationWalkApplier() {
   return (
     <>
       <Topbar backUrl="/reservation/walk" title="신청내역확인"></Topbar>
-
       {loading ? (
         <div className="flex justify-center items-center w-full h-screen px-6">
           <p>Loading...</p>

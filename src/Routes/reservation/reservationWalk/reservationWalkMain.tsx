@@ -134,7 +134,7 @@ function ReservationWalkMain() {
       .then((res) => {
         alertBox("산책 매칭이 취소되었습니다");
         setWalkListBool(true);
-        navigate("/reservation");
+        setMatchingTimeRemaining(0); // Reset matchingTimeRemaining
       })
       .catch((err) => {
         console.error(err);
