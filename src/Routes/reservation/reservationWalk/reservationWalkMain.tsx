@@ -215,9 +215,9 @@ function ReservationWalkMain() {
                 <ActionBtn
                   buttonCount={1}
                   button1Props={{
-                    text: "문제신고",
+                    text: "파트너 산책 시작 대기중",
                     onClick: () => reportWalk(),
-                    color: "bg-red-500",
+                    color: "bg-zinc-400",
                   }}></ActionBtn>
               ) : (
                 <ActionBtn

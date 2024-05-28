@@ -45,7 +45,7 @@ function ReservationWalkPartnerMain() {
       })
       .catch((err) => {});
     instanceJson.get("/mypage/status").then((res) => {
-      console.log(res);
+      const status = res.data;
     });
   }, [navigate]);
 
