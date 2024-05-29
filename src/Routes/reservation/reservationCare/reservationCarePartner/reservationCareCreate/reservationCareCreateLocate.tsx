@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { useGeolocationWithAddress } from "../../../../../hook/useGeolocation/useGeolocation";
 import { RootState, setAddress } from "../../../../../Store/store";
 import Topbar from "../../../../../Component/topbar/topbar";
+import ActionBtn from "../../../../../Component/actionBtn/actionBtn";
 
 function ReservationCareCreateLocate() {
   const dispatch = useDispatch();
@@ -75,12 +76,13 @@ function ReservationCareCreateLocate() {
       const geocoder = new window.kakao.maps.services.Geocoder();
 
       geocoder.coord2Address(Number(longitude), Number(latitude), (res: any, status: any) => {
+        console.log(res[0]);
         if (status === window.kakao.maps.services.Status.OK && res[0].road_address) {
           dispatch(
             setAddress({
-              administrativeAddress1: "",
-              administrativeAddress2: "",
-              streetNameAddress: res[0].road_address.address_name,
+              administrativeAddress1: res[0].road_address.address_name.split(" ")[0],
+              administrativeAddress2: res[0].road_address.region_2depth_name,
+              streetNameAddress: res[0].road_address.road_name + " " + res[0].road_address.main_building_no + " " + res[0].road_address?.sub_building_no,
               detailAddress: locate.detailAddress,
               latitude: latitude,
               longitude: longitude,
@@ -91,7 +93,7 @@ function ReservationCareCreateLocate() {
             setAddress({
               administrativeAddress1: "",
               administrativeAddress2: "",
-              streetNameAddress: res[0].address.address_name,
+              streetNameAddress: "",
               detailAddress: locate.detailAddress,
               latitude: latitude,
               longitude: longitude,
@@ -122,7 +124,7 @@ function ReservationCareCreateLocate() {
 
   return (
     <>
-      <Topbar title="위치 선택" backUrl="/reservation/walk/time" sendText="다음" sendFunction={() => (locate.detailAddress === "" ? alertBox("상세 주소를 입력해주세요") : navigate("/reservation/walk/pet"))}></Topbar>
+      <Topbar title="위치 선택" backUrl="/reservation/care/partner/create/date"></Topbar>
 
       <div className="w-full h-screen flex flex-col justify-start mt-16 ">
         <div id="map" style={{ width: "100%", height: "350px", position: "relative" }}>
@@ -134,7 +136,7 @@ function ReservationCareCreateLocate() {
         <div className="p-6 flex flex-col justify-center items-start">
           <h2 className="text-lg font-bold">현재 주소를 확인해 주세요</h2>
           <div className="w-full mt-2 font-medium text-zinc-600 p-4 border-2 border-zinc-400 rounded-xl">
-            <div className={locate.streetNameAddress === "" ? "text-zinc-400" : "text-zinc-600"}>{locate.streetNameAddress === "" ? "[현재 주소를 가져오지 못했습니다]" : locate.streetNameAddress}</div>
+            <div className={locate.streetNameAddress === "" ? "text-zinc-400" : "text-zinc-600"}>{locate.streetNameAddress === "" ? "[현재 거주 공간으로 마커를 옮겨주세요]" : locate.administrativeAddress1 + " " + locate.administrativeAddress2 + " " + locate.streetNameAddress}</div>
             <div className={locate.detailAddress === "" ? "text-zinc-400" : "text-zinc-600"}>{locate.detailAddress === "" ? "[상세 주소를 입력해주세요]" : locate.detailAddress}</div>
           </div>
         </div>
@@ -143,9 +145,18 @@ function ReservationCareCreateLocate() {
           <h2 className="text-lg font-bold">상세 주소</h2>
           <input className="w-full mt-2 font-medium text-zinc-600 p-4 border-2 border-zinc-400 rounded-xl" type="text" placeholder="상세 주소를 입력해주세요" value={locate.detailAddress} onChange={handleDetailAddress} />
         </div>
-
-        <span className="p-6 text-zinc-400 text-sm">주소가 다르다면 여기를 터치해주세요(미구현)</span>
       </div>
+      <ActionBtn
+        buttonCount={1}
+        button1Props={{
+          text: "다음",
+          onClick: () => {
+            if (locate.streetNameAddress == "") alertBox("현재 거주 공간으로 마커를 옮겨주세요");
+            else if (locate.detailAddress == "") alertBox("상세 주소를 입력해주세요");
+            else navigate("/reservation/care/partner/create/images");
+          },
+          color: "bg-main",
+        }}></ActionBtn>
     </>
   );
 }
