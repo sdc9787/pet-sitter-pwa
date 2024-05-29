@@ -90,7 +90,7 @@ let reservationWalk = createSlice({
   },
 });
 
-// 예약 케어 정보
+// 돌봄 예약 정보
 let reservationCare = createSlice({
   name: "reservationCare",
   initialState: initialReservationCareState,

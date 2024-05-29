@@ -54,7 +54,15 @@
   font-weight: 900;
 }
 
+.react-calendar__navigation__label {
+  pointer-events: none;
+}
+
 .react-calendar__month-view__weekdays__weekday--weekend abbr[title="일요일"] {
+  color: red;
+}
+
+.react-calendar__month-view__weekdays__weekday--weekend abbr[title="토요일"] {
   color: red;
 }
 

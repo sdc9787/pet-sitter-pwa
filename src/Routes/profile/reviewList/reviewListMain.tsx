@@ -3,6 +3,7 @@ import Topbar from "../../../Component/topbar/topbar";
 import instanceJson from "../../../Component/axios/axiosJson";
 import ActionBtn from "../../../Component/actionBtn/actionBtn";
 import { useNavigate } from "react-router-dom";
+import Loading from "../../../Component/loading/loading";
 
 type WalkReviewListType = {
   id: number;
@@ -29,6 +30,7 @@ type CareReviewListType = {
 };
 
 function WalkReviewListMain() {
+  const [loading, setLoading] = useState<boolean>(true); // 로딩 상태
   const navigate = useNavigate();
   const [selectedTab, setSelectedTab] = useState("산책");
   const [careReviewList, setCareReviewList] = useState<CareReviewListType[]>([]);
@@ -45,6 +47,9 @@ function WalkReviewListMain() {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
 
     //돌봄 리뷰 리스트 가져오기
@@ -56,6 +61,9 @@ function WalkReviewListMain() {
       })
       .catch((err) => {
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -63,6 +71,21 @@ function WalkReviewListMain() {
   const handleTabClick = (tab: string) => {
     setSelectedTab(tab);
   };
+
+  // 별점 렌더링
+  const renderRating = (rating: number) => {
+    return (
+      <div className="flex">
+        {Array.from({ length: rating }, (_, index) => (
+          <i key={index} className="xi-star xi-x text-main"></i>
+        ))}
+      </div>
+    );
+  };
+
+  if (loading) {
+    return <Loading></Loading>;
+  }
 
   return (
     <>
@@ -81,14 +104,13 @@ function WalkReviewListMain() {
           <div className={`absolute top-0 left-0 w-full transition-transform duration-300 ${selectedTab === "산책" ? "transform translate-x-0" : "transform -translate-x-full"}`}>
             {walkReviewList.length > 0 ? (
               walkReviewList.map((review) => (
-                <div key={review.id} className="flex flex-col items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
+                <div key={review.id} className="flex flex-col gap-1 items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
                   <img src={review.imgUrl} alt="Walk" className="w-full h-40 object-cover rounded-lg mb-2" />
-                  <div className="text-white font-bold">{review.userNickname}</div>
-                  <div className="text-gray-400">{review.walkerNickname}</div>
-                  <div className="text-white mt-2">{review.content}</div>
-                  <div className="text-gray-400">{new Date(review.reviewDate).toLocaleString()}</div>
-                  <div className="text-yellow-400">Rating: {review.rating}</div>
-                  <div className="text-gray-400">Walk Time: {review.walkTime} minutes</div>
+                  <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
+                  <div className="font-bold">산책러 : {review.walkerNickname}</div>
+                  <div className="font-bold">산책시간: {review.walkTime}분</div>
+                  <div className="mt-2">{renderRating(review.rating)}</div>
+                  <div className="font-semibold mt-3">{review.content}</div>
                 </div>
               ))
             ) : (
@@ -105,9 +127,9 @@ function WalkReviewListMain() {
                   <img src={review.imgUrl} alt="Care" className="w-full h-40 object-cover rounded-lg mb-2" />
                   <div className="text-white font-bold">{review.userNickname}</div>
                   <div className="text-gray-400">{review.caregiverNickname}</div>
+                  <div className="text-yellow-400">{renderRating(review.rating)}</div>
                   <div className="text-white mt-2">{review.content}</div>
                   <div className="text-gray-400">{new Date(review.reviewDate).toLocaleString()}</div>
-                  <div className="text-yellow-400">Rating: {review.rating}</div>
                   <div className="text-gray-400">Pet Species: {review.petSpecies}</div>
                 </div>
               ))

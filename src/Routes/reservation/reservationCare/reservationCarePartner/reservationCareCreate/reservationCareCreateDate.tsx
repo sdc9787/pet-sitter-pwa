@@ -5,12 +5,15 @@ import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // Import the CSS for react-calendar
 import "./ReservationCareCreateDate.css"; // Custom CSS for styling
 import { RootState, setUnavailableDate } from "../../../../../Store/store";
+import ActionBtn from "../../../../../Component/actionBtn/actionBtn";
+import { useNavigate } from "react-router-dom";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const ReservationCareCreateDate: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const unavailableDates = useSelector((state: RootState) => state.reservationCare.unavailableDates);
   const [value, setValue] = useState<Value>(new Date());
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -55,9 +58,17 @@ const ReservationCareCreateDate: React.FC = () => {
     <>
       <Topbar backUrl="/reservation/care" title="돌봄 글 작성" />
       <div className="mt-16">
-        <Calendar onChange={handleDateChange} value={value} minDate={minDate} maxDate={maxDate} formatDay={(locale, date) => date.toLocaleString("en", { day: "numeric" })} tileClassName={tileClassName} />
-        <div className="mt-4">
-          <h3>선택한 불가능한 날짜들:</h3>
+        <Calendar
+          onChange={handleDateChange}
+          value={value}
+          minDate={minDate}
+          maxDate={maxDate}
+          formatDay={(locale, date) => date.toLocaleString("en", { day: "numeric" })}
+          tileClassName={tileClassName}
+          calendarType="gregory" // Set the calendar to start the week on Sunday
+        />
+        <div className="mt-4 flex flex-col justify-center items-center">
+          <h1 className="px-6 font-bold text-lg">예약이 불가능한 날짜를 선택해 주세요</h1>
           <ul>
             {unavailableDates.map((date, index) => (
               <li key={index}>{date}</li>
@@ -65,6 +76,15 @@ const ReservationCareCreateDate: React.FC = () => {
           </ul>
         </div>
       </div>
+      <ActionBtn
+        buttonCount={1}
+        button1Props={{
+          text: "다음",
+          onClick: () => {
+            navigate("/reservation/care/partner/create/locate");
+          },
+          color: "bg-main",
+        }}></ActionBtn>
     </>
   );
 };

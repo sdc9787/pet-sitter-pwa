@@ -9,8 +9,15 @@ import PetRegister2 from "./pet/profilePetRegister2/profilePetRegister2";
 import PetProfileDetail from "./pet/profilePetDetail/profilePetDetail";
 import WalkReviewList from "./reviewList/reviewList";
 import Usage from "./usage/usage";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
+import { selectedTab } from "../../Store/store";
 
 function Profile() {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(selectedTab(4));
+  }, []);
   return (
     <>
       <Routes>
