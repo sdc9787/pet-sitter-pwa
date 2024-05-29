@@ -1,13 +1,15 @@
 import { Route, Routes } from "react-router-dom";
 import WalkReviewListMain from "./reviewListMain";
-import WalkReviewListCreate from "./reviewListCreate";
+import ReviewCareCreate from "./reviewCareCreate";
+import ReviewWalkCreate from "./reviewWalkCreate";
 
 function WalkReviewList() {
   return (
     <>
       <Routes>
         <Route path="/" element={<WalkReviewListMain></WalkReviewListMain>}></Route>
-        <Route path="/create" element={<WalkReviewListCreate></WalkReviewListCreate>}></Route>
+        <Route path="/walk/create/:id" element={<ReviewWalkCreate></ReviewWalkCreate>}></Route>
+        <Route path="/care/create/:id" element={<ReviewCareCreate></ReviewCareCreate>}></Route>
       </Routes>
     </>
   );

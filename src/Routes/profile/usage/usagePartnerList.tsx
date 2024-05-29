@@ -19,14 +19,13 @@ type WalkUsageListType = {
 };
 
 type CareUsageListType = {
-  walkRecodeId: number;
+  careRecodeId: number;
   userNickname: string;
   userImage: string;
-  walkerNickname: string;
-  walkerImage: string;
+  caregiverNickname: string;
+  caregiverImage: string;
   petName: string;
-  walkTime: number;
-  endTime: string;
+  startDate: string;
   amount: number;
 
   // Add the fields for CareUsageListType based on your API response
@@ -66,7 +65,8 @@ function UsagePartnerList() {
           setCareUsageList(res.data.careUsageList);
           console.log(res.data.careUsageList);
         } else {
-          alertBox("정보를 불러오는데 실패했습니다");
+          alertBox("파트너로 등록되어 있지 않습니다");
+          navigate("/profile");
           return;
         }
       } catch (err) {
@@ -90,10 +90,15 @@ function UsagePartnerList() {
     setSelectedTab(tab);
   };
 
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    const options: Intl.DateTimeFormatOptions = { month: "numeric", day: "numeric", weekday: "short" };
+    return date.toLocaleDateString("ko-KR", options);
+  };
+
   if (loading) {
     return <Loading />;
   }
-
   return (
     <>
       <Topbar backUrl="/profile" title="파트너 이용내역" />
@@ -108,28 +113,32 @@ function UsagePartnerList() {
           </div>
         </div>
         <div className="relative mb-18 w-full h-full flex items-center justify-center overflow-x-hidden ">
+          {/*산책 이용내역 */}
           <div className={`absolute top-0 text-center w-full h-full transition-transform duration-300 ${selectedTab === "산책" ? "transform translate-x-0" : "transform -translate-x-full"}`}>
             {walkUsageList.length > 0 ? (
               walkUsageList.map((usage) => (
-                <div key={usage.walkRecodeId} className="flex flex-col bg-gray-800 p-4 my-2 rounded-lg shadow-md">
-                  <div className="flex items-center mb-2">
-                    <img src={usage.userImage} alt="User" className="w-10 h-10 rounded-full mr-4" />
-                    <div>
+                <div key={usage.walkRecodeId} className="flex flex-col items-start justify-center gap-2 bg-gray-800 p-4 my-2 rounded-lg shadow-md">
+                  <div className="w-full flex justify-between items-center">
+                    <div className="text-zinc-400 ">{formatDate(usage.endTime)}</div>
+                    <div onClick={() => navigate(`/profile/usage/walk/detail/${usage.walkRecodeId}`)} className="p-1 px-2 text-xs font-semibold border border-zinc-500 rounded-full">
+                      상세내역
+                    </div>
+                  </div>
+                  <div className="w-full flex items-center mb-2">
+                    <img src={usage.userImage} alt="User" className="w-16 h-16 rounded-full mr-4" />
+                    <div className="w-full flex flex-col items-start justify-center gap-1">
                       <div className="text-lg font-bold">{usage.userNickname}</div>
-                      <div className="text-gray-400">{new Date(usage.endTime).toLocaleString()}</div>
+                      <div className="w-full flex flex-col justify-center items-start mb-2">
+                        <div className="font-semibold">펫 이름: {usage.petName}</div>
+                        <div className="w-full flex justify-between items-center">
+                          <div className="text-gray-400 font-semibold">산책 시간 : {usage.walkTime} 분</div>
+                          <div className="text-lg font-bold">{usage.amount > 0 ? `${usage.amount.toLocaleString()}원` : "취소"}</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center mb-2">
-                    <img src={usage.walkerImage} alt="Walker" className="w-10 h-10 rounded-full mr-4" />
-                    <div>
-                      <div className="text-lg font-bold">{usage.walkerNickname}</div>
-                      <div className="text-gray-400">Pet: {usage.petName}</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="text-gray-400">Walk Time: {usage.walkTime} minutes</div>
-                    <div className="text-lg font-bold">{usage.amount > 0 ? `${usage.amount.toLocaleString()}원` : "취소"}</div>
-                  </div>
+
+                  {/* {isWithin24Hours(usage.endTime) && <button className="mt-2 px-4 py-2 bg-main font-bold text-white rounded-lg w-full">리뷰 작성</button>} */}
                 </div>
               ))
             ) : (
@@ -139,29 +148,32 @@ function UsagePartnerList() {
               </div>
             )}
           </div>
+
+          {/*돌봄 이용내역 */}
           <div className={`absolute top-0 text-center w-full h-full transition-transform duration-300 ${selectedTab === "돌봄" ? "transform translate-x-0" : "transform translate-x-full"}`}>
             {careUsageList.length > 0 ? (
-              careUsageList.map((usage, index) => (
-                <div key={index} className="flex flex-col bg-gray-800 p-4 my-2 rounded-lg shadow-md">
-                  {/* Replace the following divs with the actual fields from careUsageList */}
-                  <div className="flex items-center mb-2">
-                    <img src={usage.userImage} alt="User" className="w-10 h-10 rounded-full mr-4" />
-                    <div>
+              careUsageList.map((usage) => (
+                <div key={usage.careRecodeId} className="flex flex-col items-start justify-center gap-2 bg-gray-800 p-4 my-2 rounded-lg shadow-md">
+                  <div className="w-full flex justify-between items-center">
+                    <div className="text-gray-400">{formatDate(usage.startDate)}</div>
+                    <div onClick={() => navigate(`/profile/usage/walk/detail/${usage.careRecodeId}`)} className="p-1 px-2 text-xs font-semibold border border-zinc-500 rounded-full">
+                      상세내역
+                    </div>
+                  </div>
+                  <div className="w-full flex items-center mb-2">
+                    <img src={usage.userImage} alt="User" className="w-16 h-16 rounded-full mr-4" />
+                    <div className="w-full flex flex-col items-start justify-center gap-1">
                       <div className="text-lg font-bold">{usage.userNickname}</div>
-                      <div className="text-gray-400">{new Date(usage.endTime).toLocaleString()}</div>
+                      <div className="w-full flex flex-col justify-center items-start mb-2">
+                        <div className="font-semibold">펫 이름: {usage.petName}</div>
+                        <div className="w-full flex justify-between items-center">
+                          <div className="text-lg font-bold">{usage.amount > 0 ? `${usage.amount.toLocaleString()}원` : "취소"}</div>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div className="flex items-center mb-2">
-                    <img src={usage.walkerImage} alt="Walker" className="w-10 h-10 rounded-full mr-4" />
-                    <div>
-                      <div className="text-lg font-bold">{usage.walkerNickname}</div>
-                      <div className="text-gray-400">Pet: {usage.petName}</div>
-                    </div>
-                  </div>
-                  <div className="flex justify-between items-center">
-                    <div className="text-gray-400">Walk Time: {usage.walkTime} minutes</div>
-                    <div className="text-lg font-bold">{usage.amount > 0 ? `${usage.amount.toLocaleString()}원` : "취소"}</div>
-                  </div>
+
+                  {/* {isWithin24Hours(usage.startDate) && <button className="mt-2 px-4 py-2 bg-main font-bold text-white rounded-lg w-full">리뷰 작성</button>} */}
                 </div>
               ))
             ) : (
@@ -173,7 +185,6 @@ function UsagePartnerList() {
           </div>
         </div>
       </div>
-      <div className="fixed bottom-0 left-3 right-3 bg-white h-16 rounded-lg"></div>
       <ActionBtn
         buttonCount={2}
         button1Props={{

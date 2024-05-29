@@ -12,7 +12,7 @@ const initialReservationWalkState: { petId: number; walkTime: number; latitude: 
   detailAddress: "",
   title: "",
   content: "",
-  amount: 0,
+  amount: 15000,
 };
 
 // 새로운 예약 케어 상태 정의

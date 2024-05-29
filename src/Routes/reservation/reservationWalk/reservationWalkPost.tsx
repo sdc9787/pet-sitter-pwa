@@ -28,6 +28,8 @@ function ReservationWalkPost() {
     };
 
     console.log(updatedReservation);
+
+    console.log(updatedReservation);
     if (updatedReservation.petId === 0) {
       alertBox("반려동물을 선택해주세요");
       return;

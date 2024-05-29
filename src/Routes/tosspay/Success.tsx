@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import instanceJson from "../../Component/axios/axiosJson";
 import ActionBtn from "../../Component/actionBtn/actionBtn";
+import Loading from "../../Component/loading/loading";
 
 interface RequestData {
   orderId: string | null;
@@ -10,6 +11,7 @@ interface RequestData {
 }
 
 export function SuccessPage() {
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const [point, setPoint] = useState(0);
@@ -41,6 +43,9 @@ export function SuccessPage() {
             })
             .catch((err) => {
               console.error(err);
+            })
+            .finally(() => {
+              setLoading(false);
             });
         })
         .catch((err) => {
@@ -56,6 +61,10 @@ export function SuccessPage() {
 
     confirm();
   }, []);
+
+  if (loading) {
+    return <Loading></Loading>;
+  }
 
   return (
     <>

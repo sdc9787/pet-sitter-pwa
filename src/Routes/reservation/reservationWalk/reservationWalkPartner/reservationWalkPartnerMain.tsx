@@ -193,6 +193,7 @@ function ReservationWalkPartnerMain() {
         console.error("Map container not found");
       }
     }
+    setLoading(false);
   }, [latitude, longitude, walkList, matchingList]);
 
   // 예약 신청
