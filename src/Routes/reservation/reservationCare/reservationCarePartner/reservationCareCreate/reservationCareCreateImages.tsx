@@ -1,47 +1,24 @@
-import React, { useState, ChangeEvent } from "react";
+import React, { useState, ChangeEvent, useEffect } from "react";
 import Topbar from "../../../../../Component/topbar/topbar";
 import { useAlert } from "../../../../../hook/useAlert/useAlert";
 import { useNavigate } from "react-router";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState, setImages } from "../../../../../Store/store";
-import { DndProvider, useDrag, useDrop, DragSourceMonitor, DropTargetMonitor } from "react-dnd";
-import { HTML5Backend } from "react-dnd-html5-backend";
-
-// 드래그 앤 드롭을 위한 아이템 타입
-const ItemType = {
-  IMAGE: "image",
-};
+import ActionBtn from "../../../../../Component/actionBtn/actionBtn";
 
 interface ImageItemProps {
   image: string;
   index: number;
-  moveImage: (fromIndex: number, toIndex: number) => void;
+  handleRemoveClick: (index: number) => void;
 }
 
-interface DragItem {
-  index: number;
-  type: string;
-}
-
-function ImageItem({ image, index, moveImage }: ImageItemProps) {
-  const [, ref] = useDrag({
-    type: ItemType.IMAGE,
-    item: { index },
-  });
-
-  const [, drop] = useDrop({
-    accept: ItemType.IMAGE,
-    hover: (draggedItem: DragItem) => {
-      if (draggedItem.index !== index) {
-        moveImage(draggedItem.index, index);
-        draggedItem.index = index;
-      }
-    },
-  });
-
+function ImageItem({ image, index, handleRemoveClick }: ImageItemProps) {
   return (
-    <div ref={(node) => ref(drop(node))} className="relative w-1/4 p-1">
+    <div className="relative w-1/4 p-1">
       <img src={image} alt={`preview-${index}`} className="w-full h-full rounded-md" />
+      <button className="absolute top-0 right-0 border-none text-black text-xl" onClick={() => handleRemoveClick(index)}>
+        <i className="xi-close-min xi-2x"></i>
+      </button>
     </div>
   );
 }
@@ -52,42 +29,57 @@ function ReservationCareCreateImages() {
   const dispatch = useDispatch();
 
   const images = useSelector((state: RootState) => state.reservationCare.images);
-  const [previewImages, setPreviewImages] = useState<string[]>([]);
+  const [previewImages, setPreviewImages] = useState<string[]>(images);
   const [fileNames, setFileNames] = useState<string[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+
+  useEffect(() => {
+    console.log(images);
+    setPreviewImages(images);
+  }, [images]);
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
       const files = Array.from(event.target.files);
       const newImages = files.map((file) => URL.createObjectURL(file));
-      setPreviewImages((prevImages) => [...prevImages, ...newImages]);
+      const updatedImages = [...previewImages, ...newImages];
+      setPreviewImages(updatedImages);
       setFileNames((prevNames) => [...prevNames, ...files.map((file) => file.name)]);
-      dispatch(setImages(files));
+      dispatch(setImages(updatedImages));
     }
   };
 
   const handleRemoveClick = (index: number) => {
-    setPreviewImages((prevImages) => prevImages.filter((_, i) => i !== index));
+    const updatedImages = previewImages.filter((_, i) => i !== index);
+    setPreviewImages(updatedImages);
     setFileNames((prevNames) => prevNames.filter((_, i) => i !== index));
+    dispatch(setImages(updatedImages));
+    if (currentImageIndex >= index && currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1);
+    }
   };
 
-  const moveImage = (fromIndex: number, toIndex: number) => {
-    const updatedImages = [...previewImages];
-    const [movedImage] = updatedImages.splice(fromIndex, 1);
-    updatedImages.splice(toIndex, 0, movedImage);
-    setPreviewImages(updatedImages);
+  const handlePreviousImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : prevIndex));
+  };
+
+  const handleNextImage = () => {
+    setCurrentImageIndex((prevIndex) => (prevIndex < previewImages.length - 1 ? prevIndex + 1 : prevIndex));
   };
 
   return (
     <>
       <Topbar backUrl="/reservation/care/partner/create/locate" title="이미지 선택"></Topbar>
-      <div className="flex flex-col justify-center items-center w-fill h-screen">
-        <h1 className="mt-20">이미지는 총 1 ~ 4개까지 업로드 가능합니다</h1>
-        <div className="w-full flex flex-col items-center justify-center mt-3">
+      <div className="flex flex-col justify-start items-center w-full h-screen p-4">
+        <div className="w-full flex flex-col items-center justify-center mt-14">
           {previewImages.length > 0 && (
-            <div className="relative w-full mt-3">
-              <img className="w-full h-full rounded-md" src={previewImages[0]} alt="preview" />
-              <button className="absolute top-0 right-0 border-none text-black text-xl" onClick={() => handleRemoveClick(0)}>
-                <i className="xi-close-min xi-2x"></i>
+            <div className="relative w-full mt-3 flex items-center justify-center">
+              <button onClick={handlePreviousImage} className="absolute left-0  rounded-full p-2">
+                <i className="xi-angle-left-min xi-2x font-bold"></i>
+              </button>
+              <img className="w-full h-full rounded-md" src={previewImages[currentImageIndex]} alt="preview" />
+              <button onClick={handleNextImage} className="absolute right-0  rounded-full p-2">
+                <i className="xi-angle-right-min xi-2x font-bold"></i>
               </button>
             </div>
           )}
@@ -97,15 +89,30 @@ function ReservationCareCreateImages() {
             </label>
             <input className="absolute w-0 h-0 p-0 overflow-hidden border-0" type="file" id="file" onChange={handleImageChange} multiple />
           </div>
-          <DndProvider backend={HTML5Backend}>
-            <div className="flex flex-wrap mt-3 w-full">
-              {previewImages.map((image, index) => (
-                <ImageItem key={index} image={image} index={index} moveImage={moveImage} />
-              ))}
-            </div>
-          </DndProvider>
+          <div className="flex flex-wrap mt-3 w-full">
+            {previewImages.map((image, index) => (
+              <ImageItem key={index} image={image} index={index} handleRemoveClick={handleRemoveClick} />
+            ))}
+          </div>
+          <div className="flex flex-col">
+            <h1>*주의사항*</h1>
+            <h1 className="">이미지는 총 1 ~ 4개까지 업로드 가능합니다</h1>
+          </div>
         </div>
       </div>
+      <ActionBtn
+        buttonCount={1}
+        button1Props={{
+          text: "다음",
+          onClick: () => {
+            if (previewImages.length === 0) {
+              alertBox("이미지를 업로드해주세요");
+            } else {
+              navigate("/reservation/care/partner/create/post");
+            }
+          },
+          color: "bg-main",
+        }}></ActionBtn>
     </>
   );
 }

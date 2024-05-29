@@ -23,7 +23,7 @@ const initialReservationCareState = {
   administrativeAddress2: "",
   streetNameAddress: "",
   detailAddress: "",
-  images: [] as File[], // 이미지 파일을 배열로 정의
+  images: [] as string[], // 이미지 URL 배열로 정의
   unavailableDates: [] as string[],
   latitude: 0,
   longitude: 0,
@@ -117,7 +117,7 @@ let reservationCare = createSlice({
       state.latitude = action.payload.latitude;
       state.longitude = action.payload.longitude;
     },
-    setImages: (state, action: PayloadAction<File[]>) => {
+    setImages: (state, action: PayloadAction<string[]>) => {
       state.images = action.payload;
     },
     setUnavailableDate: (state, action: PayloadAction<string[]>) => {
