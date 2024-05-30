@@ -123,6 +123,52 @@ let reservationCare = createSlice({
     setUnavailableDate: (state, action: PayloadAction<string[]>) => {
       state.unavailableDates = action.payload;
     },
+    setCarePostData: (
+      state,
+      action: PayloadAction<{
+        title: string;
+        content: string;
+        administrativeAddress1: string;
+        administrativeAddress2: string;
+        streetNameAddress: string;
+        detailAddress: string;
+        latitude: number;
+        longitude: number;
+        images: string[];
+        unavailableDates: string[];
+      }>
+    ) => {
+      state.title = action.payload.title;
+      state.content = action.payload.content;
+      state.administrativeAddress1 = action.payload.administrativeAddress1;
+      state.administrativeAddress2 = action.payload.administrativeAddress2;
+      state.streetNameAddress = action.payload.streetNameAddress;
+      state.detailAddress = action.payload.detailAddress;
+      state.latitude = action.payload.latitude;
+      state.longitude = action.payload.longitude;
+      state.images = action.payload.images;
+      state.unavailableDates = action.payload.unavailableDates;
+    },
+  },
+});
+
+let careImageState = createSlice({
+  name: "careImageState",
+  initialState: false,
+  reducers: {
+    setCareImageState: (state, action: PayloadAction<boolean>) => {
+      return action.payload; // Ensure state is updated with the payload value
+    },
+  },
+});
+
+let careDateState = createSlice({
+  name: "careDateState",
+  initialState: false,
+  reducers: {
+    setCareDateState: (state, action: PayloadAction<boolean>) => {
+      return action.payload; // Ensure state is updated with the payload value
+    },
   },
 });
 
@@ -132,6 +178,8 @@ let store = configureStore({
     alertbox: alertbox.reducer,
     reservationWalk: reservationWalk.reducer,
     reservationCare: reservationCare.reducer,
+    careImageState: careImageState.reducer,
+    careDateState: careDateState.reducer,
   },
 });
 
@@ -140,6 +188,8 @@ export type AppDispatch = typeof store.dispatch;
 export let { selectedTab } = tabbar.actions;
 export let { alertOn, alertOff } = alertbox.actions;
 export let { setWalkTime, setLocation, setPetId, setTitleAndContent: setWalkTitleAndContent, setWalkDataAll } = reservationWalk.actions;
-export let { setTitleAndContent, setAddress, setImages, setUnavailableDate } = reservationCare.actions;
+export let { setTitleAndContent, setAddress, setImages, setUnavailableDate, setCarePostData } = reservationCare.actions;
+export let { setCareImageState } = careImageState.actions;
+export let { setCareDateState } = careDateState.actions;
 
 export default store;

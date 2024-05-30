@@ -6,12 +6,16 @@ import { useNavigate } from "react-router";
 import { RootState, setTitleAndContent } from "../../../../../Store/store";
 import ActionBtn from "../../../../../Component/actionBtn/actionBtn";
 import instanceMultipart from "../../../../../Component/axios/axiosMultipart";
+import { useParams } from "react-router-dom";
 
-function ReservationCareCreatePost() {
+function ReservationCareEditPost() {
+  const { id } = useParams();
   const dispatch = useDispatch();
   const alertBox = useAlert();
   const navigate = useNavigate();
   const reservation = useSelector((state: RootState) => state.reservationCare);
+  const imageState = useSelector((state: RootState) => state.careImageState);
+  const dateState = useSelector((state: RootState) => state.careDateState);
   const [title, setTitle] = useState<string>(reservation.title || "");
   const [content, setContent] = useState<string>(reservation.content || "");
   const [images, setImages] = useState<File[]>([]);
@@ -45,23 +49,19 @@ function ReservationCareCreatePost() {
     images.forEach((file) => {
       formData.append("images", file);
     });
+    if (id === undefined) return;
+    formData.append("carePostId", id);
     formData.append("title", title);
     formData.append("content", content);
-    formData.append("administrativeAddress1", reservation.administrativeAddress1);
-    formData.append("administrativeAddress2", reservation.administrativeAddress2);
-    formData.append("streetNameAddress", reservation.streetNameAddress);
-    formData.append("detailAddress", reservation.detailAddress);
-    formData.append("latitude", String(reservation.latitude));
-    formData.append("longitude", String(reservation.longitude));
+    formData.append("imageChangeCheck", imageState.toString());
+    formData.append("datesChangeCheck", dateState.toString());
     // unavailableDates를 JSON 형식으로 추가
     const blob = new Blob([json], { type: "application/json" });
     formData.append("unavailableDates", blob);
-
-    console.log(JSON.parse(json));
-    console.log(title, content, images, reservation.administrativeAddress1, reservation.administrativeAddress2, reservation.streetNameAddress, reservation.detailAddress, reservation.latitude, reservation.longitude, json);
+    console.log(id, title, content, imageState, dateState, blob, images);
 
     instanceMultipart
-      .post("/care/create/post", formData)
+      .post("/care/edit/post", formData)
       .then((response) => {
         console.log(response);
         navigate("/reservation/care/partner");
@@ -69,13 +69,11 @@ function ReservationCareCreatePost() {
       .catch((error) => {
         console.error(error);
       });
-
-    // navigate("/reservation/care/partner/create/success");
   };
 
   return (
     <>
-      <Topbar title="돌봄 글 작성" backUrl="/reservation/care/partner/create/images"></Topbar>
+      <Topbar title="돌봄 글 작성" backUrl={`/reservation/care/partner/edit/images/${id}`}></Topbar>
       <div className="px-5 w-full flex flex-col items-center justify-center my-24">
         <div className="w-full flex flex-col items-center justify-center">
           <input value={title} className="w-full p-2 rounded-md border border-gray" placeholder="제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)} />
@@ -93,4 +91,4 @@ function ReservationCareCreatePost() {
   );
 }
 
-export default ReservationCareCreatePost;
+export default ReservationCareEditPost;
