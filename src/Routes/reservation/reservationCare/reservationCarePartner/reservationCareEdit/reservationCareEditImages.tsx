@@ -43,7 +43,7 @@ function ReservationCareEditImages() {
       dispatch(setCareImageState(true));
       const files = Array.from(event.target.files);
       const newImages = files.map((file) => URL.createObjectURL(file));
-      const updatedImages = [...newImages];
+      const updatedImages = [...previewImages, ...newImages];
       setPreviewImages(updatedImages);
       dispatch(setImages(updatedImages));
       dispatch(setCareImageState(true));
