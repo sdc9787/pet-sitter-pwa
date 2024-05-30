@@ -111,8 +111,8 @@ function ReservationCareCreateLocate() {
       const { latitude, longitude } = centerLatLng;
       dispatch(
         setAddress({
-          administrativeAddress1: "",
-          administrativeAddress2: "",
+          administrativeAddress1: locate.administrativeAddress1,
+          administrativeAddress2: locate.administrativeAddress2,
           streetNameAddress: locate.streetNameAddress,
           detailAddress: e.target.value,
           latitude,

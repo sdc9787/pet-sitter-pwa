@@ -21,7 +21,6 @@ function ReservationCareCreatePost() {
   }, [title, content]);
 
   useEffect(() => {
-    // 이미지를 string[]에서 File[]로 변환
     const convertToFiles = async () => {
       const filePromises = reservation.images.map(async (imageUrl) => {
         const response = await fetch(imageUrl);
@@ -40,6 +39,8 @@ function ReservationCareCreatePost() {
       return;
     }
 
+    const json = JSON.stringify(reservation.unavailableDates);
+
     const formData = new FormData();
     images.forEach((file) => {
       formData.append("images", file);
@@ -52,15 +53,18 @@ function ReservationCareCreatePost() {
     formData.append("detailAddress", reservation.detailAddress);
     formData.append("latitude", String(reservation.latitude));
     formData.append("longitude", String(reservation.longitude));
-    formData.append("unavailableDates", JSON.stringify(reservation.unavailableDates));
+    // unavailableDates를 JSON 형식으로 추가
+    const blob = new Blob([json], { type: "application/json" });
+    formData.append("unavailableDates", blob);
 
-    console.log(title, content, images, reservation.administrativeAddress1, reservation.administrativeAddress2, reservation.streetNameAddress, reservation.detailAddress, reservation.latitude, reservation.longitude, reservation.unavailableDates);
-    // 서버로 formData 전송 로직 추가 (예: axios.post('/api/upload', formData))
+    console.log(JSON.parse(json));
+    console.log(title, content, images, reservation.administrativeAddress1, reservation.administrativeAddress2, reservation.streetNameAddress, reservation.detailAddress, reservation.latitude, reservation.longitude, json);
+
     instanceMultipart
       .post("/care/create/post", formData)
       .then((response) => {
         console.log(response);
-        // navigate("/reservation/care/partner/create/success");
+        navigate("/reservation/care/partner/create/success");
       })
       .catch((error) => {
         console.error(error);
