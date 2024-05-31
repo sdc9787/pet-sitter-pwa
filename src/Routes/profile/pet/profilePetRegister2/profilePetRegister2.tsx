@@ -40,6 +40,11 @@ const PetRegister2 = () => {
   //펫정보 등록api
   const handleSubmit = () => {
     console.log({ id, weight, neutering, animalHospital, vaccination, etc });
+    //정보를 기입하지 않았을때
+    if (weight === "" || animalHospital === "") {
+      alertBox("몸무게와 동물병원을 기입해주세요.");
+      return;
+    }
 
     instanceJson
       .post("/mypage/pet/edit/step2", { id: id, weight: weight, neutering: neutering, animalHospital: animalHospital, vaccination: vaccination, etc: etc })
