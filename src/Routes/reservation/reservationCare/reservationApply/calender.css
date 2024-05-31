@@ -1,0 +1,9 @@
+.unavailable-date {
+  background-color: red;
+  color: white;
+}
+
+.selected-date {
+  background-color: green;
+  color: white;
+}

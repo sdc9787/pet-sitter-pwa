@@ -44,6 +44,11 @@
   color: #ff0000 !important;
 }
 
+.selected-date-apply {
+  background-color: #569bf6 !important;
+  color: white !important;
+}
+
 .react-calendar__navigation__label {
   background-color: white;
 }

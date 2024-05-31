@@ -85,11 +85,11 @@ function ReservationCareEditImages() {
       <div className="flex flex-col justify-start items-center w-full h-screen p-4">
         <div className="w-full flex flex-col items-center justify-center mt-14">
           {previewImages.length > 0 && (
-            <div className="relative w-full mt-3 flex items-center justify-center h-60 overflow-hidden ">
+            <div className="relative w-full mt-3 flex items-center justify-center h-60 overflow-hidden rounded-xl">
               <button onClick={handlePreviousImage} className="absolute left-0 rounded-full p-2">
                 <i className="xi-angle-left-min xi-2x font-bold"></i>
               </button>
-              <img className="w-full h-full object-cover rounded-md" src={previewImages[currentImageIndex]} alt="preview" />
+              <img className="w-full h-full object-cover" src={previewImages[currentImageIndex]} alt="preview" />
               <button onClick={handleNextImage} className="absolute right-0 rounded-full p-2">
                 <i className="xi-angle-right-min xi-2x font-bold"></i>
               </button>

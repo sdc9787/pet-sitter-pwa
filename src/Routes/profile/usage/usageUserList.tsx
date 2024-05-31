@@ -17,6 +17,7 @@ type WalkUsageListType = {
   endTime: string;
   amount: number;
   review: boolean;
+  status: number;
 };
 
 type CareUsageListType = {
@@ -29,6 +30,7 @@ type CareUsageListType = {
   startDate: string;
   amount: number;
   review: boolean;
+  status: number;
 };
 
 function UsageUserList() {
@@ -120,13 +122,13 @@ function UsageUserList() {
                         <div className="font-semibold">펫 이름: {usage.petName}</div>
                         <div className="w-full flex justify-between items-center">
                           <div className="text-gray-400 font-semibold">산책 시간 : {usage.walkTime} 분</div>
-                          <div className="text-lg font-bold">{usage.amount > 0 ? `${usage.amount.toLocaleString()}원` : "취소"}</div>
+                          <div className="text-lg font-bold">{usage.review == false && usage.status == 4 ? "취소" : usage.amount}</div>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  {isWithin24Hours(usage.endTime) && (
+                  {/*24시간 && status == 3 <-리뷰 작성 안한상태 일때만 버튼생성*/}
+                  {isWithin24Hours(usage.endTime) && usage.status == 3 && (
                     <button
                       onClick={() => {
                         if (usage?.review) {
@@ -173,7 +175,7 @@ function UsageUserList() {
                     </div>
                   </div>
 
-                  {isWithin24Hours(usage.startDate) && (
+                  {isWithin24Hours(usage.startDate) && usage.status == 3 && (
                     <button
                       onClick={() => {
                         if (usage?.review) {

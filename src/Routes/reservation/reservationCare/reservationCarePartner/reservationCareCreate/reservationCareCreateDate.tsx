@@ -56,7 +56,7 @@ const ReservationCareCreateDate: React.FC = () => {
 
   return (
     <>
-      <Topbar backUrl="/reservation/care" title="돌봄 글 작성" />
+      <Topbar backUrl="/reservation/care/partner" title="돌봄 글 작성" />
       <div className="mt-16">
         <Calendar
           onChange={handleDateChange}

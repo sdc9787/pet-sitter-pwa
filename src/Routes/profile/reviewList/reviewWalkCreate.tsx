@@ -100,7 +100,7 @@ function ReviewWalkCreate() {
 
   return (
     <>
-      <Topbar backUrl="/profile/review" title="산책 리뷰 작성"></Topbar>
+      <Topbar backUrl="/profile/usage/user" title="산책 리뷰 작성"></Topbar>
       <div className="w-full h-screen p-4">
         {/* 별점 */}
         <div className="w-full flex flex-col items-center justify-center mt-20">

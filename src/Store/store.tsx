@@ -1,4 +1,5 @@
 import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import exp from "constants";
 
 // 초기 상태 정의
 const initialTabbarState: { state: number } = { state: 0 };
@@ -27,6 +28,11 @@ const initialReservationCareState = {
   unavailableDates: [] as string[],
   latitude: 0,
   longitude: 0,
+};
+
+const careSelectedAvailableDatesState = {
+  reservationStartDate: "",
+  reservationEndDate: "",
 };
 
 // 탭바
@@ -172,6 +178,27 @@ let careDateState = createSlice({
   },
 });
 
+let careSelectedAvailableDates = createSlice({
+  name: "careSelectedAvailableDates",
+  initialState: careSelectedAvailableDatesState,
+  reducers: {
+    setCareSelectedAvailableDates: (state, action: PayloadAction<{ reservationStartDate: string; reservationEndDate: string }>) => {
+      state.reservationStartDate = action.payload.reservationStartDate;
+      state.reservationEndDate = action.payload.reservationEndDate;
+    },
+  },
+});
+
+let careSelectedAvailablePet = createSlice({
+  name: "careSelectedAvailablePet",
+  initialState: 1,
+  reducers: {
+    setCareSelectedAvailablePet: (state, action: PayloadAction<number>) => {
+      return action.payload;
+    },
+  },
+});
+
 let store = configureStore({
   reducer: {
     tabbar: tabbar.reducer,
@@ -180,6 +207,8 @@ let store = configureStore({
     reservationCare: reservationCare.reducer,
     careImageState: careImageState.reducer,
     careDateState: careDateState.reducer,
+    careSelectedAvailableDates: careSelectedAvailableDates.reducer,
+    careSelectedAvailablePet: careSelectedAvailablePet.reducer,
   },
 });
 
@@ -191,5 +220,7 @@ export let { setWalkTime, setLocation, setPetId, setTitleAndContent: setWalkTitl
 export let { setTitleAndContent, setAddress, setImages, setUnavailableDate, setCarePostData } = reservationCare.actions;
 export let { setCareImageState } = careImageState.actions;
 export let { setCareDateState } = careDateState.actions;
+export let { setCareSelectedAvailableDates } = careSelectedAvailableDates.actions;
+export let { setCareSelectedAvailablePet } = careSelectedAvailablePet.actions;
 
 export default store;

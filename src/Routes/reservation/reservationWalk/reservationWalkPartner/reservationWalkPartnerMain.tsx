@@ -53,6 +53,7 @@ function ReservationWalkPartnerMain() {
       .catch((err) => {});
     instanceJson.get("/mypage/status").then((res) => {
       console.log(res.data);
+      setLoading(false);
       const status = res.data.partnerWalk;
       //이용자가 매칭을 눌렀을때
       if (status === "산책매칭없음") setMatchingState(0);
@@ -102,10 +103,8 @@ function ReservationWalkPartnerMain() {
           return Math.floor((createdDate.getTime() + 5 * 60 * 1000 - now.getTime()) / 1000);
         });
         setRemainingTimes(times);
-        setLoading(false);
       })
       .catch((err) => {
-        setLoading(false);
         if (err.response.status === 400) {
           navigate("/reservation/walk/partner");
         }
@@ -193,7 +192,6 @@ function ReservationWalkPartnerMain() {
         console.error("Map container not found");
       }
     }
-    setLoading(false);
   }, [latitude, longitude, walkList, matchingList]);
 
   // 예약 신청

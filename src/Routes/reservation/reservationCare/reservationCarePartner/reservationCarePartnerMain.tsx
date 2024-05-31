@@ -95,11 +95,11 @@ function ReservationCarePartnerMain() {
           ) : (
             <div className="w-full h-screen">
               <div className="flex flex-col items-center p-4">
-                <div className="relative w-full mt-16 flex items-center justify-center h-60 overflow-hidden border rounded-md">
+                <div className="relative w-full mt-16 flex items-center justify-center h-60 overflow-hidden rounded-xl">
                   <button onClick={handlePreviousImage} className="absolute left-0 rounded-full p-2">
                     <i className="xi-angle-left-min xi-2x font-bold"></i>
                   </button>
-                  <img src={careData.careImages[currentImageIndex]} alt="care" className="w-full h-full object-cover rounded-md" />
+                  <img src={careData.careImages[currentImageIndex]} alt="care" className="w-full h-full object-cover " />
                   <button onClick={handleNextImage} className="absolute right-0 rounded-full p-2">
                     <i className="xi-angle-right-min xi-2x font-bold"></i>
                   </button>
