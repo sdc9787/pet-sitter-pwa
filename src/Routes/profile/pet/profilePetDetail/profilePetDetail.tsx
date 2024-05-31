@@ -190,11 +190,11 @@ function PetProfileDetail() {
                 <div className="flex items-center gap-5 mb-20">
                   <span className="font-extrabold text-lg">성별</span>
                   <label className="flex items-center">
-                    <input type="radio" value="male" name="gender" onChange={(e) => setGender(e.target.value)} />
+                    <input type="radio" value="male" name="gender" checked={gender == "male" ? true : false} onChange={(e) => setGender(e.target.value)} />
                     <span className="ml-1 font-bold">남자아이</span>
                   </label>
                   <label className="flex items-center ">
-                    <input type="radio" value="female" name="gender" onChange={(e) => setGender(e.target.value)} />
+                    <input type="radio" value="female" name="gender" checked={gender == "female" ? true : false} onChange={(e) => setGender(e.target.value)} />
                     <span className="ml-1 font-bold">여자아이</span>
                   </label>
                 </div>
