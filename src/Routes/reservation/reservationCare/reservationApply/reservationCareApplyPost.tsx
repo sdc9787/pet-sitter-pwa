@@ -21,7 +21,21 @@ function ReservationCareApplyPost() {
       alertBox("요청 사항을 입력해주세요");
       return;
     }
-    instanceJson.post("/care/apply", {});
+    instanceJson
+      .post("/care/apply", {
+        carePostId: id,
+        petId: petId,
+        amount: 20000,
+        reservationStartDate: date.reservationStartDate,
+        reservationEndDate: date.reservationEndDate,
+        requestMessage: content,
+      })
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
     // navigate("/reservation/care/partner/create/success");
   };

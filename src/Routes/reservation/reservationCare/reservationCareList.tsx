@@ -4,6 +4,7 @@ import instanceJson from "../../../Component/axios/axiosJson";
 import Topbar from "../../../Component/topbar/topbar";
 import { RootState } from "../../../Store/store";
 import { useNavigate } from "react-router-dom";
+import ActionBtn from "../../../Component/actionBtn/actionBtn";
 
 type CareList = {
   carePostId: number;
@@ -91,6 +92,18 @@ function ReservationCareList() {
           ))}
         </div>
       </div>
+      <ActionBtn
+        buttonCount={2}
+        button1Props={{
+          text: "돌아가기",
+          onClick: () => navigate("/reservation/care"),
+          color: "bg-main",
+        }}
+        button2Props={{
+          text: "예약내역",
+          onClick: () => navigate("/reservation/care/apply/list"),
+          color: "bg-main",
+        }}></ActionBtn>
     </>
   );
 }

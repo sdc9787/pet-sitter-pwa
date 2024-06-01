@@ -49,6 +49,11 @@
   color: white !important;
 }
 
+.react-calendar__tile--active:enabled:hover {
+  background: #569bf6;
+  color: white;
+}
+
 .react-calendar__navigation__label {
   background-color: white;
 }

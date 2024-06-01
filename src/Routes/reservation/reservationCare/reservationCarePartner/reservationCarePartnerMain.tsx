@@ -74,9 +74,22 @@ function ReservationCarePartnerMain() {
     setCurrentImageIndex((prevIndex) => (careData ? (prevIndex < careData.careImages.length - 1 ? prevIndex + 1 : prevIndex) : prevIndex));
   };
 
+  const handleRemoveCarePost = (postId: number) => {
+    instanceJson
+      .get(`/care/delete/post?carePostId=${postId}`)
+      .then((res) => {
+        alertBox("돌봄 글이 삭제되었습니다");
+        navigate("/reservation");
+      })
+      .catch((err) => {
+        console.log(err);
+        alertBox("글 삭제에 실패했습니다");
+      });
+  };
+
   return (
     <>
-      <Topbar backUrl="/reservation" title="내 돌봄 글"></Topbar>
+      <Topbar backUrl="/reservation" title="내 돌봄 글" sendText="삭제" sendFunction={() => (careData?.carePostId ? handleRemoveCarePost(careData?.carePostId) : null)}></Topbar>
       {loading ? (
         <Loding />
       ) : (
@@ -131,25 +144,16 @@ function ReservationCarePartnerMain() {
               <ActionBtn
                 buttonCount={2}
                 button1Props={{
-                  text: "삭제하기",
-                  color: "bg-red-500",
-                  onClick: () => {
-                    instanceJson
-                      .get(`/care/delete/post?carePostId=${careData.carePostId}`)
-                      .then((res) => {
-                        alertBox("돌봄 글이 삭제되었습니다");
-                        navigate("/reservation");
-                      })
-                      .catch((err) => {
-                        console.log(err);
-                        alertBox("글 삭제에 실패했습니다");
-                      });
-                  },
+                  text: "수정하기",
+                  color: "bg-zinc-400",
+                  onClick: () => navigate(`/reservation/care/partner/edit/date/${careData.carePostId}`),
                 }}
                 button2Props={{
-                  text: "수정하기",
+                  text: "돌봄 관리",
                   color: "bg-main",
-                  onClick: () => navigate(`/reservation/care/partner/edit/date/${careData.carePostId}`),
+                  onClick: () => {
+                    navigate("/reservation/care/partner/applier");
+                  },
                 }}></ActionBtn>
             </div>
           )}
