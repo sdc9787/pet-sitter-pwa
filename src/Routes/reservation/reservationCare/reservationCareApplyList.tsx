@@ -73,6 +73,14 @@ function ReservationCareApplyList() {
     setSelectedTab(tab);
   };
 
+  useEffect(() => {
+    if (applierList.length > 0) {
+      setSelectedTab("신청중");
+    } else if (applyList.length > 0) {
+      setSelectedTab("확정");
+    }
+  }, [applyList, applierList]);
+
   //예약 확정자의 예약 취소
   const handleApplyCancel = (careMatchingId: number) => {
     instanceJson
