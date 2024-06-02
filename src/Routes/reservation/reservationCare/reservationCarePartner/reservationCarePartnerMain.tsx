@@ -89,7 +89,7 @@ function ReservationCarePartnerMain() {
 
   return (
     <>
-      <Topbar backUrl="/reservation" title="내 돌봄 글" sendText={careData ? "삭제" : ""} sendFunction={() => (careData?.carePostId ? handleRemoveCarePost(careData?.carePostId) : null)}></Topbar>
+      <Topbar backUrl="/reservation" title="내 돌봄 글"></Topbar>
       {loading ? (
         <Loding />
       ) : (
@@ -117,8 +117,18 @@ function ReservationCarePartnerMain() {
                     <i className="xi-angle-right-min xi-2x font-bold"></i>
                   </button>
                 </div>
-                <div className="w-full mt-4 flex flex-col gap-2">
-                  <div className="text-lg font-bold">{careData.title}</div>
+                <div className="w-full mt-4 flex flex-col">
+                  <div className="flex justify-between items-center">
+                    <div className="text-lg font-bold">{careData.title}</div>
+                    <div className="flex ">
+                      <div onClick={() => navigate(`/reservation/care/partner/edit/date/${careData.carePostId}`)} className="p-1 font-semibold text-sm text-zinc-500">
+                        수정
+                      </div>
+                      <div onClick={() => handleRemoveCarePost} className="p-1 font-semibold text-sm text-zinc-500">
+                        삭제
+                      </div>
+                    </div>
+                  </div>
                   <div className="flex items-center justify-start gap-2">
                     {/*닉네임*/}
                     <div className="text-lg font-bold">{careData.caregiverNickname}</div>
@@ -144,9 +154,9 @@ function ReservationCarePartnerMain() {
               <ActionBtn
                 buttonCount={2}
                 button1Props={{
-                  text: "수정하기",
-                  color: "bg-zinc-400",
-                  onClick: () => navigate(`/reservation/care/partner/edit/date/${careData.carePostId}`),
+                  text: "예약하기",
+                  color: "bg-main",
+                  onClick: () => navigate(`/reservation/care`),
                 }}
                 button2Props={{
                   text: "돌봄 관리",
