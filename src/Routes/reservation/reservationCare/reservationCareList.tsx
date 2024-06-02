@@ -5,6 +5,8 @@ import Topbar from "../../../Component/topbar/topbar";
 import { RootState } from "../../../Store/store";
 import { useNavigate } from "react-router-dom";
 import ActionBtn from "../../../Component/actionBtn/actionBtn";
+import { useAlert } from "../../../hook/useAlert/useAlert";
+import Loading from "../../../Component/loading/loading";
 
 type CareList = {
   carePostId: number;
@@ -19,11 +21,33 @@ type CareList = {
 };
 
 function ReservationCareList() {
+  const [loading1, setLoading1] = useState<boolean>(true); //로딩
+  const [loading2, setLoading2] = useState<boolean>(true); //로딩
+
   const page = 1;
+  const alertBox = useAlert();
   const locate = useSelector((state: RootState) => state.reservationCare);
   const navigate = useNavigate();
   const [careList, setCareList] = useState<CareList[]>([]);
   const [currentImageIndex, setCurrentImageIndex] = useState<number[]>([]);
+  const [progress, setProgress] = useState<boolean>(false);
+
+  useEffect(() => {
+    instanceJson
+      .get("/mypage/status")
+      .then((res) => {
+        console.log(res.data);
+        if (res.data["유저로서돌봄진행중수"]) {
+          setProgress(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading1(false);
+      });
+  }, []);
 
   useEffect(() => {
     instanceJson
@@ -41,6 +65,9 @@ function ReservationCareList() {
       })
       .catch((e: any) => {
         console.log(e);
+      })
+      .finally(() => {
+        setLoading2(false);
       });
   }, [locate]);
 
@@ -62,6 +89,10 @@ function ReservationCareList() {
     });
   };
 
+  if (loading1 || loading2) {
+    return <Loading></Loading>;
+  }
+
   return (
     <>
       <Topbar backUrl="/reservation/care" title="돌봄 예약" />
@@ -80,7 +111,6 @@ function ReservationCareList() {
               </div>
               <div className="w-full mt-4">
                 <div className="text-lg font-bold">{care.title}</div>
-
                 <div className="flex justify-start items-center gap-1">
                   <div className="text-lg font-bold">{care.caregiverNickname}</div>
                   <div className="text-base font-semibold text-gray-600">{care.administrativeAddress1}</div>
@@ -95,9 +125,11 @@ function ReservationCareList() {
       <ActionBtn
         buttonCount={2}
         button1Props={{
-          text: "돌아가기",
-          onClick: () => navigate("/reservation/care"),
-          color: "bg-main",
+          text: "진행중인 내역",
+          onClick: () => {
+            progress ? navigate("/reservation/care/progress") : alertBox("진행중인 돌봄이 없습니다.");
+          },
+          color: progress ? "bg-main" : "bg-zinc-400",
         }}
         button2Props={{
           text: "예약내역",

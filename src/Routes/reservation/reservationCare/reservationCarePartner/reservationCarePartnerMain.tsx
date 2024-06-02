@@ -89,7 +89,7 @@ function ReservationCarePartnerMain() {
 
   return (
     <>
-      <Topbar backUrl="/reservation" title="내 돌봄 글" sendText="삭제" sendFunction={() => (careData?.carePostId ? handleRemoveCarePost(careData?.carePostId) : null)}></Topbar>
+      <Topbar backUrl="/reservation" title="내 돌봄 글" sendText={careData ? "삭제" : ""} sendFunction={() => (careData?.carePostId ? handleRemoveCarePost(careData?.carePostId) : null)}></Topbar>
       {loading ? (
         <Loding />
       ) : (

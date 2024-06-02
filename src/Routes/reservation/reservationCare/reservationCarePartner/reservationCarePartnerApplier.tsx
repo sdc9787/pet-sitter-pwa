@@ -69,6 +69,7 @@ function ReservationCarePartnerApplier() {
       });
   }, []);
 
+  // 확정 신청자 수락
   const handleAccept = (careMatchingId: number) => {
     instanceJson
       .get(`/care/accept?careMatchingId=${careMatchingId}`)
@@ -86,6 +87,42 @@ function ReservationCarePartnerApplier() {
               console.log(err);
             });
         }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
+  //확정 신청자 취소
+  const handleCancel = (careMatchingId: number) => {
+    instanceJson
+      .get(`/care/reject?careMatchingId=${careMatchingId}`)
+      .then((res) => {
+        if (res.data) {
+          alertBox("취소되었습니다.");
+          instanceJson
+            .get("/care/myPost/applier")
+            .then((res) => {
+              console.log(res.data);
+              setApplierList(res.data);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+  //산책 시작 버튼
+  const handleStart = (careMatchingId: number) => {
+    instanceJson
+      .get(`/care/start?careMatchingId=${careMatchingId}`)
+      .then((res) => {
+        console.log(res.data);
+        alertBox("산책을 시작합니다.");
+        navigate("/reservation/care/partner");
       })
       .catch((err) => {
         console.log(err);
@@ -128,6 +165,13 @@ function ReservationCarePartnerApplier() {
                     <div>시작날짜 : {new Date(applier.reservationStartDate).toLocaleString()} </div>
                     <div>종료날짜 : {new Date(applier.reservationEndDate).toLocaleString()} </div>
                   </div>
+                  <button
+                    onClick={() => {
+                      handleStart(applier.careMatchingId);
+                    }}
+                    className={"px-4 py-2 font-bold text-white rounded-lg w-full bg-main"}>
+                    시작
+                  </button>
                 </div>
               ))
             ) : (
@@ -163,6 +207,13 @@ function ReservationCarePartnerApplier() {
                     className={"px-4 py-2 font-bold text-white rounded-lg w-full bg-main"}>
                     수락
                   </button>
+                  <button
+                    onClick={() => {
+                      handleCancel(applier.careMatchingId);
+                    }}
+                    className={"px-4 py-2 font-bold text-white rounded-lg w-full bg-red-500"}>
+                    거절
+                  </button>
                 </div>
               ))
             ) : (
@@ -174,6 +225,13 @@ function ReservationCarePartnerApplier() {
           </div>
         </div>
       </div>
+      <ActionBtn
+        buttonCount={1}
+        button1Props={{
+          text: "현재 진행중인 돌봄 내역",
+          color: "bg-main",
+          onClick: () => navigate("/reservation/care/partner/progress"),
+        }}></ActionBtn>
     </>
   );
 }

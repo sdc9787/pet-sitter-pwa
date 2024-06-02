@@ -17,6 +17,14 @@ function ReservationCareApplyPost() {
   const date = useSelector((state: RootState) => state.careSelectedAvailableDates);
 
   const handleSubmit = () => {
+    if (!petId) {
+      alertBox("펫을 선택해주세요");
+      return;
+    }
+    if (!date.reservationStartDate || !date.reservationEndDate) {
+      alertBox("날짜를 선택해주세요");
+      return;
+    }
     if (!content) {
       alertBox("요청 사항을 입력해주세요");
       return;
@@ -31,13 +39,13 @@ function ReservationCareApplyPost() {
         requestMessage: content,
       })
       .then((res) => {
-        console.log(res.data);
+        alertBox("예약이 완료되었습니다.");
+        navigate("/reservation/care/apply/list");
       })
       .catch((err) => {
+        alertBox("예약에 실패했습니다.");
         console.log(err);
       });
-
-    // navigate("/reservation/care/partner/create/success");
   };
 
   return (

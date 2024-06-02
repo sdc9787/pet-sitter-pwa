@@ -12,6 +12,7 @@ import Usage from "./usage/usage";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { selectedTab } from "../../Store/store";
+import PartnerShip from "./partnerShip/partnerShip";
 
 function Profile() {
   const dispatch = useDispatch();
@@ -31,6 +32,7 @@ function Profile() {
         <Route path="/pincheck" element={<PinCheck></PinCheck>}></Route>
         <Route path="/review/*" element={<WalkReviewList></WalkReviewList>}></Route>
         <Route path="/usage/*" element={<Usage></Usage>}></Route>
+        <Route path="/partnerShip/*" element={<PartnerShip></PartnerShip>}></Route>
       </Routes>
     </>
   );
