@@ -32,7 +32,7 @@ const CameraComponent = ({ onCapture }) => {
 
   return (
     <div>
-      {deviceId ? <Camera ref={camera} aspectRatio={16 / 9} numberOfCamerasCallback={4} deviceId={deviceId} /> : <p>Loading camera...</p>}
+      {deviceId ? <Camera ref={camera} aspectRatio={16 / 9} numberOfCamerasCallback={() => 4} deviceId={deviceId} /> : <p>Loading camera...</p>}
       <button onClick={handleTakePhoto}>Take Photo</button>
     </div>
   );
