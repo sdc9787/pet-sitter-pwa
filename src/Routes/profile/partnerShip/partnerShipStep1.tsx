@@ -12,7 +12,7 @@ const PartnerShipStep1: React.FC = () => {
 
   const uploadPhoto = async (photo: string) => {
     const formData = new FormData();
-    formData.append("file", dataURItoBlob(photo));
+    formData.append("identification_image", dataURItoBlob(photo));
 
     instanceMultipart
       .post("/mypage/partner/apply/step1", formData)
