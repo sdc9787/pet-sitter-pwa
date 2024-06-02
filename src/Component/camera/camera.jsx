@@ -1,5 +1,5 @@
 // src/components/CameraComponent.js
-import React, { useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Camera } from "react-camera-pro";
 
 const CameraComponent = ({ onCapture }) => {
