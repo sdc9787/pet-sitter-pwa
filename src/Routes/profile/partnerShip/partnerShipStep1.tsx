@@ -1,55 +1,51 @@
-// import { useState } from "react";
-// import CameraComponent from "../../../Component/camera/camera";
+import React, { useState } from "react";
+import CameraComponent from "../../../Component/camera/camera";
 
-// function PartnerShipStep1() {
-//   const [photo, setPhoto] = useState<string | null>(null);
+const PartnerShipStep1: React.FC = () => {
+  const [photo, setPhoto] = useState<string | null>(null);
 
-//   const handleCapture = (photo: string) => {
-//     setPhoto(photo);
-//     uploadPhoto(photo);
-//   };
+  const handleCapture = (photo: string) => {
+    setPhoto(photo);
+    uploadPhoto(photo);
+  };
 
-//   const uploadPhoto = async (photo: string) => {
-//     const formData = new FormData();
-//     formData.append("file", dataURLtoFile(photo, "id_photo.jpg"));
+  const uploadPhoto = async (photo: string) => {
+    const formData = new FormData();
+    formData.append("file", dataURItoBlob(photo));
 
-//     try {
-//       const response = await fetch("YOUR_SERVER_URL/upload", {
-//         method: "POST",
-//         body: formData,
-//       });
+    try {
+      const response = await fetch("https://your-server-endpoint/upload", {
+        method: "POST",
+        body: formData,
+      });
+      if (response.ok) {
+        alert("Photo uploaded successfully!");
+      } else {
+        alert("Failed to upload photo.");
+      }
+    } catch (error) {
+      alert("Error uploading photo: " + (error as Error).message);
+    }
+  };
 
-//       if (response.ok) {
-//         console.log("Photo uploaded successfully");
-//       } else {
-//         console.error("Failed to upload photo");
-//       }
-//     } catch (error) {
-//       console.error("Error uploading photo:", error);
-//     }
-//   };
+  const dataURItoBlob = (dataURI: string): Blob => {
+    const byteString = atob(dataURI.split(",")[1]);
+    const mimeString = dataURI.split(",")[0].split(":")[1].split(";")[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+    return new Blob([ab], { type: mimeString });
+  };
 
-//   const dataURLtoFile = (dataurl: string, filename: string): File => {
-//     const arr = dataurl.split(",");
-//     const mime = arr[0].match(/:(.*?);/)[1];
-//     const bstr = atob(arr[1]);
-//     let n = bstr.length;
-//     const u8arr = new Uint8Array(n);
+  return (
+    <div>
+      <h1>Capture ID Photo</h1>
+      <CameraComponent onCapture={handleCapture} />
+      {photo && <img src={photo} alt="Captured" />}
+    </div>
+  );
+};
 
-//     while (n--) {
-//       u8arr[n] = bstr.charCodeAt(n);
-//     }
-
-//     return new File([u8arr], filename, { type: mime });
-//   };
-
-//   return (
-//     <div>
-//       <h1>Take ID Photo</h1>
-//       <CameraComponent onCapture={handleCapture} />
-//       {photo && <img src={photo} alt="Captured" />}
-//     </div>
-//   );
-// }
-
-// export default PartnerShipStep1;
+export default PartnerShipStep1;

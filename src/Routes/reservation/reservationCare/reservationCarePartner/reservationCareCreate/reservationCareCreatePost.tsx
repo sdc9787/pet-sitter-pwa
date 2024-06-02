@@ -79,7 +79,7 @@ function ReservationCareCreatePost() {
       <div className="px-5 w-full flex flex-col items-center justify-center my-24">
         <div className="w-full flex flex-col items-center justify-center">
           <input value={title} className="w-full p-2 rounded-md border border-gray" placeholder="제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)} />
-          <textarea value={content} className="w-full h-96 p-2 mt-2 border border-gray rounded-md" placeholder="산책시 특별한 주의 사항을 적어주세요" onChange={(e) => setContent(e.target.value)}></textarea>
+          <textarea value={content} className="w-full h-96 p-2 mt-2 border border-gray rounded-md" placeholder="내용을 적어주세요" onChange={(e) => setContent(e.target.value)}></textarea>
         </div>
         <ActionBtn
           buttonCount={1}

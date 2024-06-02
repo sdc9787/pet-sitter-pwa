@@ -77,9 +77,9 @@ function ProfileMain() {
       navigate: "/tossPay",
     },
     {
-      title: "서비스 이용 내역",
+      title: "파트너쉽 권한",
       icon: "xi-list-square",
-      navigate: "/profile/service-history",
+      navigate: "/profile/partnerShip/step1",
     },
     {
       title: "고객센터",
