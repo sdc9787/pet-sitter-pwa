@@ -29,6 +29,7 @@ function ReservationCareApplyPost() {
       alertBox("요청 사항을 입력해주세요");
       return;
     }
+    console.log(content, petId, date.reservationStartDate, date.reservationEndDate, id);
     instanceJson
       .post("/care/apply", {
         carePostId: id,
