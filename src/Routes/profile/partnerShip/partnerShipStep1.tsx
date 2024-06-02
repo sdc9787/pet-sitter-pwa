@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import CameraComponent from "../../../Component/camera/camera";
+import instanceMultipart from "../../../Component/axios/axiosMultipart";
 
 const PartnerShipStep1: React.FC = () => {
   const [photo, setPhoto] = useState<string | null>(null);
@@ -13,19 +14,14 @@ const PartnerShipStep1: React.FC = () => {
     const formData = new FormData();
     formData.append("file", dataURItoBlob(photo));
 
-    try {
-      const response = await fetch("https://your-server-endpoint/upload", {
-        method: "POST",
-        body: formData,
+    instanceMultipart
+      .post("/mypage/partner/apply/step1", formData)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-      if (response.ok) {
-        alert("Photo uploaded successfully!");
-      } else {
-        alert("Failed to upload photo.");
-      }
-    } catch (error) {
-      alert("Error uploading photo: " + (error as Error).message);
-    }
   };
 
   const dataURItoBlob = (dataURI: string): Blob => {
