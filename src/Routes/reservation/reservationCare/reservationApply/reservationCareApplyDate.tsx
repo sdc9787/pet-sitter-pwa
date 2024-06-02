@@ -32,10 +32,14 @@ function ReservationCareApplyDate() {
     setMaxDate(max);
   }, []);
 
+  const formatTime = (time: number): string => {
+    return time.toString().padStart(2, "0") + ":00:00";
+  };
+
   const handleDateChange = (dateRange: Value) => {
     if (Array.isArray(dateRange) && dateRange[0] !== null && dateRange[1] !== null && startTime !== null && endTime !== null) {
-      const startDate = dateRange[0].toLocaleDateString("en-CA") + " " + startTime + ":00:00";
-      const endDate = dateRange[1].toLocaleDateString("en-CA") + " " + endTime + ":00:00";
+      const startDate = dateRange[0].toLocaleDateString("en-CA") + " " + formatTime(startTime);
+      const endDate = dateRange[1].toLocaleDateString("en-CA") + " " + formatTime(endTime);
 
       const rangeContainsUnavailable = unavailableDates.some((date) => {
         if (dateRange[0] === null || dateRange[1] === null) return false;
