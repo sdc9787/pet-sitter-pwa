@@ -7,13 +7,20 @@ const CameraComponent = ({ onCapture }) => {
   const [deviceId, setDeviceId] = useState(null);
 
   useEffect(() => {
-    navigator.mediaDevices.enumerateDevices().then((devices) => {
+    const getDevices = async () => {
+      const devices = await navigator.mediaDevices.enumerateDevices();
       const videoDevices = devices.filter((device) => device.kind === "videoinput");
-      const backCamera = videoDevices.find((device) => device.label.toLowerCase().includes("back")) || videoDevices[0];
-      if (backCamera) {
-        setDeviceId(backCamera.deviceId);
+
+      let backCamera = videoDevices.find((device) => device.label.toLowerCase().includes("back"));
+      if (!backCamera && videoDevices.length > 1) {
+        // If no 'back' camera is found, assume the second camera is the back camera
+        backCamera = videoDevices[1];
       }
-    });
+
+      setDeviceId(backCamera?.deviceId || null);
+    };
+
+    getDevices();
   }, []);
 
   const handleTakePhoto = () => {
@@ -25,7 +32,7 @@ const CameraComponent = ({ onCapture }) => {
 
   return (
     <div>
-      {deviceId && <Camera ref={camera} aspectRatio={16 / 9} deviceId={deviceId} />}
+      {deviceId ? <Camera ref={camera} aspectRatio={16 / 9} deviceId={deviceId} /> : <p>Loading camera...</p>}
       <button onClick={handleTakePhoto}>Take Photo</button>
     </div>
   );
