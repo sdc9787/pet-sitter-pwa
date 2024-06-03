@@ -182,7 +182,7 @@ function UsageUserList() {
                           alertBox("이미 리뷰를 작성하셨습니다");
                           return;
                         }
-                        navigate(`/profile/review/walk/create/${usage.careRecodeId}`);
+                        navigate(`/profile/review/care/create/${usage.careRecodeId}`);
                       }}
                       className={"mt-2 px-4 py-2 font-bold text-white rounded-lg w-full " + (usage?.review ? "bg-zinc-400" : "bg-main")}>
                       {usage?.review ? "리뷰 작성 완료" : "리뷰 작성"}
