@@ -5,6 +5,7 @@ import PartnerShipStep3 from "./partnerShipStep3";
 import { useEffect } from "react";
 import instanceJson from "../../../Component/axios/axiosJson";
 import { useAlert } from "../../../hook/useAlert/useAlert";
+import PartnerShipStep4 from "./partnerShipStep4";
 
 function PartnerShip() {
   const alertBox = useAlert();
@@ -38,6 +39,7 @@ function PartnerShip() {
         <Route path="/step1" element={<PartnerShipStep1></PartnerShipStep1>}></Route>
         <Route path="/step2" element={<PartnerShipStep2></PartnerShipStep2>}></Route>
         <Route path="/step3" element={<PartnerShipStep3></PartnerShipStep3>}></Route>
+        <Route path="/step4" element={<PartnerShipStep4></PartnerShipStep4>}></Route>
       </Routes>
     </>
   );

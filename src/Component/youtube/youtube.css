@@ -1,0 +1,9 @@
+.youtube-container {
+  position: relative;
+  width: 100%;
+}
+
+.youtube-container iframe {
+  margin-top: 64px;
+  width: 100%;
+}
