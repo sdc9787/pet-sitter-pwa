@@ -123,14 +123,13 @@ function WalkReviewListMain() {
           <div className={`absolute top-0 left-0 w-full transition-transform duration-300 ${selectedTab === "돌봄" ? "transform translate-x-0" : "transform translate-x-full"}`}>
             {careReviewList.length > 0 ? (
               careReviewList.map((review) => (
-                <div key={review.id} className="flex flex-col items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
+                <div key={review.id} className="flex flex-col gap-1 items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
                   <img src={review.imgUrl} alt="Care" className="w-full h-40 object-cover rounded-lg mb-2" />
-                  <div className="text-white font-bold">{review.userNickname}</div>
-                  <div className="text-gray-400">{review.caregiverNickname}</div>
-                  <div className="text-yellow-400">{renderRating(review.rating)}</div>
-                  <div className="text-white mt-2">{review.content}</div>
-                  <div className="text-gray-400">{new Date(review.reviewDate).toLocaleString()}</div>
-                  <div className="text-gray-400">Pet Species: {review.petSpecies}</div>
+                  <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
+                  <div className="font-bold">돌봄러 : {review.caregiverNickname}</div>
+                  <div className="font-bold">펫 종류: {review.petSpecies}</div>
+                  <div className="mt-2">{renderRating(review.rating)}</div>
+                  <div className="font-semibold mt-3">{review.content}</div>
                 </div>
               ))
             ) : (
