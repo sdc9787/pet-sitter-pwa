@@ -156,7 +156,7 @@ function UsagePartnerList() {
                 <div key={usage.careRecodeId} className="flex flex-col items-start justify-center gap-2 bg-gray-800 p-4 my-2 rounded-lg shadow-md">
                   <div className="w-full flex justify-between items-center">
                     <div className="text-gray-400">{formatDate(usage.startDate)}</div>
-                    <div onClick={() => navigate(`/profile/usage/walk/detail/${usage.careRecodeId}`)} className="p-1 px-2 text-xs font-semibold border border-zinc-500 rounded-full">
+                    <div onClick={() => navigate(`/profile/usage/care/detail/${usage.careRecodeId}`)} className="p-1 px-2 text-xs font-semibold border border-zinc-500 rounded-full">
                       상세내역
                     </div>
                   </div>
