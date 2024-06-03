@@ -66,7 +66,7 @@ function UsageCareDetail() {
   // id에 해당하는 돌봄 상세내역을 가져옵니다.
   useEffect(() => {
     instanceJson
-      .post(`/usageDetails/care/detail?care_record_id=${id}`, {})
+      .get(`/usageDetails/care/detail?care_record_id=${id}`)
       .then((res) => {
         setCareDetail(res.data);
         console.log(res.data);
