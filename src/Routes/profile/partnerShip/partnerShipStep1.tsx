@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import CameraComponent from "../../../Component/camera/camera";
 import instanceMultipart from "../../../Component/axios/axiosMultipart";
+import { useAlert } from "../../../hook/useAlert/useAlert";
+import { useNavigate } from "react-router-dom";
 
 const PartnerShipStep1: React.FC = () => {
+  const alertBox = useAlert();
+  const navigate = useNavigate();
   const [photo, setPhoto] = useState<string | null>(null);
 
   const handleCapture = (photo: string) => {
@@ -17,9 +21,13 @@ const PartnerShipStep1: React.FC = () => {
     instanceMultipart
       .post("/mypage/partner/apply/step1", formData)
       .then((res) => {
+        alertBox("신분증이 등록되었습니다.");
+        navigate("/profile/partnerShip/step2");
         console.log(res.data);
       })
       .catch((err) => {
+        alertBox("신분증 등록에 실패했습니다.");
+        navigate("/profile");
         console.log(err);
       });
   };
