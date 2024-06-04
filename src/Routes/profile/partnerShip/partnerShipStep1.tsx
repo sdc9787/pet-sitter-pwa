@@ -101,7 +101,7 @@ const PartnerShipStep1: React.FC = () => {
             <span>인식중</span>
           </div>
           <div className="bg-white w-16 h-16 rounded-full flex justify-center items-center relative">
-            <div className="bg-black opacity-20 w-16 h-16 z-10 rounded-full absolute top-1/2 left-1/2"></div>
+            <div className="bg-black opacity-20 w-16 h-16 z-10 rounded-full absolute top-0 left-0"></div>
             <div className="bg-main w-14 h-14 rounded-full"></div>
           </div>
         </>
