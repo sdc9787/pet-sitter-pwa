@@ -81,22 +81,30 @@ const PartnerShipStep1: React.FC = () => {
           <div className="absolute -right-1 -bottom-1 border-4 rounded-full w-8 border-white "></div>
           <div className="absolute -left-1 -top-1 border-4 rounded-full w-8 border-white "></div>
           <div className="absolute -left-1 -bottom-1 border-4 rounded-full w-8 border-white "></div>
-          <div onClick={handleTakePhoto} className="bg-white w-16 h-16 rounded-full flex justify-center items-center">
-            <div className="bg-main w-14 h-14 rounded-full"></div>
-          </div>
         </div>
       )}
 
       {!loading ? (
-        <div className="flex flex-col justify-center items-center text-center">
-          <span className="text-white font-bold">영역 안에 신분증이 꽉 차도록 배치후</span>
-          <span className="text-white font-bold">하단 버튼을 누르면 촬영됩니다.</span>
-        </div>
+        <>
+          <div className="flex flex-col justify-center items-center text-center">
+            <span className="text-white font-bold">영역 안에 신분증이 꽉 차도록 배치후</span>
+            <span className="text-white font-bold">하단 버튼을 누르면 촬영됩니다.</span>
+          </div>
+          <div onClick={handleTakePhoto} className="bg-white w-16 h-16 rounded-full flex justify-center items-center">
+            <div className="bg-main w-14 h-14 rounded-full"></div>
+          </div>
+        </>
       ) : (
-        <div className="flex flex-col justify-center items-center text-center">
-          <i className="xi-spinner-4 xi-spin xi-3x"></i>
-          <span>인식중</span>
-        </div>
+        <>
+          <div className="flex flex-col justify-center items-center text-center">
+            <i className="xi-spinner-4 xi-spin xi-3x"></i>
+            <span>인식중</span>
+          </div>
+          <div className="bg-white w-16 h-16 rounded-full flex justify-center items-center">
+            <div className="bg-black opacity-20 w-16 h-16 z-10 rounded-full"></div>
+            <div className="bg-main w-14 h-14 rounded-full"></div>
+          </div>
+        </>
       )}
     </div>
   );
