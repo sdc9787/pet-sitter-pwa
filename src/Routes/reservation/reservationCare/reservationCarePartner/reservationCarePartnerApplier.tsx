@@ -115,13 +115,13 @@ function ReservationCarePartnerApplier() {
         console.log(err);
       });
   };
-  //산책 시작 버튼
+  //돌봄 시작 버튼
   const handleStart = (careMatchingId: number) => {
     instanceJson
       .get(`/care/start?careMatchingId=${careMatchingId}`)
       .then((res) => {
         console.log(res.data);
-        alertBox("산책을 시작합니다.");
+        alertBox("돌봄을 시작합니다.");
         navigate("/reservation/care/partner");
       })
       .catch((err) => {
