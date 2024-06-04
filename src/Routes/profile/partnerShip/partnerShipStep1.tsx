@@ -8,8 +8,10 @@ const PartnerShipStep1: React.FC = () => {
   const alertBox = useAlert();
   const navigate = useNavigate();
   const [photo, setPhoto] = useState<string | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const handleCapture = (photo: string) => {
+    setLoading(true);
     setPhoto(photo);
     uploadPhoto(photo);
   };
@@ -29,6 +31,9 @@ const PartnerShipStep1: React.FC = () => {
         alertBox("신분증 등록에 실패했습니다.");
         navigate("/profile");
         console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 
@@ -46,8 +51,19 @@ const PartnerShipStep1: React.FC = () => {
   return (
     <>
       <div className="w-full h-screen bg-zinc-500 px-4 flex flex-col justify-start items-center">
-        <span className="text-white">신분증 인증</span>
+        <span className="text-white font-bold">신분증 인증</span>
         <CameraComponent onCapture={handleCapture} />
+        {!loading ? (
+          <div className="flex flex-col justify-center items-center text-center">
+            <span>영역 안에 신분증이 꽉 차도록 배치후</span>
+            <span>하단 버튼을 누르면 촬영됩니다.</span>
+          </div>
+        ) : (
+          <div className="flex flex-col justify-center items-center text-center">
+            <i className="xi-spinner-4 xi-spin"></i>
+            <span>인식중</span>
+          </div>
+        )}
         {photo && <img src={photo} alt="Captured" />}
       </div>
     </>
