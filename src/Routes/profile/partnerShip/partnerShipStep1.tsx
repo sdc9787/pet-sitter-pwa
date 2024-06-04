@@ -47,11 +47,7 @@ const PartnerShipStep1: React.FC = () => {
     <>
       <div className="w-full h-screen bg-zinc-500 flex flex-col justify-start items-center">
         <span className="text-white">신분증 인증</span>
-        <div className="relative">
-          <CameraComponent onCapture={handleCapture} />
-          <div className="absolute left-0 top-0 bottom-0 w-5 border-l-2 border-y-2 border-white"></div>
-          <div className="absolute right-0 top-0 bottom-0 w-5 border-r-2 border-y-2 border-white"></div>
-        </div>
+        <CameraComponent onCapture={handleCapture} />
         {photo && <img src={photo} alt="Captured" />}
       </div>
     </>
