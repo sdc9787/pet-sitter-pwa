@@ -16,8 +16,8 @@ const CameraComponent = ({ onCapture }) => {
     <>
       <div className="w-full h-auto relative rounded-lg">
         <Camera className="rounded-lg" ref={camera} aspectRatio={16 / 9} facingMode="environment" />
-        <div className="absolute left-0 top-0 bottom-0 w-5 border-l-4 border-y-4 border-white "></div>
-        <div className="absolute right-0 top-0 bottom-0 w-5 border-r-4 border-y-4 border-white "></div>
+        <div className="absolute left-0 top-0 bottom-0 border-4 rounded-full w-1 border-white "></div>
+        <div className="absolute right-0 top-0 bottom-0 border-4 rounded-full w-1 border-white "></div>
       </div>
       <button onClick={handleTakePhoto}>Take Photo</button>
     </>
