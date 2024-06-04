@@ -29,7 +29,7 @@ const PartnerShipStep1: React.FC = () => {
       })
       .catch((err) => {
         alertBox("신분증 등록에 실패했습니다.");
-        navigate("/profile");
+        setPhoto(null);
         console.log(err);
       })
       .finally(() => {

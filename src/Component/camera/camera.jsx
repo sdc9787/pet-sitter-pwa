@@ -24,7 +24,7 @@ const CameraComponent = ({ onCapture }) => {
         <div className="absolute -left-1 -bottom-1 border-4 rounded-full w-8 border-white "></div>
       </div>
       <div onClick={handleTakePhoto} className="bg-white w-16 h-16 rounded-full flex justify-center items-center">
-        <div className="bg-main w-14 h-16 rounded-full"></div>
+        <div className="bg-main w-14 h-14 rounded-full"></div>
       </div>
 
       {/* <button onClick={handleTakePhoto}>Take Photo</button> */}
