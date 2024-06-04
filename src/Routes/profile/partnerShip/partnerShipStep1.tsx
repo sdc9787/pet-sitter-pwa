@@ -90,7 +90,7 @@ const PartnerShipStep1: React.FC = () => {
             <span className="text-white font-bold">영역 안에 신분증이 꽉 차도록 배치후</span>
             <span className="text-white font-bold">하단 버튼을 누르면 촬영됩니다.</span>
           </div>
-          <div onClick={handleTakePhoto} className="bg-white w-16 h-16 rounded-full flex justify-center items-center mb-20">
+          <div onClick={handleTakePhoto} className="bg-white w-16 h-16 rounded-full flex justify-center items-center mb-52">
             <div className="bg-main w-14 h-14 rounded-full"></div>
           </div>
         </>
@@ -100,7 +100,7 @@ const PartnerShipStep1: React.FC = () => {
             <i className="xi-spinner-3 xi-spin xi-3x text-white"></i>
             <span className="text-white font-bold">인식중</span>
           </div>
-          <div className="bg-white w-16 h-16 rounded-full flex justify-center items-center relative mb-20">
+          <div className="bg-white w-16 h-16 rounded-full flex justify-center items-center relative mb-52">
             <div className="bg-black opacity-20 w-16 h-16 z-10 rounded-full absolute top-0 left-0"></div>
             <div className="bg-main w-14 h-14 rounded-full"></div>
           </div>
