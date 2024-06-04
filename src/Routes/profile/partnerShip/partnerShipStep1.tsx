@@ -60,7 +60,7 @@ const PartnerShipStep1: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-zinc-500 px-4 flex flex-col justify-start items-center">
+    <div className="w-full h-screen bg-zinc-500 px-4 flex flex-col justify-center items-center">
       <span className="text-white font-bold">신분증 인증</span>
       {photo ? (
         <div className="w-full h-auto relative rounded-lg">
@@ -86,7 +86,7 @@ const PartnerShipStep1: React.FC = () => {
 
       {!loading ? (
         <>
-          <div className="flex flex-col justify-center items-center text-center">
+          <div className="flex flex-col justify-center items-center text-center h-20">
             <span className="text-white font-bold">영역 안에 신분증이 꽉 차도록 배치후</span>
             <span className="text-white font-bold">하단 버튼을 누르면 촬영됩니다.</span>
           </div>
@@ -96,8 +96,8 @@ const PartnerShipStep1: React.FC = () => {
         </>
       ) : (
         <>
-          <div className="flex flex-col justify-center items-center text-center">
-            <i className="xi-spinner-2 xi-spin"></i>
+          <div className="flex flex-col justify-center items-center text-center h-20">
+            <i className="xi-spinner-2 xi-spin xi-3x"></i>
             <span>인식중</span>
           </div>
           <div className="bg-white w-16 h-16 rounded-full flex justify-center items-center relative">
