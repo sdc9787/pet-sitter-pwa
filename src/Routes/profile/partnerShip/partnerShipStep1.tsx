@@ -60,7 +60,7 @@ const PartnerShipStep1: React.FC = () => {
   };
 
   return (
-    <div className="w-full h-screen bg-zinc-500 px-4 flex flex-col justify-center items-center">
+    <div className="w-full h-screen bg-zinc-500 px-4 flex flex-col justify-around items-center">
       <span className="text-white font-bold">신분증 인증</span>
       {photo ? (
         <div className="w-full h-auto relative rounded-lg">
@@ -97,8 +97,8 @@ const PartnerShipStep1: React.FC = () => {
       ) : (
         <>
           <div className="flex flex-col justify-center items-center text-center h-20">
-            <i className="xi-spinner-2 xi-spin xi-3x"></i>
-            <span>인식중</span>
+            <i className="xi-spinner-3 xi-spin xi-3x text-white"></i>
+            <span className="text-white font-bold">인식중</span>
           </div>
           <div className="bg-white w-16 h-16 rounded-full flex justify-center items-center relative">
             <div className="bg-black opacity-20 w-16 h-16 z-10 rounded-full absolute top-0 left-0"></div>
