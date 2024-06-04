@@ -97,11 +97,11 @@ const PartnerShipStep1: React.FC = () => {
       ) : (
         <>
           <div className="flex flex-col justify-center items-center text-center">
-            <i className="xi-spinner-4 xi-spin xi-3x"></i>
+            <i className="xi-spinner-2 xi-spin"></i>
             <span>인식중</span>
           </div>
-          <div className="bg-white w-16 h-16 rounded-full flex justify-center items-center">
-            <div className="bg-black opacity-20 w-16 h-16 z-10 rounded-full"></div>
+          <div className="bg-white w-16 h-16 rounded-full flex justify-center items-center relative">
+            <div className="bg-black opacity-20 w-16 h-16 z-10 rounded-full absolute top-1/2 left-1/2"></div>
             <div className="bg-main w-14 h-14 rounded-full"></div>
           </div>
         </>
