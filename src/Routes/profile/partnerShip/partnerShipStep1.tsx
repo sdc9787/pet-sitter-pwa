@@ -45,7 +45,7 @@ const PartnerShipStep1: React.FC = () => {
 
   return (
     <>
-      <div className="w-full h-screen bg-zinc-500 px-4 flex flex-col justify-start items-center">
+      <div className="w-full h-screen px-4 flex flex-col justify-start items-center">
         <span className="text-white">신분증 인증</span>
         <CameraComponent onCapture={handleCapture} />
         {photo && <img src={photo} alt="Captured" />}
