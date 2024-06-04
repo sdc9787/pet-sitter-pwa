@@ -1,6 +1,5 @@
 import "./Styles/App.css";
 import { Route, Routes, useNavigate } from "react-router-dom";
-import TabBar from "./Component/tabbar/tabbar";
 import { AlertText } from "./hook/useAlert/useAlert";
 import Profile from "./Routes/profile/profile";
 import Community from "./Routes/community/community";
@@ -8,9 +7,8 @@ import Oauth from "./Routes/oauth/oauth";
 import { useEffect, useState } from "react";
 import KakaoMap from "./Routes/map/map";
 import Reservation from "./Routes/reservation/reservation";
-import ReservationUtils from "./Routes/reservationUtils/reservationUtils";
 import TossPay from "./Routes/tosspay/tosspay";
-import { EventSourcePolyfill } from "event-source-polyfill";
+import Chat from "./Routes/chat/chat";
 
 type EventData = {
   // 이벤트 데이터의 타입을 정의하세요.
@@ -81,7 +79,7 @@ function App() {
           <Route path="/" element={<Reservation></Reservation>}></Route>
           <Route path="/reservation/*" element={<Reservation></Reservation>}></Route>
           {/* 예약 내역*/}
-          <Route path="/reservationUtils/*" element={<ReservationUtils></ReservationUtils>}></Route>
+          <Route path="/chat/*" element={<Chat></Chat>}></Route>
           {/* 지도 */}
           <Route path="/map" element={<KakaoMap></KakaoMap>}></Route>
           {/*토스페이*/}

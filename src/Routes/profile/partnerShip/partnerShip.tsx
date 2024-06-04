@@ -23,9 +23,15 @@ function PartnerShip() {
         } else if (res.data.partnerStep === 2) {
           navigate("/profile/partnerShip/step3");
         } else if (res.data.partnerStep === 3) {
-          if (res.data.testCount == 3) {
-            alertBox("3회 불합격 하셨습니다, 다음에 다시 도전해주세요");
+          if (res.data.testCount < 3) {
+            alertBox(`${res.data.testCount}회 시험을 응시 하셨습니다`);
           }
+        } else if (res.data.partnerStep === 4) {
+          alertBox(`${res.data.nextTestDate}부터 다시 시험을 응시할 수 있습니다`);
+          navigate("/profile");
+        } else if (res.data.partnerStep === 5) {
+          alertBox("이미 파트너로 등록되어 있습니다");
+          navigate("/profile");
         }
       })
       .catch((err) => {

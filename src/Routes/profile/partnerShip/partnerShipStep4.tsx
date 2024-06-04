@@ -101,46 +101,47 @@ function PartnerShipStep4() {
   return (
     <>
       <Topbar backUrl="/profile/partnerShip/step3" title="퀴즈"></Topbar>
-      <div className="w-full h-screen">
+      <div className="w-full h-screen flex flex-col justify-between">
         <div className="mt-20 px-4">
-          <div>
-            <p>
-              {currentQuestionIndex + 1}. {currentQuestion.question}
-            </p>
+          <div className="bg-white p-6 rounded-lg shadow-md">
+            <p className="text-main font-extrabold text-lg mb-4">Q{currentQuestionIndex + 1} </p>
+            <p className="font-semibold mb-4">{currentQuestion.question}</p>
             {isMCQuestion ? (
-              <div className="flex flex-col">
+              <div className="flex flex-col space-y-2">
                 {currentQuestion.options?.map((option, index) => (
-                  <label key={index}>
-                    <input type="radio" name={`question${currentQuestionIndex}`} value={index + 1} checked={answers[`q${currentQuestionIndex + 1}`] === index + 1} onChange={() => handleAnswerChange((index + 1).toString(), currentQuestionIndex)} />
-                    {option}
+                  <label key={index} className="flex items-center space-x-2">
+                    <input type="radio" name={`question${currentQuestionIndex}`} value={index + 1} checked={answers[`q${currentQuestionIndex + 1}`] === index + 1} onChange={() => handleAnswerChange((index + 1).toString(), currentQuestionIndex)} className="form-radio h-4 w-4 text-main" />
+                    <span>{option}</span>
                   </label>
                 ))}
               </div>
             ) : (
-              <div>
-                <label>
-                  <input type="radio" name={`question${currentQuestionIndex}`} value="O" checked={answers[`q${currentQuestionIndex + 1}`] === true} onChange={() => handleAnswerChange("O", currentQuestionIndex)} />O
+              <div className="flex justify-around">
+                <label className="flex items-center space-x-2">
+                  <input type="radio" name={`question${currentQuestionIndex}`} value="O" checked={answers[`q${currentQuestionIndex + 1}`] === true} onChange={() => handleAnswerChange("O", currentQuestionIndex)} className="form-radio h-4 w-4 text-main" />
+                  <span>O</span>
                 </label>
-                <label>
-                  <input type="radio" name={`question${currentQuestionIndex}`} value="X" checked={answers[`q${currentQuestionIndex + 1}`] === false} onChange={() => handleAnswerChange("X", currentQuestionIndex)} />X
+                <label className="flex items-center space-x-2">
+                  <input type="radio" name={`question${currentQuestionIndex}`} value="X" checked={answers[`q${currentQuestionIndex + 1}`] === false} onChange={() => handleAnswerChange("X", currentQuestionIndex)} className="form-radio h-4 w-4 text-main" />
+                  <span>X</span>
                 </label>
               </div>
             )}
           </div>
         </div>
+        <ActionBtn
+          buttonCount={2}
+          button1Props={{
+            text: "이전 문제",
+            color: "bg-main text-white",
+            onClick: handlePrevious,
+          }}
+          button2Props={{
+            text: currentQuestionIndex === quizData.oxQuestions.length + quizData.mcQuestions.length - 1 ? "제출" : "다음 문제",
+            color: "bg-main text-white",
+            onClick: currentQuestionIndex === quizData.oxQuestions.length + quizData.mcQuestions.length - 1 ? sendAnswer : handleNext,
+          }}></ActionBtn>
       </div>
-      <ActionBtn
-        buttonCount={2}
-        button1Props={{
-          text: "이전 문제",
-          color: "bg-main",
-          onClick: handlePrevious,
-        }}
-        button2Props={{
-          text: currentQuestionIndex === quizData.oxQuestions.length + quizData.mcQuestions.length - 1 ? "제출" : "다음 문제",
-          color: "bg-main",
-          onClick: currentQuestionIndex === quizData.oxQuestions.length + quizData.mcQuestions.length - 1 ? sendAnswer : handleNext,
-        }}></ActionBtn>
     </>
   );
 }

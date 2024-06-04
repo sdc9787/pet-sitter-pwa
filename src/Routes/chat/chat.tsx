@@ -1,10 +1,10 @@
 import { Route, Routes } from "react-router-dom";
-import ReservationUtilsMain from "./reservationUtilsMain/reservationUtilsMain";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
 import { selectedTab } from "../../Store/store";
+import ChatMain from "./chatMain/chatMain";
 
-function ReservationUtils() {
+function Chat() {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(selectedTab(1));
@@ -12,10 +12,10 @@ function ReservationUtils() {
   return (
     <>
       <Routes>
-        <Route path="/" element={<ReservationUtilsMain></ReservationUtilsMain>}></Route>
+        <Route path="/" element={<ChatMain></ChatMain>}></Route>
       </Routes>
     </>
   );
 }
 
-export default ReservationUtils;
+export default Chat;

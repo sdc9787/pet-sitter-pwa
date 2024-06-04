@@ -7,8 +7,8 @@ function TabBar() {
     //tabbar 정보
     IconFalse: ["xi-home-o", "xi-paper-o", "xi-map-o", "xi-forum-o", "xi-user-o"],
     IconTrue: ["xi-home", "xi-paper", "xi-map", "xi-forum", "xi-user"],
-    IconName: ["예약", "예약 내역", "지도", "커뮤니티", "프로필"],
-    Link: ["reservation", "reservationUtils", "map", "community", "profile"],
+    IconName: ["예약", "채팅", "지도", "커뮤니티", "프로필"],
+    Link: ["reservation", "chat", "map", "community", "profile"],
   };
   const navigate = useNavigate(); //페이지 이동
 

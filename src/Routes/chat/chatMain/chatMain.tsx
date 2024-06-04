@@ -1,6 +1,6 @@
 import TabBar from "../../../Component/tabbar/tabbar";
 
-function ReservationUtilsMain() {
+function ChatMain() {
   return (
     <>
       <h1>Reservation Utils Main</h1>
@@ -9,4 +9,4 @@ function ReservationUtilsMain() {
   );
 }
 
-export default ReservationUtilsMain;
+export default ChatMain;
