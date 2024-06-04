@@ -35,6 +35,35 @@ const careSelectedAvailableDatesState = {
   reservationEndDate: "",
 };
 
+// [
+//   {
+//       "sender": "ahavvsvw",
+//       "content": "채팅 메세지 테스트",
+//       "sendTime": "2024-06-04T23:31:16"
+//   },
+//   {
+//       "sender": "test9",
+//       "content": "채팅 메세지 테스트",
+//       "sendTime": "2024-06-04T23:32:03"
+//   },
+//   {
+//       "sender": "test9",
+//       "content": "테스트",
+//       "sendTime": "2024-06-05T00:41:48"
+//   },
+//   {
+//       "sender": "test9",
+//       "content": "테스트",
+//       "sendTime": "2024-06-05T00:43:39"
+//   }
+// ]
+
+const chatState: { content: string; sendTime: string; sender: string } = {
+  content: "",
+  sendTime: "",
+  sender: "",
+};
+
 // 탭바
 let tabbar = createSlice({
   name: "tabbar",
@@ -199,6 +228,26 @@ let careSelectedAvailablePet = createSlice({
   },
 });
 
+let profileImage = createSlice({
+  name: "profileImage",
+  initialState: "",
+  reducers: {
+    setProfileImage: (state, action: PayloadAction<string>) => {
+      return action.payload;
+    },
+  },
+});
+
+let chat = createSlice({
+  name: "chat",
+  initialState: [chatState],
+  reducers: {
+    setChat: (state, action: PayloadAction<any>) => {
+      return action.payload;
+    },
+  },
+});
+
 let store = configureStore({
   reducer: {
     tabbar: tabbar.reducer,
@@ -209,6 +258,8 @@ let store = configureStore({
     careDateState: careDateState.reducer,
     careSelectedAvailableDates: careSelectedAvailableDates.reducer,
     careSelectedAvailablePet: careSelectedAvailablePet.reducer,
+    profileImage: profileImage.reducer,
+    chat: chat.reducer,
   },
 });
 
@@ -222,5 +273,7 @@ export let { setCareImageState } = careImageState.actions;
 export let { setCareDateState } = careDateState.actions;
 export let { setCareSelectedAvailableDates } = careSelectedAvailableDates.actions;
 export let { setCareSelectedAvailablePet } = careSelectedAvailablePet.actions;
+export let { setProfileImage } = profileImage.actions;
+export let { setChat } = chat.actions;
 
 export default store;

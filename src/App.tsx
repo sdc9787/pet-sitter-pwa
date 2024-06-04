@@ -9,6 +9,7 @@ import KakaoMap from "./Routes/map/map";
 import Reservation from "./Routes/reservation/reservation";
 import TossPay from "./Routes/tosspay/tosspay";
 import Chat from "./Routes/chat/chat";
+import { WebSocketProvider } from "./Component/webSocket/webSocket";
 
 type EventData = {
   // 이벤트 데이터의 타입을 정의하세요.
@@ -68,23 +69,25 @@ function App() {
   return (
     <>
       <div className="w-screen flex justify-center items-start font-custom">
-        <Routes>
-          {/* 로그인, 회원가입 페이지 */}
-          <Route path="/oauth/*" element={<Oauth />} />
-          {/* 프로필 */}
-          <Route path="/profile/*" element={<Profile></Profile>}></Route>
-          {/* 커뮤니티 */}
-          <Route path="/community/*" element={<Community></Community>}></Route>
-          {/* 예약(홈) */}
-          <Route path="/" element={<Reservation></Reservation>}></Route>
-          <Route path="/reservation/*" element={<Reservation></Reservation>}></Route>
-          {/* 예약 내역*/}
-          <Route path="/chat/*" element={<Chat></Chat>}></Route>
-          {/* 지도 */}
-          <Route path="/map" element={<KakaoMap></KakaoMap>}></Route>
-          {/*토스페이*/}
-          <Route path="/tossPay/*" element={<TossPay></TossPay>}></Route>
-        </Routes>
+        <WebSocketProvider>
+          <Routes>
+            {/* 로그인, 회원가입 페이지 */}
+            <Route path="/oauth/*" element={<Oauth />} />
+            {/* 프로필 */}
+            <Route path="/profile/*" element={<Profile></Profile>}></Route>
+            {/* 커뮤니티 */}
+            <Route path="/community/*" element={<Community></Community>}></Route>
+            {/* 예약(홈) */}
+            <Route path="/" element={<Reservation></Reservation>}></Route>
+            <Route path="/reservation/*" element={<Reservation></Reservation>}></Route>
+            {/* 예약 내역*/}
+            <Route path="/chat/*" element={<Chat></Chat>}></Route>
+            {/* 지도 */}
+            <Route path="/map" element={<KakaoMap></KakaoMap>}></Route>
+            {/*토스페이*/}
+            <Route path="/tossPay/*" element={<TossPay></TossPay>}></Route>
+          </Routes>
+        </WebSocketProvider>
       </div>
       {/* 알림창 */}
       <AlertText />
