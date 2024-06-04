@@ -44,11 +44,12 @@ const PartnerShipStep1: React.FC = () => {
   };
 
   return (
-    <div>
-      <h1>Capture ID Photo</h1>
-      <CameraComponent onCapture={handleCapture} />
-      {photo && <img src={photo} alt="Captured" />}
-    </div>
+    <>
+      <div className="w-full h-screen">
+        <CameraComponent onCapture={handleCapture} />
+        {photo && <img src={photo} alt="Captured" />}
+      </div>
+    </>
   );
 };
 

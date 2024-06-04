@@ -13,7 +13,7 @@ const CameraComponent = ({ onCapture }) => {
   };
 
   return (
-    <div>
+    <div className="w-full h-auto">
       <Camera ref={camera} aspectRatio={16 / 9} facingMode="environment" />
       <button onClick={handleTakePhoto}>Take Photo</button>
     </div>
