@@ -52,7 +52,20 @@ const PartnerShipStep1: React.FC = () => {
     <>
       <div className="w-full h-screen bg-zinc-500 px-4 flex flex-col justify-start items-center">
         <span className="text-white font-bold">신분증 인증</span>
-        <CameraComponent onCapture={handleCapture} />
+        {photo ? (
+          <div className="w-full h-auto relative rounded-lg">
+            <img src={photo} alt="Captured" />
+            <div className="absolute -left-1 -top-1 -bottom-1 border-4 rounded-full w-1 border-white "></div>
+            <div className="absolute -right-1 -top-1 -bottom-1 border-4 rounded-full w-1 border-white "></div>
+            <div className="absolute -right-1 -top-1 border-4  rounded-full w-8 border-white "></div>
+            <div className="absolute -right-1 -bottom-1 border-4 rounded-full w-8 border-white "></div>
+            <div className="absolute -left-1 -top-1 border-4 rounded-full w-8 border-white "></div>
+            <div className="absolute -left-1 -bottom-1 border-4 rounded-full w-8 border-white "></div>
+          </div>
+        ) : (
+          <CameraComponent onCapture={handleCapture} />
+        )}
+
         {!loading ? (
           <div className="flex flex-col justify-center items-center text-center">
             <span>영역 안에 신분증이 꽉 차도록 배치후</span>
@@ -64,7 +77,6 @@ const PartnerShipStep1: React.FC = () => {
             <span>인식중</span>
           </div>
         )}
-        {photo && <img src={photo} alt="Captured" />}
       </div>
     </>
   );
