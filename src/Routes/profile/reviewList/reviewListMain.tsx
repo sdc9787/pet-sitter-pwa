@@ -125,7 +125,10 @@ function WalkReviewListMain() {
               careReviewList.map((review) => (
                 <div key={review.id} className="flex flex-col gap-1 items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
                   <img src={review.imgUrl} alt="Care" className="w-full h-40 object-cover rounded-lg mb-2" />
-                  <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
+                  <div className="flex justify-between items-center">
+                    <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
+                    <div>삭제</div>
+                  </div>
                   <div className="font-bold">돌봄러 : {review.caregiverNickname}</div>
                   <div className="font-bold">펫 종류: {review.petSpecies}</div>
                   <div className="mt-2">{renderRating(review.rating)}</div>

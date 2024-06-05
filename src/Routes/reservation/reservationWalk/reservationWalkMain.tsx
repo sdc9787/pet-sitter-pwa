@@ -199,7 +199,7 @@ function ReservationWalkMain() {
               ) : userState == 0 ? (
                 <p className="font-semibold text-red-500 mb-20">남은 시간: {remainingTime}초</p>
               ) : (
-                <p className="font-semibold text-blue-500 mb-20">파트너 수락 대기중...</p>
+                <p className="font-semibold text-blue-500 mb-20">파트너 시작 대기중...</p>
               )}
               {userState == 0 ? (
                 <ActionBtn
