@@ -30,7 +30,7 @@ type CareReviewListType = {
   imgUrl: string;
 };
 
-function WalkReviewListMain() {
+function WalkReviewListPartner() {
   const [loading, setLoading] = useState<boolean>(true); // 로딩 상태
   const navigate = useNavigate();
   const alertBox = useAlert();
@@ -42,7 +42,7 @@ function WalkReviewListMain() {
   useEffect(() => {
     //산책 리뷰 리스트 가져오기
     instanceJson
-      .get("/review/walk/myWrite")
+      .get("/review/walk/partner/list")
       .then((res) => {
         setWalkReviewList(res.data.walkReviewList);
         console.log(res.data.walkReviewList);
@@ -56,7 +56,7 @@ function WalkReviewListMain() {
 
     //돌봄 리뷰 리스트 가져오기
     instanceJson
-      .get("/review/care/myWrite")
+      .get("/review/care/partner/list")
       .then((res) => {
         setCareReviewList(res.data.careReviewList);
         console.log(res.data.careReviewList);
@@ -85,41 +85,13 @@ function WalkReviewListMain() {
     );
   };
 
-  const walkReviewDelete = (id: number) => {
-    instanceJson
-      .get(`/review/delete/walk?walk_review_id=${id}`)
-      .then((res) => {
-        alertBox("리뷰가 삭제되었습니다.");
-        setWalkReviewList((prevList) => prevList.filter((review) => review.id !== id));
-        console.log(res);
-      })
-      .catch((err) => {
-        alertBox("리뷰 삭제에 실패했습니다.");
-        console.log(err);
-      });
-  };
-
-  const careReviewDelete = (id: number) => {
-    instanceJson
-      .get(`/review/delete/care?care_review_id=${id}`)
-      .then((res) => {
-        alertBox("리뷰가 삭제되었습니다.");
-        setCareReviewList((prevList) => prevList.filter((review) => review.id !== id));
-        console.log(res);
-      })
-      .catch((err) => {
-        alertBox("리뷰 삭제에 실패했습니다.");
-        console.log(err);
-      });
-  };
-
   if (loading) {
     return <Loading></Loading>;
   }
 
   return (
     <>
-      <Topbar backUrl="/profile" title="내가 쓴 리뷰" />
+      <Topbar backUrl="/profile" title="내가 받은 리뷰" />
       <div className="flex flex-col justify-start items-center w-full h-screen gap-4 overflow-x-hidden">
         <div className="relative w-full mt-18 h-12 bg-white text-center flex justify-evenly items-center">
           <div className={`absolute top-0 h-full w-1/3 transition-transform duration-300 ${selectedTab === "산책" ? "transform -translate-x-2/3" : "transform translate-x-2/3"} bg-white border-b-4 border-black`} />
@@ -136,11 +108,8 @@ function WalkReviewListMain() {
               walkReviewList.map((review) => (
                 <div key={review.id} className="flex flex-col gap-1 items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
                   <img src={review.imgUrl} alt="Walk" className="w-full h-40 object-cover rounded-lg mb-2" />
-                  <div className="w-full flex justify-between items-center">
-                    <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
-                    <i className="xi-close-min xi-x p-1 font-extrabold text-red-500" onClick={() => walkReviewDelete(review.id)}></i>
-                  </div>
-                  <div className="font-bold">산책러 : {review.walkerNickname}</div>
+                  <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
+                  <div className="font-bold">이용자 : {review.userNickname}</div>
                   <div className="font-bold">산책시간: {review.walkTime}분</div>
                   <div className="mt-2">{renderRating(review.rating)}</div>
                   <div className="font-semibold mt-3">{review.content}</div>
@@ -158,10 +127,7 @@ function WalkReviewListMain() {
               careReviewList.map((review) => (
                 <div key={review.id} className="flex flex-col gap-1 items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
                   <img src={review.imgUrl} alt="Care" className="w-full h-40 object-cover rounded-lg mb-2" />
-                  <div className="w-full flex justify-between items-center">
-                    <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
-                    <i className="xi-close-min xi-x p-1 font-extrabold text-red-500" onClick={() => careReviewDelete(review.id)}></i>
-                  </div>
+                  <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
                   <div className="font-bold">돌봄러 : {review.caregiverNickname}</div>
                   <div className="font-bold">펫 종류: {review.petSpecies}</div>
                   <div className="mt-2">{renderRating(review.rating)}</div>
@@ -190,4 +156,4 @@ function WalkReviewListMain() {
   );
 }
 
-export default WalkReviewListMain;
+export default WalkReviewListPartner;

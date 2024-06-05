@@ -1,13 +1,9 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { stringify } from "querystring";
 import Topbar from "../../../Component/topbar/topbar";
 import TabBar from "../../../Component/tabbar/tabbar";
 import instanceJson from "../../../Component/axios/axiosJson";
 import Loading from "../../../Component/loading/loading";
-import { useDispatch } from "react-redux";
-import { selectedTab } from "../../../Store/store";
 
 function ProfileMain() {
   const navigate = useNavigate(); //페이지 이동
@@ -16,29 +12,35 @@ function ProfileMain() {
   const [profileName, setProfileName] = useState<string>(""); //프로필 이름
   const [point, setPoint] = useState<number>(0); //포인트
   const [review, setReview] = useState<number>(0); //리뷰
+  //파트너가 받은 리뷰
+  const [partnerReview, setPartnerReview] = useState<number>(0); //파트너가 받은 리뷰
+  const [usage, setUsage] = useState<number>(0); //이용내역
 
   useEffect(() => {
     setProfileName(window.localStorage.getItem("nickname") || "");
-    instanceJson
-      .get("/mypage/coin")
-      .then((res) => {
-        console.log(res.data);
-        setPoint(res.data);
+
+    const fetchCoin = instanceJson.get("/mypage/coin");
+    const fetchWalkReviews = instanceJson.get("/review/walk/myWrite");
+    const fetchCareReviews = instanceJson.get("/review/care/myWrite");
+    const fetchWalkUsage = instanceJson.get("/usageDetails/walk/list");
+    const fetchCareUsage = instanceJson.get("/usageDetails/care/list");
+    const fetchPartnerWalkUsage = localStorage.getItem("partnership") === "1" ? instanceJson.get("/usageDetails/walk/partner/list") : Promise.resolve({ data: { walkUsageList: [] } });
+    const fetchPartnerCareUsage = localStorage.getItem("partnership") === "1" ? instanceJson.get("/usageDetails/care/partner/list") : Promise.resolve({ data: { careUsageList: [] } });
+    const fetchPartnerWalkReviews = localStorage.getItem("partnership") === "1" ? instanceJson.get("/review/walk/partner/list") : Promise.resolve({ data: { walkReviewList: [] } });
+    const fetchPartnerCareReviews = localStorage.getItem("partnership") === "1" ? instanceJson.get("/review/care/partner/list") : Promise.resolve({ data: { careReviewList: [] } });
+
+    Promise.all([fetchCoin, fetchWalkReviews, fetchCareReviews, fetchWalkUsage, fetchCareUsage, fetchPartnerWalkUsage, fetchPartnerCareUsage, fetchPartnerWalkReviews, fetchPartnerCareReviews])
+      .then((responses) => {
+        setPoint(responses[0].data);
+        setReview((prevReview) => prevReview + responses[1].data.walkReviewList.length + responses[2].data.careReviewList.length);
+        setUsage((prevUsage) => prevUsage + responses[3].data.walkUsageList.length + responses[4].data.careUsageList.length + responses[5].data.walkUsageList.length + responses[6].data.careUsageList.length);
+        setPartnerReview((prevPartnerReview) => prevPartnerReview + responses[7].data.walkReviewList.length + responses[8].data.careReviewList.length);
       })
       .catch((error) => {
         console.error(error);
       })
       .finally(() => {
         setLoading(false);
-      });
-
-    instanceJson
-      .get("/review/walk/myWrite")
-      .then((res) => {
-        setReview(res.data.walkReviewList.length);
-      })
-      .catch((error) => {
-        console.error(error);
       });
   }, []);
 
@@ -138,14 +140,14 @@ function ProfileMain() {
             <span className="text-xs font-medium text-gray">내가 남긴 리뷰</span>
           </div>
           {localStorage.getItem("partnership") == "1" ? (
-            <div className="flex flex-col justify-center items-center w-1/3">
-              <div className="text-3xl font-bold mb-1">0</div>
+            <div onClick={() => navigate("/profile/review/partner")} className="flex flex-col justify-center items-center w-1/3">
+              <div className="text-3xl font-bold mb-1">{partnerReview}</div>
               <span className="text-xs font-medium text-gray">내가 받은 리뷰</span>
             </div>
           ) : null}
 
           <div onClick={() => navigate("/profile/usage/user")} className="flex flex-col justify-center items-center w-1/3">
-            <div className="text-3xl font-bold mb-1">0</div>
+            <div className="text-3xl font-bold mb-1">{usage}</div>
             <span className="text-xs font-medium text-gray">이용내역</span>
           </div>
         </div>

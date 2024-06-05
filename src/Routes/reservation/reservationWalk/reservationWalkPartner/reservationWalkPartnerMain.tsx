@@ -259,7 +259,7 @@ function ReservationWalkPartnerMain() {
     <>
       <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭"></Topbar>
       <div className="w-full h-screen bg-gray-100">
-        <div className="absolute top-20 left-4 bg-main text-white font-semibold px-3 py-1 rounded-md text-sm">
+        <div className="z-10 absolute top-20 left-4 bg-main text-white font-semibold px-3 py-1 rounded-md text-sm">
           검색범위
           <select value={distance} onChange={handleDistanceChange} className="ml-2 p-1 bg-main text-white font-semibold text-sm rounded">
             {[1, 2, 3, 4, 5].map((d) => (

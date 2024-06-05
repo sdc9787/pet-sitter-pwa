@@ -107,7 +107,9 @@ function ReservationCareDetail() {
                 <i className="xi-star text-main"></i>
                 <div className="text-base font-bold">{careData.caregiverRating}</div>
               </div>
-              <div className="text-base font-bold text-zinc-500 underline">리뷰 {careData.caregiverReviewCount}개</div>
+              <div onClick={() => navigate(`/profile/review/care/view/${careData.carePostId}`)} className="text-base font-bold text-zinc-500 underline">
+                리뷰 {careData.caregiverReviewCount}개
+              </div>
               <div className="flex gap-1">
                 <div className="text-base font-bold text-zinc-500">{careData.administrativeAddress1}</div>
                 <div className="text-base font-bold text-zinc-500">{careData.administrativeAddress2}</div>

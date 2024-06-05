@@ -60,16 +60,18 @@ function ReservationWalkApplier() {
           <p className="text-center text-gray-500 font-bold text-xl">신청자가 없습니다.</p>
         </div>
       ) : (
-        <ul className="w-full mt-20">
+        <ul className="w-full mt-20 px-6 space-y-4">
           {appliers.map((applier, index) => (
-            <li key={applier.id} className="w-full flex items-center p-4 bg-white rounded-lg shadow-md">
-              <img src={applier.profileImage} alt={`${applier.name} 프로필 이미지`} className="w-16 h-16 rounded-full object-cover mr-4" />
+            <li key={applier.id} className="w-full flex items-center p-4 bg-white rounded-lg shadow-md transition-transform transform hover:scale-105">
+              <img src={applier.profileImage} alt={`${applier.name} 프로필 이미지`} className="w-16 h-16 rounded-full object-cover mr-4 " />
               <div className="flex-grow">
-                <h3 className="text-lg font-bold">{applier.name}</h3>
-                <p className="text-gray-600">평점: {applier.rating} / 5</p>
-                <p className="text-gray-600">리뷰: {applier.reviewCount}</p>
+                <h3 className="text-lg font-bold text-gray-800">{applier.name}</h3>
+                <p className="font-semibold text-gray-600">평점: {applier.rating} / 5</p>
+                <p onClick={() => navigate(`/profile/review/walk/view/${applier.userId}`)} className="font-semibold text-blue-500 underline cursor-pointer">
+                  받은 리뷰: {applier.reviewCount}개
+                </p>
               </div>
-              <button onClick={() => handleApplierSelection(index)} className="px-4 py-2 bg-blue-500 text-white rounded-lg">
+              <button onClick={() => handleApplierSelection(index)} className="px-4 py-2 font-bold bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors shadow-button">
                 수락
               </button>
             </li>

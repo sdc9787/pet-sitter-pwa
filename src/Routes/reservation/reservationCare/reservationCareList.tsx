@@ -113,6 +113,11 @@ function ReservationCareList() {
                 <div className="text-lg font-bold">{care.title}</div>
                 <div className="flex justify-start items-center gap-1">
                   <div className="text-lg font-bold">{care.caregiverNickname}</div>
+                  <div className="flex items-center justify-center">
+                    <i className="xi-star text-main"></i>
+                    <div className="text-base font-bold">{care.caregiverRating}</div>
+                  </div>
+                  <div className="text-base font-bold text-zinc-500 underline">리뷰 {care.caregiverReviewCount}개</div>
                   <div className="text-base font-semibold text-gray-600">{care.administrativeAddress1}</div>
                   <div className="text-base font-semibold text-gray-600">{care.administrativeAddress2}</div>
                   <div className="text-sm text-gray-600">{care.distance.toFixed(2)} km</div>
