@@ -28,6 +28,7 @@ interface Comment {
 }
 
 function CommunityDetail() {
+  const [loading, setLoading] = useState(true); //로딩
   const navgate = useNavigate(); //페이지 이동
   const alertBox = useAlert(); //알림창
   const { id } = useParams();

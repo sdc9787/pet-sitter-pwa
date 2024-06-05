@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import { setChat } from "../../Store/store";
 import dayjs from "dayjs";
+import Loading from "../../Component/loading/loading";
 
 type ChatDetailType = {
   sender: string;
@@ -15,6 +16,7 @@ type ChatDetailType = {
 };
 
 function ChatDetail() {
+  const [loading, setLoading] = useState<boolean>(true); //로딩
   const { id } = useParams();
   const dispatch = useDispatch();
   const chatList = useSelector((state: { chat: any }) => state.chat);
@@ -50,6 +52,9 @@ function ChatDetail() {
       })
       .catch((error) => {
         console.error(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, [id]);
 
@@ -76,23 +81,9 @@ function ChatDetail() {
     scrollToBottom();
   }, [chatList]);
 
-  const groupMessagesBySenderAndTime = (messages: ChatDetailType[]) => {
-    const groupedMessages: { [key: string]: ChatDetailType[] } = {};
-    messages.forEach((message, index) => {
-      const prevMessage = messages[index - 1];
-      const currentKey = `${message.sender}-${dayjs(message.sendTime).format("HH:mm")}`;
-      const prevKey = prevMessage ? `${prevMessage.sender}-${dayjs(prevMessage.sendTime).format("HH:mm")}` : null;
-
-      if (currentKey === prevKey) {
-        groupedMessages[prevKey!].push(message);
-      } else {
-        groupedMessages[currentKey] = [message];
-      }
-    });
-    return groupedMessages;
-  };
-
-  const groupedMessages = groupMessagesBySenderAndTime(chatList);
+  if (loading) {
+    return <Loading></Loading>;
+  }
 
   return (
     <>
@@ -100,7 +91,32 @@ function ChatDetail() {
       <div className="w-full h-screen px-2">
         <div className="mt-18 overflow-auto">
           {/*채팅 내역 */}
-          {Object.keys(groupedMessages).map((key, index) => {
+          {chatList.map((chat: ChatDetailType, index: number) => {
+            const isOwnMessage = chat.sender === nickname || chat.sender === email;
+            const showProfileImage = index === 0 || chat.sender !== chatList[index - 1].sender;
+            const showTime = index === chatList.length - 1 || chat.sender !== chatList[index + 1].sender;
+
+            return (
+              <div key={index} className={`flex ${isOwnMessage ? "justify-end" : "justify-start"} my-2`}>
+                {!isOwnMessage && showProfileImage ? <img src={image} alt="profile" className="w-10 h-10 rounded-full mr-2" /> : <div className="w-10 h-10 bg-white mr-2"></div>}
+                <div className="flex flex-col items-end">
+                  {isOwnMessage ? (
+                    <div className="flex justify-end items-end">
+                      {showTime && <div className="text-xs mr-2 mb-1 font-bold">{dayjs(chat.sendTime).format("HH:mm")}</div>}
+                      <div className={`py-2 px-3 rounded-xl bg-blue-300 my-1 flex items-center font-semibold max-w-64`}>{chat.content}</div>
+                    </div>
+                  ) : (
+                    <div className="flex justify-start items-end ">
+                      <div className={`py-2 px-3 rounded-xl bg-zinc-200 my-1 flex items-center font-semibold max-w-64`}>{chat.content}</div>
+                      {showTime && <div className="text-xs ml-2 mb-1 font-bold">{dayjs(chat.sendTime).format("HH:mm")}</div>}
+                    </div>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+
+          {/* {Object.keys(groupedMessages).map((key, index) => {
             const messageGroup = groupedMessages[key];
             const firstMessage = messageGroup[0];
             const lastMessage = messageGroup[messageGroup.length - 1];
@@ -127,34 +143,8 @@ function ChatDetail() {
                 </div>
               </div>
             );
-          })}
-
-          {/* {chatList.map((chat: ChatDetailType, index: number) => {
-            return (
-              <div key={index} className="flex flex-col justify-center items-center w-full">
-                {chat.sender === nickname || chat.sender === email ? (
-                  <div className="self-end">
-                    <div className="flex self-end">
-                      <div className="bg-blue-300 p-2 m-2 rounded-xl font-semibold">
-                        <div className="text-left">{chat.content}</div>
-                        <div className="text-xs">{chat.sendTime}</div>
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="self-start">
-                    <div className="flex self-start">
-                      <img src={image} alt="profile" className="w-12 h-12 rounded-full" />
-                      <div className="bg-zinc-300 p-2 m-2 rounded-xl font-semibold">
-                        <div className="text-left">{chat.content}</div>
-                        <div className="text-xs">{chat.sendTime}</div>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
           })} */}
+
           <div ref={messagesEndRef} />
           <div className="pb-20"></div>
           {/*채팅 입력*/}

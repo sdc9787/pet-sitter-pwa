@@ -6,6 +6,7 @@ import Topbar from "../../Component/topbar/topbar";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { setProfileImage } from "../../Store/store";
+import Loading from "../../Component/loading/loading";
 
 // [
 //   {
@@ -30,6 +31,7 @@ type ChatListType = {
 };
 
 function ChatMain() {
+  const [loading, setLoading] = useState<boolean>(true); //로딩
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [chatList, setChatList] = useState<ChatListType[]>([]);
@@ -43,6 +45,9 @@ function ChatMain() {
       })
       .catch((error) => {
         console.error(error);
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }, []);
 
@@ -56,6 +61,10 @@ function ChatMain() {
       return format(date, "MMM d일");
     }
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <>
@@ -73,12 +82,12 @@ function ChatMain() {
                 className="flex items-center justify-between p-4 border-b border-gray-300">
                 <div className="flex items-center">
                   <img src={chat.image} alt="profile" className="w-12 h-12 rounded-full" />
-                  <div className="ml-4">
+                  <div className="ml-4 max-w-52">
                     <div className="text-lg font-bold">{chat.reverse_user}</div>
                     <div className="text-sm text-zinc-500">{chat.latestMessage === null ? "아직 채팅을 시작하지 않았습니다" : chat.latestMessage}</div>
                   </div>
                 </div>
-                <div className="text-sm text-gray-400">{formatDate(chat.updatedAt)}</div>
+                <div className="text-sm text-gray-400 text-nowrap">{formatDate(chat.updatedAt)}</div>
               </div>
             );
           })}
