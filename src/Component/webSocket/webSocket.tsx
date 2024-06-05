@@ -1,7 +1,8 @@
 // WebSocketContext.js
 import React, { createContext, useState, useEffect, useContext, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { setChat } from "../../Store/store";
+import { useSelector } from "react-redux";
 
 type WebSocketContextType = {
   ws1: WebSocket | null;
@@ -71,19 +72,16 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("Authorization");
-    if (token) {
-      const ws1 = connectWebSocket(websocketUrl1, "1");
-      const ws2 = connectWebSocket(websocketUrl2, "2");
+    const ws1 = connectWebSocket(websocketUrl1, "1");
+    const ws2 = connectWebSocket(websocketUrl2, "2");
 
-      setWs1(ws1);
-      setWs2(ws2);
+    setWs1(ws1);
+    setWs2(ws2);
 
-      return () => {
-        ws1.close();
-        ws2.close();
-      };
-    }
+    return () => {
+      ws1.close();
+      ws2.close();
+    };
   }, []);
 
   return <WebSocketContext.Provider value={{ ws1, ws2 }}>{children}</WebSocketContext.Provider>;
