@@ -132,7 +132,7 @@ function ReservationWalkPartnerMain() {
           console.error(err);
         });
     }
-  }, [matchingState]);
+  }, [matchingState, distance]);
 
   // 1초마다 시간 감소(타이머)
   useEffect(() => {
@@ -246,6 +246,10 @@ function ReservationWalkPartnerMain() {
     };
   }, [matchingState, matchingTime]);
 
+  const handleDistanceChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setDistance(Number(e.target.value));
+  };
+
   // 로딩페이지
   if (loading == true) {
     return <Loading></Loading>;
@@ -255,6 +259,16 @@ function ReservationWalkPartnerMain() {
     <>
       <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭"></Topbar>
       <div className="w-full h-screen bg-gray-100">
+        <div className="absolute top-20 left-4 bg-main text-white font-semibold px-3 py-1 rounded-md text-sm">
+          검색범위
+          <select value={distance} onChange={handleDistanceChange} className="ml-2 p-1 bg-main text-white font-semibold text-sm rounded">
+            {[1, 2, 3, 4, 5].map((d) => (
+              <option className="font-semibold text-sm" key={d} value={d}>
+                {d} km
+              </option>
+            ))}
+          </select>
+        </div>
         {isAllTimersExpired == true && matchingState == 0 ? (
           <div className="flex flex-col justify-center items-center h-full">
             <p className="text-xl font-bold">주변에 산책 글이 없습니다</p>
