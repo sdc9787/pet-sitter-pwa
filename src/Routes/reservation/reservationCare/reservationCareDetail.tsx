@@ -41,6 +41,7 @@ function ReservationCareDetail() {
           homeLongitude: Number(locate.longitude),
         })
         .then((r: any) => {
+          console.log(r.data);
           const formattedUnavailableDates = r.data.unavailableDate.map((date: string) => new Date(date).toLocaleDateString("sv-SE"));
           dispatch(setUnavailableDate(formattedUnavailableDates));
           setCareData({ ...r.data, unavailableDate: formattedUnavailableDates });
