@@ -152,7 +152,7 @@ function CommunityDetail() {
         <span className="text-2xl font-extrabold mb-3">{detail.title}</span>
         {/* 작성자 정보 */}
         <div className="text-sm flex justify-center items-center gap-3 mb-1">
-          <span className="font-semibold">{detail.title}</span>
+          <span className="font-semibold">{detail.nickname}</span>
           <span className="font-semibold">댓글 : {detail.commentCount}개</span>
           <span className="font-semibold">추천 : {detail.likeCount}개</span>
           <span className="font-semibold">조회수 : {detail.viewCount}</span>

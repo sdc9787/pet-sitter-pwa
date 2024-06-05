@@ -107,7 +107,7 @@ function ReservationCareDetail() {
                 <i className="xi-star text-main"></i>
                 <div className="text-base font-bold">{careData.caregiverRating}</div>
               </div>
-              <div onClick={() => navigate(`/profile/review/care/view/${careData.carePostId}`)} className="text-base font-bold text-zinc-500 underline">
+              <div onClick={() => (careData.caregiverReviewCount == 0 ? null : navigate(`/profile/review/care/view/${careData.carePostId}`))} className="text-base font-bold text-zinc-500 underline">
                 리뷰 {careData.caregiverReviewCount}개
               </div>
               <div className="flex gap-1">
@@ -120,7 +120,7 @@ function ReservationCareDetail() {
             </div>
             <div className="mt-5 text-base font-bold">{careData.content}</div>
             <div className="mb-4">
-              <h3 className="text-xl font-semibold">Unavailable Dates:</h3>
+              <h3 className="text-xl font-semibold">예약 불가능 날짜</h3>
               <ul className="list-disc list-inside">
                 {careData.unavailableDate.map((date, index) => (
                   <li key={index}>{date}</li>

@@ -5,21 +5,8 @@ import instanceJson from "../../Component/axios/axiosJson";
 import { useWebSocket } from "../../Component/webSocket/webSocket";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import { set } from "date-fns";
 import { setChat } from "../../Store/store";
-
-// [
-//   {
-//       "sender": "ahavvsvw",
-//       "content": "채팅 메세지 테스트",
-//       "sendTime": "2024-06-04T23:31:16"
-//   },
-//   {
-//       "sender": "test9",
-//       "content": "채팅 메세지 테스트",
-//       "sendTime": "2024-06-04T23:32:03"
-//   }
-// ]
+import dayjs from "dayjs";
 
 type ChatDetailType = {
   sender: string;
@@ -66,7 +53,6 @@ function ChatDetail() {
       });
   }, [id]);
 
-  //처음 채팅방에 들어왔을때 join 메시지 전송
   useEffect(() => {
     const message = {
       type: "join",
@@ -90,13 +76,60 @@ function ChatDetail() {
     scrollToBottom();
   }, [chatList]);
 
+  const groupMessagesBySenderAndTime = (messages: ChatDetailType[]) => {
+    const groupedMessages: { [key: string]: ChatDetailType[] } = {};
+    messages.forEach((message, index) => {
+      const prevMessage = messages[index - 1];
+      const currentKey = `${message.sender}-${dayjs(message.sendTime).format("HH:mm")}`;
+      const prevKey = prevMessage ? `${prevMessage.sender}-${dayjs(prevMessage.sendTime).format("HH:mm")}` : null;
+
+      if (currentKey === prevKey) {
+        groupedMessages[prevKey!].push(message);
+      } else {
+        groupedMessages[currentKey] = [message];
+      }
+    });
+    return groupedMessages;
+  };
+
+  const groupedMessages = groupMessagesBySenderAndTime(chatList);
+
   return (
     <>
       <Topbar backUrl="/chat" title="채팅내역" />
       <div className="w-full h-screen px-2">
-        <div className="mt-18">
+        <div className="mt-18 overflow-auto">
           {/*채팅 내역 */}
-          {chatList.map((chat: ChatDetailType, index: number) => {
+          {Object.keys(groupedMessages).map((key, index) => {
+            const messageGroup = groupedMessages[key];
+            const firstMessage = messageGroup[0];
+            const lastMessage = messageGroup[messageGroup.length - 1];
+            const isOwnMessage = firstMessage.sender === nickname || firstMessage.sender === email;
+            return (
+              <div key={index} className={`flex ${isOwnMessage ? "justify-end" : "justify-start"} my-2`}>
+                {!isOwnMessage && <img src={image} alt="profile" className="w-10 h-10 rounded-full mr-2" />}
+                <div>
+                  {messageGroup.map((chat, msgIndex) => (
+                    <div key={msgIndex}>
+                      {isOwnMessage ? (
+                        <div className="flex justify-end items-end">
+                          {msgIndex === messageGroup.length - 1 && <div className="text-xs ml-2 mb-2">{dayjs(chat.sendTime).format("HH:mm")}</div>}
+                          <div className={`p-2 rounded-xl ${isOwnMessage ? "bg-blue-300" : "bg-zinc-200"} my-1 flex items-center`}>{chat.content}</div>
+                        </div>
+                      ) : (
+                        <div className="flex justify-start items-end">
+                          <div className={`p-2 rounded-xl ${isOwnMessage ? "bg-blue-300" : "bg-zinc-200"} my-1 flex items-center`}>{chat.content}</div>
+                          {msgIndex === messageGroup.length - 1 && <div className="text-xs ml-2">{dayjs(chat.sendTime).format("HH:mm")}</div>}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })}
+
+          {/* {chatList.map((chat: ChatDetailType, index: number) => {
             return (
               <div key={index} className="flex flex-col justify-center items-center w-full">
                 {chat.sender === nickname || chat.sender === email ? (
@@ -121,7 +154,7 @@ function ChatDetail() {
                 )}
               </div>
             );
-          })}
+          })} */}
           <div ref={messagesEndRef} />
           <div className="pb-20"></div>
           {/*채팅 입력*/}
