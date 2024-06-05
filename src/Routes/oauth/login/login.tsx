@@ -36,9 +36,13 @@ function Login() {
         console.log(res.headers);
         localStorage.setItem("Authorization", res.headers.authorization); //토큰 저장
         localStorage.setItem("refresh_token", res.headers.refresh_token); //리프레시 토큰 저장
-        localStorage.setItem("nickname", res.headers.nickname); //닉네임 저장
         localStorage.setItem("partnership", res.headers.partnership); //파트너십 저장
         localStorage.setItem("email", res.headers.email); //이메일 저장
+
+        //닉네임을 디코딩하여 저장
+        const nickname = decodeURIComponent(res.headers.nickname);
+        localStorage.setItem("nickname", nickname);
+
         dispatch(selectedTab(0)); //탭바 초기화
 
         //회원가입 추가 정보가 있는지 확인

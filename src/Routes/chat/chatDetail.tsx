@@ -102,7 +102,7 @@ function ChatDetail() {
                 {chat.sender === nickname || chat.sender === email ? (
                   <div className="self-end">
                     <div className="flex self-end">
-                      <div className="bg-main p-2 m-2 rounded-xl font-semibold">
+                      <div className="bg-blue-300 p-2 m-2 rounded-xl font-semibold">
                         <div className="text-left">{chat.content}</div>
                         <div className="text-xs">{chat.sendTime}</div>
                       </div>
