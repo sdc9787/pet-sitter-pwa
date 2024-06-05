@@ -113,13 +113,13 @@ function ChatDetail() {
                     <div key={msgIndex}>
                       {isOwnMessage ? (
                         <div className="flex justify-end items-end">
-                          {msgIndex === messageGroup.length - 1 && <div className="text-xs ml-2 mb-2">{dayjs(chat.sendTime).format("HH:mm")}</div>}
-                          <div className={`p-2 rounded-xl ${isOwnMessage ? "bg-blue-300" : "bg-zinc-200"} my-1 flex items-center`}>{chat.content}</div>
+                          {msgIndex === messageGroup.length - 1 && <div className="text-xs mr-2 mb-1 font-bold">{dayjs(chat.sendTime).format("HH:mm")}</div>}
+                          <div className={`p-2 rounded-xl ${isOwnMessage ? "bg-blue-300" : "bg-zinc-200"} my-1 flex items-center font-bold max-w-64`}>{chat.content}</div>
                         </div>
                       ) : (
                         <div className="flex justify-start items-end">
-                          <div className={`p-2 rounded-xl ${isOwnMessage ? "bg-blue-300" : "bg-zinc-200"} my-1 flex items-center`}>{chat.content}</div>
-                          {msgIndex === messageGroup.length - 1 && <div className="text-xs ml-2">{dayjs(chat.sendTime).format("HH:mm")}</div>}
+                          <div className={`p-2 rounded-xl ${isOwnMessage ? "bg-blue-300" : "bg-zinc-200"} my-1 flex items-center font-bold max-w-64`}>{chat.content}</div>
+                          {msgIndex === messageGroup.length - 1 && <div className="text-xs ml-2 mb-1 font-bold">{dayjs(chat.sendTime).format("HH:mm")}</div>}
                         </div>
                       )}
                     </div>
@@ -158,10 +158,10 @@ function ChatDetail() {
           <div ref={messagesEndRef} />
           <div className="pb-20"></div>
           {/*채팅 입력*/}
-          <div className="fixed bottom-0 left-0 right-0 flex w-full">
-            <input value={input} onChange={(e) => setInput(e.target.value)} className="bg-zinc-300 w-full p-2 font-semibold" type="text" />
+          <div className="fixed bottom-0 left-0 right-0 flex w-full border-t border-zinc-500">
+            <input value={input} onChange={(e) => setInput(e.target.value)} className="bg-zinc-100 w-full p-2 font-semibold" type="text" />
             <div className="bg-main flex justify-center items-center">
-              <i onClick={() => sendMessage()} className="xi-send xi-2x pl-4 pr-2 py-3 text-white"></i>
+              <i onClick={() => sendMessage()} className="xi-send xi-2x pl-4 pr-3 py-3 text-white"></i>
             </div>
           </div>
         </div>
