@@ -25,10 +25,15 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const chatListRef = useRef(chatList);
   const { latitude, longitude } = useGeolocationWithAddress(); // 위치 정보를 받아오는 훅
   const partnerState = useSelector((state: { partnerState: number }) => state.partnerState);
+  const partnerStateRef = useRef(partnerState);
 
   useEffect(() => {
     chatListRef.current = chatList;
   }, [chatList]);
+
+  useEffect(() => {
+    partnerStateRef.current = partnerState;
+  }, [partnerState]);
 
   const websocketUrl1 = `${import.meta.env.VITE_APP_API_URL}/chat`;
   const websocketUrl2 = `${import.meta.env.VITE_APP_API_URL}/notifications`;
