@@ -133,6 +133,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
       positionInterval = setInterval(() => {
         if (latitude && longitude) {
           const position = {
+            type: "location",
             latitude: latitude,
             longitude: longitude,
           };
