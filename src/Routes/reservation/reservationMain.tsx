@@ -15,11 +15,10 @@ function ReservationMain() {
       {/* 메인 카드 */}
       <div className="flex-grow p-4 bg-gray-100">
         <div className="grid grid-cols-2 gap-4">
-          <ReservationMainCard navigateProps={Number(localStorage.getItem("partnership")) === 0 ? "/reservation/care" : "/reservation/care/partner"} title="돌봄" description="LIVE 영상으로 돌봄 모습 확인" />
+          <ReservationMainCard navigateProps={Number(localStorage.getItem("partnership")) === 0 ? "/reservation/care" : "/reservation/care/partner"} title="돌봄" description="인증 받은 파트너가 돌봐드려요" />
           <ReservationMainCard navigateProps={Number(localStorage.getItem("partnership")) === 0 ? "/reservation/walk" : "/reservation/walk/partner/list"} title="산책" description="GPS 경로와 함께 산책 모습 확인" />
-          <div className="col-span-2">
-            <ReservationMainCard navigateProps="/map" title="펫 플레이스" description="반려동물과 함께하는 모든 장소" />
-          </div>
+          <ReservationMainCard navigateProps="/map" title="펫 플레이스" description="반려동물과 함께하는 모든 장소" />
+          <ReservationMainCard navigateProps="/community" title="커뮤니티" description="애견인들의 정보공유 공간" />
         </div>
       </div>
       <TabBar></TabBar>

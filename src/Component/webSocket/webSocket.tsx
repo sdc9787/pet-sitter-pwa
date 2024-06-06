@@ -146,7 +146,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     ws.onmessage = function (event) {
       const data = JSON.parse(event.data);
       if (data.type === "location") {
-        console.log(`Location from server ${websocketLabel}:`, data.message);
+        console.log(`Location from server ${websocketLabel}:`, data);
         // Handle the location message as needed
       }
     };

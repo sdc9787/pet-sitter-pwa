@@ -16,7 +16,7 @@ const ReservationMainCard: React.FC<CardProps> = ({ title, description, navigate
         <div className="flex items-center justify-between">
           <div className="text-lg font-bold">{title}</div>
         </div>
-        <p className="text-gray-600">{description}</p>
+        <p className="text-zinc-500 text-balance">{description}</p>
       </div>
     </>
   );
