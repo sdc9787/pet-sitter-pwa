@@ -198,17 +198,17 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
           console.error(error);
         });
 
-      // const ws1 = connectWebSocket(websocketUrl1, "1");
-      // const ws2 = connectWebSocket2(websocketUrl2, "2");
+      const ws1 = connectWebSocket(websocketUrl1, "1");
+      const ws2 = connectWebSocket2(websocketUrl2, "2");
       const ws3 = connectWebSocket3(websocketUrl3, "3");
 
-      // setWs1(ws1);
-      // setWs2(ws2);
+      setWs1(ws1);
+      setWs2(ws2);
       setWs3(ws3);
 
       return () => {
-        // if (ws1) ws1.close();
-        // if (ws2) ws2.close();
+        if (ws1) ws1.close();
+        if (ws2) ws2.close();
         if (ws3) ws3.close();
       };
     }
