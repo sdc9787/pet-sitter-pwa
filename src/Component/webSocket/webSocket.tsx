@@ -143,7 +143,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
       // 주기적으로 위치 정보 전송
       positionInterval = setInterval(() => {
-        if (latitude && longitude && partnerState === 1) {
+        if (latitude && longitude) {
           const position = {
             type: "location",
             latitude: latitude,
