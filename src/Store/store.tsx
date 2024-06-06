@@ -248,6 +248,16 @@ let chat = createSlice({
   },
 });
 
+let partnerState = createSlice({
+  name: "partnerState",
+  initialState: 0,
+  reducers: {
+    setPartnerState: (state, action: PayloadAction<number>) => {
+      return action.payload;
+    },
+  },
+});
+
 let store = configureStore({
   reducer: {
     tabbar: tabbar.reducer,
@@ -260,6 +270,7 @@ let store = configureStore({
     careSelectedAvailablePet: careSelectedAvailablePet.reducer,
     profileImage: profileImage.reducer,
     chat: chat.reducer,
+    partnerState: partnerState.reducer,
   },
 });
 
@@ -275,5 +286,6 @@ export let { setCareSelectedAvailableDates } = careSelectedAvailableDates.action
 export let { setCareSelectedAvailablePet } = careSelectedAvailablePet.actions;
 export let { setProfileImage } = profileImage.actions;
 export let { setChat } = chat.actions;
+export let { setPartnerState } = partnerState.actions;
 
 export default store;

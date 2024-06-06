@@ -1,10 +1,10 @@
 // WebSocketContext.js
 import React, { createContext, useState, useEffect, useContext, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setChat } from "../../Store/store";
+import { setChat, setPartnerState } from "../../Store/store";
 import { useAlert } from "../../hook/useAlert/useAlert";
 import { useGeolocationWithAddress } from "../../hook/useGeolocation/useGeolocation";
-import { set } from "date-fns";
+import instanceJson from "../axios/axiosJson";
 
 type WebSocketContextType = {
   ws1: WebSocket | null;
@@ -24,6 +24,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const chatList = useSelector((state: { chat: any }) => state.chat);
   const chatListRef = useRef(chatList);
   const { latitude, longitude } = useGeolocationWithAddress(); // 위치 정보를 받아오는 훅
+  const partnerState = useSelector((state: { partnerState: number }) => state.partnerState);
 
   useEffect(() => {
     chatListRef.current = chatList;
@@ -68,7 +69,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
     ws.onclose = function (event) {
       console.log(`WebSocket connection ${websocketLabel} closed`, event);
-      connectWebSocket(websocketUrl, websocketLabel); // 즉시 재연결
+      setTimeout(() => connectWebSocket(websocketUrl, websocketLabel), 5000); // 5초 후 재연결
     };
 
     return ws;
@@ -96,6 +97,12 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
       if (data.type === "notification") {
         alertBox(data.message);
         console.log(`Notification from server ${websocketLabel}:`, data.message);
+        if (data.message === "매칭이 성사되었습니다" || data.message === "산책이 시작되었습니다") {
+          dispatch(setPartnerState(1));
+        } else if (data.message === "산책이 종료되었습니다") {
+          dispatch(setPartnerState(0));
+        }
+
         // Handle the notification message as needed
       }
     };
@@ -106,7 +113,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
     ws.onclose = function (event) {
       console.log(`WebSocket connection ${websocketLabel} closed`, event);
-      connectWebSocket2(websocketUrl, websocketLabel); // 즉시 재연결
+      setTimeout(() => connectWebSocket2(websocketUrl, websocketLabel), 5000); // 5초 후 재연결
     };
 
     return ws;
@@ -131,7 +138,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
       // 주기적으로 위치 정보 전송
       positionInterval = setInterval(() => {
-        if (latitude && longitude) {
+        if (latitude && longitude && partnerState === 1) {
           const position = {
             type: "location",
             latitude: latitude,
@@ -158,11 +165,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     ws.onclose = function (event) {
       console.log(`WebSocket connection ${websocketLabel} closed`, event);
       //5초마다 재연결
-      // setInterval(() => {
-      //   connectWebSocket3(websocketUrl, websocketLabel);
-      // }, 5000);
+      setTimeout(() => connectWebSocket3(websocketUrl, websocketLabel), 5000);
 
-      connectWebSocket3(websocketUrl, websocketLabel); // 즉시 재연결
       if (positionInterval) {
         clearInterval(positionInterval); // 위치 전송 중지
       }
@@ -173,7 +177,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
-    if (token) {
+    if (token && latitude && longitude) {
       const ws1 = connectWebSocket(websocketUrl1, "1");
       const ws2 = connectWebSocket2(websocketUrl2, "2");
       const ws3 = connectWebSocket3(websocketUrl3, "3");
@@ -183,12 +187,25 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
       setWs3(ws3);
 
       return () => {
-        ws1.close();
-        ws2.close();
-        ws3.close();
+        if (ws1) ws1.close();
+        if (ws2) ws2.close();
+        if (ws3) ws3.close();
       };
     }
   }, [latitude, longitude]);
+
+  useEffect(() => {
+    instanceJson
+      .get("/mypage/status")
+      .then((res) => {
+        if (res.data.partnerWalk === "매칭만완료" || res.data.partnerWalk === "현재산책중") {
+          dispatch(setPartnerState(1));
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   return <WebSocketContext.Provider value={{ ws1, ws2, ws3 }}>{children}</WebSocketContext.Provider>;
 };
