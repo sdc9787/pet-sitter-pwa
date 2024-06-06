@@ -42,6 +42,7 @@ function ReservationWalkPartnerMain() {
   const [matchingTime, setMatchingTime] = useState<number>(0);
   const [matchingTimeRemaining, setMatchingTimeRemaining] = useState<number>(0); // New state for matchingTime remaining
   const matchingIntervalRef = useRef<NodeJS.Timeout | null>(null); // New ref for matchingTime interval
+  const [refreshKey, setRefreshKey] = useState<number>(0); // State for key refresh
 
   // 파트너가 산책글 작성했는지 확인
   useEffect(() => {
@@ -61,7 +62,7 @@ function ReservationWalkPartnerMain() {
       //파트너가 산책 시작 버튼을 눌렀을때
       else if (status === "현재산책중") setMatchingState(2);
     });
-  }, []);
+  }, [refreshKey]);
 
   // 예약 리스트 불러오기
   const reservationListApi = () => {
@@ -132,7 +133,7 @@ function ReservationWalkPartnerMain() {
           console.error(err);
         });
     }
-  }, [matchingState, distance]);
+  }, [matchingState, distance, refreshKey]);
 
   // 1초마다 시간 감소(타이머)
   useEffect(() => {
@@ -257,7 +258,7 @@ function ReservationWalkPartnerMain() {
 
   return (
     <>
-      <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭"></Topbar>
+      <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭" sendText="재검색" sendFunction={() => setRefreshKey((oldKey) => oldKey + 1)}></Topbar>
       <div className="w-full h-screen bg-gray-100">
         <div className="z-10 absolute top-20 left-4 bg-main text-white font-semibold px-3 py-1 rounded-md text-sm">
           검색범위
