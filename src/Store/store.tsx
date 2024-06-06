@@ -258,6 +258,17 @@ let partnerState = createSlice({
   },
 });
 
+let walkLocation = createSlice({
+  name: "walkLocation",
+  initialState: { latitude: 0, longitude: 0 },
+  reducers: {
+    setWalkLocation: (state, action: PayloadAction<{ latitude: number; longitude: number }>) => {
+      state.latitude = action.payload.latitude;
+      state.longitude = action.payload.longitude;
+    },
+  },
+});
+
 let store = configureStore({
   reducer: {
     tabbar: tabbar.reducer,
@@ -271,6 +282,7 @@ let store = configureStore({
     profileImage: profileImage.reducer,
     chat: chat.reducer,
     partnerState: partnerState.reducer,
+    walkLocation: walkLocation.reducer,
   },
 });
 
@@ -287,5 +299,6 @@ export let { setCareSelectedAvailablePet } = careSelectedAvailablePet.actions;
 export let { setProfileImage } = profileImage.actions;
 export let { setChat } = chat.actions;
 export let { setPartnerState } = partnerState.actions;
+export let { setWalkLocation } = walkLocation.actions;
 
 export default store;

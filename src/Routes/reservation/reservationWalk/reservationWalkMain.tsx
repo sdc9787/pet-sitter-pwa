@@ -3,7 +3,8 @@ import instanceJson from "../../../Component/axios/axiosJson";
 import Topbar from "../../../Component/topbar/topbar";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../../../hook/useAlert/useAlert";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../Store/store";
 import { setWalkDataAll, setWalkTime } from "../../../Store/store";
 import ActionBtn from "../../../Component/actionBtn/actionBtn";
 
@@ -49,6 +50,7 @@ function ReservationWalkMain() {
   const matchingIntervalRef = useRef<NodeJS.Timeout | null>(null); // New ref for matchingTime interval
   const alertBox = useAlert();
   const dispatch = useDispatch();
+  const partnerLocation = useSelector((state: RootState) => state.walkLocation);
 
   useEffect(() => {
     instanceJson
@@ -87,11 +89,29 @@ function ReservationWalkMain() {
         const markerPosition = new kakao.maps.LatLng(walkData.latitude, walkData.longitude);
         const marker = new kakao.maps.Marker({ position: markerPosition });
         marker.setMap(map);
+
+        // Partner location marker
+        const partnerMarker = new kakao.maps.Marker({
+          position: new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude),
+        });
+        partnerMarker.setMap(map);
+
+        // Update partner marker position when partner location changes
+        const updatePartnerMarker = () => {
+          partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude));
+        };
+
+        updatePartnerMarker();
+        const partnerLocationInterval = setInterval(updatePartnerMarker, 10000);
+
+        return () => {
+          clearInterval(partnerLocationInterval);
+        };
       } else {
         console.error("Map container not found");
       }
     }
-  }, [walkData]);
+  }, [walkData, partnerLocation]);
 
   // Timer for remaining time
   useEffect(() => {

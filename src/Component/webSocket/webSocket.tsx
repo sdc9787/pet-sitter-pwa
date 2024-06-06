@@ -1,7 +1,7 @@
 // WebSocketContext.js
 import React, { createContext, useState, useEffect, useContext, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setChat, setPartnerState } from "../../Store/store";
+import { setChat, setLocation, setPartnerState, setWalkLocation } from "../../Store/store";
 import { useAlert } from "../../hook/useAlert/useAlert";
 import { useGeolocationWithAddress } from "../../hook/useGeolocation/useGeolocation";
 import instanceJson from "../axios/axiosJson";
@@ -154,6 +154,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
       const data = JSON.parse(event.data);
       if (data.type === "location") {
         console.log(`Location from server ${websocketLabel}:`, data);
+        dispatch(setWalkLocation({ latitude: data.latitude, longitude: data.longitude }));
         // Handle the location message as needed
       }
     };
@@ -178,6 +179,20 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
     if (token && latitude && longitude) {
+      instanceJson
+        .get("/mypage/status")
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.partnerWalk === "매칭만완료" || res.data.partnerWalk === "현재산책중") {
+            dispatch(setPartnerState(1));
+          } else {
+            dispatch(setPartnerState(0));
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
       const ws1 = connectWebSocket(websocketUrl1, "1");
       const ws2 = connectWebSocket2(websocketUrl2, "2");
       const ws3 = connectWebSocket3(websocketUrl3, "3");
@@ -195,17 +210,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   }, [latitude, longitude]);
 
   useEffect(() => {
-    instanceJson
-      .get("/mypage/status")
-      .then((res) => {
-        if (res.data.partnerWalk === "매칭만완료" || res.data.partnerWalk === "현재산책중") {
-          dispatch(setPartnerState(1));
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+    console.log(partnerState);
+  }, [partnerState]);
 
   return <WebSocketContext.Provider value={{ ws1, ws2, ws3 }}>{children}</WebSocketContext.Provider>;
 };
