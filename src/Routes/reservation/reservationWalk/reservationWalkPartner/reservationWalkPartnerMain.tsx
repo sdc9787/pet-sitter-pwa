@@ -170,8 +170,13 @@ function ReservationWalkPartnerMain() {
         userMarker.setMap(map);
 
         walkList.forEach((walk) => {
+          const markerImage = new kakao.maps.MarkerImage("/img/marker1.webp", new kakao.maps.Size(64, 64), { alt: "Destination" });
+
           const markerPosition = new kakao.maps.LatLng(walk.latitude, walk.longitude);
-          const marker = new kakao.maps.Marker({ position: markerPosition });
+          const marker = new kakao.maps.Marker({
+            position: markerPosition,
+            image: markerImage,
+          });
           marker.setMap(map);
           kakao.maps.event.addListener(marker, "click", () => {
             setSelectedWalkId(walk.id);
@@ -186,8 +191,14 @@ function ReservationWalkPartnerMain() {
         const userPosition = new kakao.maps.LatLng(latitude, longitude);
         const userMarker = new kakao.maps.Marker({ position: userPosition });
         userMarker.setMap(map);
+
+        const markerImage = new kakao.maps.MarkerImage("/img/marker2.webp", new kakao.maps.Size(64, 64), { alt: "Partner Location" });
+
         const markerPosition = new kakao.maps.LatLng(matchingList.latitude, matchingList.longitude);
-        const marker = new kakao.maps.Marker({ position: markerPosition });
+        const marker = new kakao.maps.Marker({
+          position: markerPosition,
+          image: markerImage,
+        });
         marker.setMap(map);
       } else {
         console.error("Map container not found");

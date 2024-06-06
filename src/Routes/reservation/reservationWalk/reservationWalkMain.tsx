@@ -21,7 +21,7 @@ interface Walk {
   latitude: number;
   longitude: number;
   createDate: string;
-  startTime: string; // Added to match response structure
+  startTime: string;
 }
 
 function ReservationWalkMain() {
@@ -43,11 +43,11 @@ function ReservationWalkMain() {
   const [walkListBool, setWalkListBool] = useState(true);
   const [remainingTime, setRemainingTime] = useState(300);
   const [matchingTime, setMatchingTime] = useState<number>(0);
-  const [matchingTimeRemaining, setMatchingTimeRemaining] = useState<number>(0); // New state for matchingTime remaining
+  const [matchingTimeRemaining, setMatchingTimeRemaining] = useState<number>(0);
   const [userState, setUserState] = useState<number>(0);
   const navigate = useNavigate();
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const matchingIntervalRef = useRef<NodeJS.Timeout | null>(null); // New ref for matchingTime interval
+  const matchingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const alertBox = useAlert();
   const dispatch = useDispatch();
   const partnerLocation = useSelector((state: RootState) => state.walkLocation);
@@ -68,7 +68,7 @@ function ReservationWalkMain() {
         const matchingTime = new Date(res.data.startTime);
         const diff2 = Math.floor((now.getTime() - matchingTime.getTime()) / 1000);
         setMatchingTime(diff2);
-        setMatchingTimeRemaining(diff2); // Initialize matchingTimeRemaining
+        setMatchingTimeRemaining(diff2);
       })
       .catch((err) => {
         if (err.response.data === "작성한 게시글이 없습니다") setWalkListBool(true);
@@ -86,17 +86,29 @@ function ReservationWalkMain() {
         };
         const map = new kakao.maps.Map(mapContainer, mapOption);
 
+        // 마커 이미지 설정
+        const markerImageUrl = "/img/marker1.webp";
+        const partnerMarkerImageUrl = "/img/marker2.webp";
+
+        const markerImage = new kakao.maps.MarkerImage(markerImageUrl, new kakao.maps.Size(64, 64), { alt: "Destination" });
+
+        const partnerMarkerImage = new kakao.maps.MarkerImage(partnerMarkerImageUrl, new kakao.maps.Size(64, 64), { alt: "Partner Location" });
+
+        // 도착 지점 마커
         const markerPosition = new kakao.maps.LatLng(walkData.latitude, walkData.longitude);
-        const marker = new kakao.maps.Marker({ position: markerPosition });
+        const marker = new kakao.maps.Marker({
+          position: markerPosition,
+          image: markerImage,
+        });
         marker.setMap(map);
 
-        // Partner location marker
+        // 파트너 위치 마커
         const partnerMarker = new kakao.maps.Marker({
           position: new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude),
+          image: partnerMarkerImage,
         });
         partnerMarker.setMap(map);
 
-        // Update partner marker position when partner location changes
         const updatePartnerMarker = () => {
           partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude));
         };
@@ -113,7 +125,6 @@ function ReservationWalkMain() {
     }
   }, [walkData, partnerLocation]);
 
-  // Timer for remaining time
   useEffect(() => {
     if (remainingTime > 0) {
       intervalRef.current = setInterval(() => {
@@ -132,7 +143,6 @@ function ReservationWalkMain() {
     };
   }, [remainingTime, walkListBool]);
 
-  // Timer for matching time
   useEffect(() => {
     if (userState === 2 && matchingTime > 0) {
       matchingIntervalRef.current = setInterval(() => {
@@ -147,21 +157,19 @@ function ReservationWalkMain() {
     };
   }, [userState, matchingTime]);
 
-  //산책글 취소
   function cancelWalk() {
     instanceJson
       .get(`/walk/delete/${walkData.id}`)
       .then((res) => {
         alertBox("산책 매칭이 취소되었습니다");
         setWalkListBool(true);
-        setMatchingTimeRemaining(0); // Reset matchingTimeRemaining
+        setMatchingTimeRemaining(0);
       })
       .catch((err) => {
         console.error(err);
       });
   }
 
-  //산책 완료 버튼
   function completeWalk() {
     instanceJson
       .get(`/walk/complete/${walkData.id}`)
@@ -175,7 +183,6 @@ function ReservationWalkMain() {
       });
   }
 
-  //문제 이용시 문의 버튼
   function reportWalk() {
     instanceJson
       .post(`/walk/incomplete/${walkData.id}`, { reason: "문제신고" })
