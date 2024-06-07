@@ -53,6 +53,11 @@ function ReservationWalkMain() {
   const alertBox = useAlert();
   const dispatch = useDispatch();
   const partnerLocation = useSelector((state: RootState) => state.walkLocation);
+  const partnerLocationRef = useRef(partnerLocation);
+
+  useEffect(() => {
+    partnerLocationRef.current = partnerLocation;
+  }, [partnerLocation]);
 
   useEffect(() => {
     instanceJson
@@ -106,7 +111,7 @@ function ReservationWalkMain() {
 
         // 파트너 위치 마커
         const partnerMarker = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude),
+          position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
           image: partnerMarkerImage,
         });
         partnerMarker.setMap(map);
