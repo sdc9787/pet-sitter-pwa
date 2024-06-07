@@ -1,7 +1,6 @@
-// WebSocketContext.js
 import React, { createContext, useState, useEffect, useContext, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setChat, setLocation, setPartnerState, setWalkLocation } from "../../Store/store";
+import { setChat, setPartnerState, setWalkLocation } from "../../Store/store";
 import { useAlert } from "../../hook/useAlert/useAlert";
 import { useGeolocationWithAddress } from "../../hook/useGeolocation/useGeolocation";
 import instanceJson from "../axios/axiosJson";
@@ -27,6 +26,9 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const partnerState = useSelector((state: { partnerState: number }) => state.partnerState);
   const partnerStateRef = useRef(partnerState);
 
+  const latitudeRef = useRef(latitude);
+  const longitudeRef = useRef(longitude);
+
   useEffect(() => {
     chatListRef.current = chatList;
   }, [chatList]);
@@ -34,6 +36,11 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   useEffect(() => {
     partnerStateRef.current = partnerState;
   }, [partnerState]);
+
+  useEffect(() => {
+    latitudeRef.current = latitude;
+    longitudeRef.current = longitude;
+  }, [latitude, longitude]);
 
   const websocketUrl1 = `${import.meta.env.VITE_APP_API_URL}/chat`;
   const websocketUrl2 = `${import.meta.env.VITE_APP_API_URL}/notifications`;
@@ -107,8 +114,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
         } else if (data.message === "산책이 종료되었습니다") {
           dispatch(setPartnerState(0));
         }
-
-        // Handle the notification message as needed
       }
     };
 
@@ -143,19 +148,16 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
       // 주기적으로 위치 정보 전송
       positionInterval = setInterval(() => {
-        //실시간으로 위치 정보를 받아오는 훅을 통해 위치 정보를 받아온다.
-        const { latitude, longitude } = useGeolocationWithAddress();
-
-        if (latitude && longitude && partnerStateRef.current == 1) {
+        if (latitudeRef.current && longitudeRef.current && partnerStateRef.current == 1) {
           const position = {
             type: "location",
-            latitude: latitude,
-            longitude: longitude,
+            latitude: latitudeRef.current,
+            longitude: longitudeRef.current,
           };
           ws.send(JSON.stringify(position));
           console.log(`Sent location: ${JSON.stringify(position)}`);
         }
-      }, 4000); // 10초마다 위치 전송
+      }, 4000); // 4초마다 위치 전송
     };
 
     ws.onmessage = function (event) {
@@ -163,7 +165,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
       if (data.type === "location") {
         console.log(`Location from server ${websocketLabel}:`, data);
         dispatch(setWalkLocation({ latitude: data.latitude, longitude: data.longitude }));
-        // Handle the location message as needed
       }
     };
 
@@ -173,8 +174,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
     ws.onclose = function (event) {
       console.log(`WebSocket connection ${websocketLabel} closed`, event);
-      //5초마다 재연결
-      setTimeout(() => connectWebSocket3(websocketUrl, websocketLabel), 5000);
+      setTimeout(() => connectWebSocket3(websocketUrl, websocketLabel), 5000); // 5초 후 재연결
 
       if (positionInterval) {
         clearInterval(positionInterval); // 위치 전송 중지
