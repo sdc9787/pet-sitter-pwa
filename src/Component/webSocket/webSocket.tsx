@@ -15,6 +15,12 @@ type WebSocketProviderProps = {
   children: React.ReactNode;
 };
 
+interface GeolocationState {
+  latitude: number | null;
+  longitude: number | null;
+  error: string | null;
+}
+
 const WebSocketContext = React.createContext<WebSocketContextType | null>(null);
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
@@ -22,12 +28,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const dispatch = useDispatch();
   const chatList = useSelector((state: { chat: any }) => state.chat);
   const chatListRef = useRef(chatList);
-  const { latitude, longitude } = useGeolocationWithAddress(); // 위치 정보를 받아오는 훅
   const partnerState = useSelector((state: { partnerState: number }) => state.partnerState);
   const partnerStateRef = useRef(partnerState);
-
-  const latitudeRef = useRef(latitude);
-  const longitudeRef = useRef(longitude);
 
   useEffect(() => {
     chatListRef.current = chatList;
@@ -36,11 +38,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   useEffect(() => {
     partnerStateRef.current = partnerState;
   }, [partnerState]);
-
-  useEffect(() => {
-    latitudeRef.current = latitude;
-    longitudeRef.current = longitude;
-  }, [latitude, longitude]);
 
   const websocketUrl1 = `${import.meta.env.VITE_APP_API_URL}/chat`;
   const websocketUrl2 = `${import.meta.env.VITE_APP_API_URL}/notifications`;
@@ -148,11 +145,54 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
       // 주기적으로 위치 정보 전송
       positionInterval = setInterval(() => {
-        if (latitudeRef.current && longitudeRef.current && partnerStateRef.current == 1) {
+        const [state, setState] = useState<GeolocationState>({
+          latitude: null,
+          longitude: null,
+          error: null,
+        });
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            (position) => {
+              setState({
+                latitude: position.coords.latitude,
+                longitude: position.coords.longitude,
+                error: null,
+              });
+            },
+            (error) => {
+              let errorMessage = "Error getting location";
+              switch (error.code) {
+                case error.PERMISSION_DENIED:
+                  errorMessage = "User denied the request for Geolocation.";
+                  break;
+                case error.POSITION_UNAVAILABLE:
+                  errorMessage = "Location information is unavailable.";
+                  break;
+                case error.TIMEOUT:
+                  errorMessage = "The request to get user location timed out.";
+                  break;
+              }
+              setState({
+                latitude: null,
+                longitude: null,
+                error: errorMessage,
+              });
+              console.error(errorMessage);
+            }
+          );
+        } else {
+          setState({
+            latitude: null,
+            longitude: null,
+            error: "Geolocation is not supported by this browser.",
+          });
+          console.error("Geolocation is not supported by this browser.");
+        }
+        if (state.latitude && state.longitude) {
           const position = {
             type: "location",
-            latitude: latitudeRef.current,
-            longitude: longitudeRef.current,
+            latitude: state.latitude,
+            longitude: state.longitude,
           };
           ws.send(JSON.stringify(position));
           console.log(`Sent location: ${JSON.stringify(position)}`);
@@ -186,7 +226,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
   useEffect(() => {
     const token = localStorage.getItem("Authorization");
-    if (token && latitude && longitude) {
+    if (token) {
       instanceJson
         .get("/mypage/status")
         .then((res) => {
@@ -215,7 +255,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
         if (ws3) ws3.close();
       };
     }
-  }, [latitude, longitude]);
+  }, []);
 
   useEffect(() => {
     console.log(partnerState);
