@@ -2,7 +2,6 @@ import React, { createContext, useState, useEffect, useContext, useRef } from "r
 import { useDispatch, useSelector } from "react-redux";
 import { setChat, setPartnerState, setWalkLocation } from "../../Store/store";
 import { useAlert } from "../../hook/useAlert/useAlert";
-import { useGeolocationWithAddress } from "../../hook/useGeolocation/useGeolocation";
 import instanceJson from "../axios/axiosJson";
 
 type WebSocketContextType = {
@@ -15,12 +14,6 @@ type WebSocketProviderProps = {
   children: React.ReactNode;
 };
 
-interface GeolocationState {
-  latitude: number | null;
-  longitude: number | null;
-  error: string | null;
-}
-
 const WebSocketContext = React.createContext<WebSocketContextType | null>(null);
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
@@ -30,11 +23,11 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const chatListRef = useRef(chatList);
   const partnerState = useSelector((state: { partnerState: number }) => state.partnerState);
   const partnerStateRef = useRef(partnerState);
-  const [state, setState] = useState<GeolocationState>({
+  const [location, setLocation] = useState<{ latitude: number | null; longitude: number | null }>({
     latitude: null,
     longitude: null,
-    error: null,
   });
+
   useEffect(() => {
     chatListRef.current = chatList;
   }, [chatList]);
@@ -152,55 +145,28 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             (position) => {
-              setState({
-                latitude: position.coords.latitude,
-                longitude: position.coords.longitude,
-                error: null,
-              });
+              const { latitude, longitude } = position.coords;
+              setLocation({ latitude, longitude });
+
+              if (latitude && longitude && partnerStateRef.current === 1) {
+                const pos = {
+                  type: "location",
+                  latitude,
+                  longitude,
+                };
+                ws.send(JSON.stringify(pos));
+                console.log(`Sent location: ${JSON.stringify(pos)}`);
+              }
             },
             (error) => {
-              let errorMessage = "Error getting location";
-              switch (error.code) {
-                case error.PERMISSION_DENIED:
-                  errorMessage = "User denied the request for Geolocation.";
-                  break;
-                case error.POSITION_UNAVAILABLE:
-                  errorMessage = "Location information is unavailable.";
-                  break;
-                case error.TIMEOUT:
-                  errorMessage = "The request to get user location timed out.";
-                  break;
-              }
-              setState({
-                latitude: null,
-                longitude: null,
-                error: errorMessage,
-              });
-              console.error(errorMessage);
+              console.error(`Error getting location: ${error.message}`);
             }
           );
         } else {
-          setState({
-            latitude: null,
-            longitude: null,
-            error: "Geolocation is not supported by this browser.",
-          });
           console.error("Geolocation is not supported by this browser.");
         }
-      }, 2000); // 4초마다 위치 전송
+      }, 4000); // 4초마다 위치 전송
     };
-
-    useEffect(() => {
-      if (state.latitude && state.longitude) {
-        const position = {
-          type: "location",
-          latitude: state.latitude,
-          longitude: state.longitude,
-        };
-        ws.send(JSON.stringify(position));
-        console.log(`Sent location: ${JSON.stringify(position)}`);
-      }
-    }, [state]);
 
     ws.onmessage = function (event) {
       const data = JSON.parse(event.data);
