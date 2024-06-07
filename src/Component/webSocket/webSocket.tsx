@@ -26,9 +26,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const partnerState = useSelector((state: { partnerState: number }) => state.partnerState);
   const partnerStateRef = useRef(partnerState);
 
-  const latitudeRef = useRef(latitude);
-  const longitudeRef = useRef(longitude);
-
   useEffect(() => {
     chatListRef.current = chatList;
   }, [chatList]);
@@ -36,11 +33,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   useEffect(() => {
     partnerStateRef.current = partnerState;
   }, [partnerState]);
-
-  useEffect(() => {
-    latitudeRef.current = latitude;
-    longitudeRef.current = longitude;
-  }, [latitude, longitude]);
 
   const websocketUrl1 = `${import.meta.env.VITE_APP_API_URL}/chat`;
   const websocketUrl2 = `${import.meta.env.VITE_APP_API_URL}/notifications`;
@@ -148,11 +140,12 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
       // 주기적으로 위치 정보 전송
       positionInterval = setInterval(() => {
-        if (latitudeRef.current && longitudeRef.current && partnerStateRef.current == 1) {
+        const { latitude, longitude } = useGeolocationWithAddress(); // 위치 정보를 받아오는 훅
+        if (latitude && longitude && partnerStateRef.current == 1) {
           const position = {
             type: "location",
-            latitude: latitudeRef.current,
-            longitude: longitudeRef.current,
+            latitude: latitude,
+            longitude: longitude,
           };
           ws.send(JSON.stringify(position));
           console.log(`Sent location: ${JSON.stringify(position)}`);
