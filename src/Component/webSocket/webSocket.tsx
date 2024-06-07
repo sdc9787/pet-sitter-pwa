@@ -1,4 +1,5 @@
-import React, { createContext, useState, useEffect, useContext, useRef } from "react";
+// WebSocketContext.js
+import React, { useState, useEffect, useContext, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setChat, setPartnerState, setWalkLocation } from "../../Store/store";
 import { useAlert } from "../../hook/useAlert/useAlert";
@@ -23,10 +24,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const chatListRef = useRef(chatList);
   const partnerState = useSelector((state: { partnerState: number }) => state.partnerState);
   const partnerStateRef = useRef(partnerState);
-  const [location, setLocation] = useState<{ latitude: number | null; longitude: number | null }>({
-    latitude: null,
-    longitude: null,
-  });
 
   useEffect(() => {
     chatListRef.current = chatList;
@@ -108,6 +105,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
         } else if (data.message === "산책이 종료되었습니다") {
           dispatch(setPartnerState(0));
         }
+
+        // Handle the notification message as needed
       }
     };
 
@@ -123,6 +122,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     return ws;
   };
 
+  // 위치전송
   // 위치전송
   const connectWebSocket3 = (websocketUrl: string, websocketLabel: string) => {
     let ws = new WebSocket(websocketUrl);
@@ -142,29 +142,22 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
       // 주기적으로 위치 정보 전송
       positionInterval = setInterval(() => {
-        if (navigator.geolocation) {
-          navigator.geolocation.getCurrentPosition(
-            (position) => {
-              const { latitude, longitude } = position.coords;
-              setLocation({ latitude, longitude });
-
-              if (latitude && longitude && partnerStateRef.current === 1) {
-                const pos = {
-                  type: "location",
-                  latitude,
-                  longitude,
-                };
-                ws.send(JSON.stringify(pos));
-                console.log(`Sent location: ${JSON.stringify(pos)}`);
-              }
-            },
-            (error) => {
-              console.error(`Error getting location: ${error.message}`);
-            }
-          );
-        } else {
-          console.error("Geolocation is not supported by this browser.");
-        }
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const { latitude, longitude } = position.coords;
+            ws.send(
+              JSON.stringify({
+                type: "location",
+                latitude: latitude,
+                longitude: longitude,
+              })
+            );
+            console.log(`Sent location to server ${websocketLabel}:`, { latitude, longitude });
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+          }
+        );
       }, 4000); // 4초마다 위치 전송
     };
 
@@ -173,6 +166,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
       if (data.type === "location") {
         console.log(`Location from server ${websocketLabel}:`, data);
         dispatch(setWalkLocation({ latitude: data.latitude, longitude: data.longitude }));
+        // Handle the location message as needed
       }
     };
 
@@ -182,7 +176,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
     ws.onclose = function (event) {
       console.log(`WebSocket connection ${websocketLabel} closed`, event);
-      setTimeout(() => connectWebSocket3(websocketUrl, websocketLabel), 5000); // 5초 후 재연결
+      //5초마다 재연결
+      setTimeout(() => connectWebSocket3(websocketUrl, websocketLabel), 5000);
 
       if (positionInterval) {
         clearInterval(positionInterval); // 위치 전송 중지
