@@ -54,6 +54,8 @@ function ReservationWalkMain() {
   const dispatch = useDispatch();
   const partnerLocation = useSelector((state: RootState) => state.walkLocation);
   const partnerLocationRef = useRef(partnerLocation);
+  const mapInstance = useRef<kakao.maps.Map | null>(null);
+  const mapLevel = useRef<number>(3);
 
   useEffect(() => {
     partnerLocationRef.current = partnerLocation;
@@ -89,9 +91,10 @@ function ReservationWalkMain() {
       if (mapContainer) {
         const mapOption = {
           center: new kakao.maps.LatLng(walkData.latitude, walkData.longitude),
-          level: 3,
+          level: mapLevel.current,
         };
         const map = new kakao.maps.Map(mapContainer, mapOption);
+        mapInstance.current = map;
 
         // 마커 이미지 설정
         const markerImageUrl = "/img/marker1.webp";
@@ -130,7 +133,26 @@ function ReservationWalkMain() {
         console.error("Map container not found");
       }
     }
-  }, [walkData, partnerLocation]);
+  }, [walkData]);
+
+  useEffect(() => {
+    if (mapInstance.current) {
+      const partnerMarker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
+        map: mapInstance.current,
+      });
+
+      const updatePartnerMarker = () => {
+        partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude));
+      };
+
+      const partnerLocationInterval = setInterval(updatePartnerMarker, 10000);
+
+      return () => {
+        clearInterval(partnerLocationInterval);
+      };
+    }
+  }, [partnerLocation]);
 
   useEffect(() => {
     if (remainingTime > 0) {
