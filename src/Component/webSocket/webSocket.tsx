@@ -30,7 +30,11 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
   const chatListRef = useRef(chatList);
   const partnerState = useSelector((state: { partnerState: number }) => state.partnerState);
   const partnerStateRef = useRef(partnerState);
-
+  const [state, setState] = useState<GeolocationState>({
+    latitude: null,
+    longitude: null,
+    error: null,
+  });
   useEffect(() => {
     chatListRef.current = chatList;
   }, [chatList]);
@@ -145,11 +149,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
       // 주기적으로 위치 정보 전송
       positionInterval = setInterval(() => {
-        const [state, setState] = useState<GeolocationState>({
-          latitude: null,
-          longitude: null,
-          error: null,
-        });
         if (navigator.geolocation) {
           navigator.geolocation.getCurrentPosition(
             (position) => {
