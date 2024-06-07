@@ -152,7 +152,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
           ws.send(JSON.stringify(position));
           console.log(`Sent location: ${JSON.stringify(position)}`);
         }
-      }, 10000); // 10초마다 위치 전송
+      }, 4000); // 10초마다 위치 전송
     };
 
     ws.onmessage = function (event) {
