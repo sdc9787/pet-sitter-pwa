@@ -7,6 +7,7 @@ import Topbar from "../../../../Component/topbar/topbar";
 import ActionBtn from "../../../../Component/actionBtn/actionBtn";
 import { useAlert } from "../../../../hook/useAlert/useAlert";
 import Select from "react-select";
+import "./ReservationCareEditDate.css";
 
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
@@ -107,9 +108,9 @@ function ReservationCareApplyDate() {
           <h1 className="px-6 font-bold text-lg">빨간색 칸은 예약이 불가능한 날짜입니다.</h1>
           <h1 className="px-6 font-bold text-lg">예약이 가능한 날짜를 선택해 주세요</h1>
         </div>
-        <div className="mt-4 flex justify-center items-center">
-          <div className="time-picker">
-            <label>Start Time</label>
+        <div className="mt-4 flex justify-evenly items-center">
+          <div className="time-picker text-center font-bold">
+            <label>시작 시간</label>
             <Select
               value={timeOptions.find((option) => option.value === startTime)}
               onChange={(selectedOption) => setStartTime(selectedOption ? selectedOption.value : null)}
@@ -118,8 +119,8 @@ function ReservationCareApplyDate() {
               maxMenuHeight={200} // Limit to 5 options, each approximately 30px high
             />
           </div>
-          <div className="time-picker">
-            <label>End Time</label>
+          <div className="time-picker text-center font-bold">
+            <label>종료 시간</label>
             <Select
               value={timeOptions.find((option) => option.value === endTime)}
               onChange={(selectedOption) => setEndTime(selectedOption ? selectedOption.value : null)}

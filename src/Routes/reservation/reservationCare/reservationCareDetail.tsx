@@ -21,6 +21,7 @@ type CareDetail = {
   distance: number;
   unavailableDate: string[];
   careImages: string[];
+  caregiverProfileImage: string;
 };
 
 function ReservationCareDetail() {
@@ -100,7 +101,8 @@ function ReservationCareDetail() {
               <i className="xi-angle-right-min xi-2x font-bold"></i>
             </button>
           </div>
-          <div className="w-full mt-4 flex flex-col gap-2  p-4">
+          <div className="w-full mt-4 flex flex-col gap-2  p-4 relative">
+            <img src={careData.caregiverProfileImage} className="absolute  w-14 h-14 object-cover -top-12 rounded-full left-8 border-2 border-white" alt="" />
             <div className="text-lg font-bold">{careData.title}</div>
             <div className="flex items-center justify-start gap-2">
               <div className="text-lg font-bold">{careData.caregiverNickname}</div>
@@ -139,15 +141,7 @@ function ReservationCareDetail() {
                 </div>
               </div>
             </div>
-            <div className="mt-5 text-base font-bold">{careData.content}</div>
-            <div className="mb-4">
-              <h3 className="text-xl font-semibold">예약 불가능 날짜</h3>
-              <ul className="list-disc list-inside">
-                {careData.unavailableDate.map((date, index) => (
-                  <li key={index}>{date}</li>
-                ))}
-              </ul>
-            </div>
+            <div className="text-base font-bold">{careData.content}</div>
           </div>
         </div>
       </div>
