@@ -143,6 +143,9 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
 
       // 주기적으로 위치 정보 전송
       positionInterval = setInterval(() => {
+        //실시간으로 위치 정보를 받아오는 훅을 통해 위치 정보를 받아온다.
+        const { latitude, longitude } = useGeolocationWithAddress();
+
         if (latitude && longitude && partnerStateRef.current == 1) {
           const position = {
             type: "location",
