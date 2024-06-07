@@ -2,7 +2,6 @@ import React, { createContext, useState, useEffect, useContext, useRef } from "r
 import { useDispatch, useSelector } from "react-redux";
 import { setChat, setPartnerState, setWalkLocation } from "../../Store/store";
 import { useAlert } from "../../hook/useAlert/useAlert";
-import { useGeolocationWithAddress } from "../../hook/useGeolocation/useGeolocation";
 import instanceJson from "../axios/axiosJson";
 
 type WebSocketContextType = {
@@ -21,7 +20,7 @@ interface GeolocationState {
   error: string | null;
 }
 
-const WebSocketContext = React.createContext<WebSocketContextType | null>(null);
+const WebSocketContext = createContext<WebSocketContextType | null>(null);
 
 export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }) => {
   const alertBox = useAlert();
@@ -35,6 +34,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
     longitude: null,
     error: null,
   });
+
   useEffect(() => {
     chatListRef.current = chatList;
   }, [chatList]);
@@ -157,6 +157,16 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
                 longitude: position.coords.longitude,
                 error: null,
               });
+
+              if (position.coords.latitude && position.coords.longitude && partnerStateRef.current === 1) {
+                const pos = {
+                  type: "location",
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude,
+                };
+                ws.send(JSON.stringify(pos));
+                console.log(`Sent location: ${JSON.stringify(pos)}`);
+              }
             },
             (error) => {
               let errorMessage = "Error getting location";
@@ -186,15 +196,6 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
             error: "Geolocation is not supported by this browser.",
           });
           console.error("Geolocation is not supported by this browser.");
-        }
-        if (state.latitude && state.longitude) {
-          const position = {
-            type: "location",
-            latitude: state.latitude,
-            longitude: state.longitude,
-          };
-          ws.send(JSON.stringify(position));
-          console.log(`Sent location: ${JSON.stringify(position)}`);
         }
       }, 4000); // 4초마다 위치 전송
     };
