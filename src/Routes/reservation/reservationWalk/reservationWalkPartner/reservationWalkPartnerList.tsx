@@ -118,7 +118,7 @@ function ReservationWalkPartnerList() {
                       remainingTimes[index] > 0 && (
                         <div
                           key={item.id}
-                          className={`mb-4 p-4 border ${selectedWalkId === item.id ? "border-blue-500 shadow-lg" : "border-gray-300 shadow-md"} rounded-lg cursor-pointer`}
+                          className={`mb-4 p-4 border transition-all duration-300 ${selectedWalkId === item.id ? "border-blue-500 shadow-md" : "border-zinc-400 shadow-md"} rounded-lg cursor-pointer`}
                           onClick={() => {
                             if (selectedWalkId === item.id) {
                               setSelectedWalkId(null); // 선택을 취소합니다.

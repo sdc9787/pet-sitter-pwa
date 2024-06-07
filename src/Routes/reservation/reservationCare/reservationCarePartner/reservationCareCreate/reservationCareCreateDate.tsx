@@ -3,7 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import Topbar from "../../../../../Component/topbar/topbar";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css"; // Import the CSS for react-calendar
-import "./ReservationCareCreateDate.css"; // Custom CSS for styling
 import { RootState, setUnavailableDate } from "../../../../../Store/store";
 import ActionBtn from "../../../../../Component/actionBtn/actionBtn";
 import { useNavigate } from "react-router-dom";
@@ -69,11 +68,12 @@ const ReservationCareCreateDate: React.FC = () => {
         />
         <div className="mt-4 flex flex-col justify-center items-center">
           <h1 className="px-6 font-bold text-lg">예약이 불가능한 날짜를 선택해 주세요</h1>
-          <ul>
-            {unavailableDates.map((date, index) => (
-              <li key={index}>{date}</li>
-            ))}
-          </ul>
+          <div className="m-8 text-nowrap relative  flex flex-col justify-center items-center p-4 border border-black rounded-xl">
+            <div className="absolute -top-4 bg-white px-2 font-bold">주의 사항</div>
+            <div className="text-sm font-semibold text-zinc-500">돌봄 글 예약은 하루에 최대 2개까지만 받을 수 있습니다</div>
+            <div className="text-sm font-semibold text-zinc-500">날짜 설정은 다음달까지만 가능합니다</div>
+          </div>
+          <div></div>
         </div>
       </div>
       <ActionBtn

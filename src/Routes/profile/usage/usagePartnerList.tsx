@@ -16,6 +16,8 @@ type WalkUsageListType = {
   walkTime: number;
   endTime: string;
   amount: number;
+  review: boolean;
+  status: number;
 };
 
 type CareUsageListType = {
@@ -27,8 +29,8 @@ type CareUsageListType = {
   petName: string;
   startDate: string;
   amount: number;
-
-  // Add the fields for CareUsageListType based on your API response
+  review: boolean;
+  status: number;
 };
 
 function UsagePartnerList() {
@@ -38,23 +40,12 @@ function UsagePartnerList() {
   const [loading, setLoading] = useState(true);
   const [walkUsageList, setWalkUsageList] = useState<WalkUsageListType[]>([]);
   const [careUsageList, setCareUsageList] = useState<CareUsageListType[]>([]);
+  const partnerShip = localStorage.getItem("partnership");
 
   useEffect(() => {
-    const partnerShip = localStorage.getItem("partnership");
-
     const fetchData = async () => {
       try {
         let res;
-        // if (partnerShip === "0" || partnerShip === "1") {
-        //   // Fetch Walk Usage List
-        //   res = await instanceJson.get("/usageDetails/walk/list");
-        //   setWalkUsageList(res.data.walkUsageList);
-        //   console.log(res.data.walkUsageList);
-        //   // Fetch Care Usage List
-        //   res = await instanceJson.get("/usageDetails/care/list");
-        //   setCareUsageList(res.data.careUsageList);
-        //   console.log(res.data.careUsageList);
-        // }
         if (partnerShip === "1") {
           // Fetch Walk Partner Usage List
           res = await instanceJson.get("/usageDetails/walk/partner/list");
@@ -99,12 +90,13 @@ function UsagePartnerList() {
   if (loading) {
     return <Loading />;
   }
+
   return (
     <>
       <Topbar backUrl="/profile" title="파트너 이용내역" />
       <div className="flex flex-col justify-start items-center w-full h-screen gap-4 overflow-x-hidden">
-        <div className="relative w-full mt-18 h-12 bg-white  text-center flex justify-evenly items-center">
-          <div className={`absolute top-0  h-full w-1/3 transition-transform duration-300 ${selectedTab === "산책" ? "transform -translate-x-2/3" : "transform translate-x-2/3"} bg-white border-b-4 border-black`} />
+        <div className="relative w-full mt-18 h-12 bg-white text-center flex justify-evenly items-center">
+          <div className={`absolute top-0 h-full w-1/3 transition-transform duration-300 ${selectedTab === "산책" ? "transform -translate-x-2/3" : "transform translate-x-2/3"} bg-white border-b-4 border-black`} />
           <div className={`text-xl transition-all ease-in-out duration-300 font-bold w-1/3 py-3 z-10 ${selectedTab === "산책" ? "text-black" : "text-zinc-400"}`} onClick={() => handleTabClick("산책")}>
             산책
           </div>
@@ -112,14 +104,17 @@ function UsagePartnerList() {
             돌봄
           </div>
         </div>
-        <div className="relative mb-18 w-full h-full flex items-center justify-center overflow-x-hidden ">
-          {/*산책 이용내역 */}
+        <div className="relative mb-18 w-full h-full flex items-center justify-center overflow-x-hidden">
+          {/* 산책 이용내역 */}
           <div className={`absolute top-0 text-center w-full h-full transition-transform duration-300 ${selectedTab === "산책" ? "transform translate-x-0" : "transform -translate-x-full"}`}>
             {walkUsageList.length > 0 ? (
               walkUsageList.map((usage) => (
                 <div key={usage.walkRecodeId} className="flex flex-col items-start justify-center gap-2 bg-gray-800 p-4 my-2 rounded-lg shadow-md">
                   <div className="w-full flex justify-between items-center">
-                    <div className="text-zinc-400 ">{formatDate(usage.endTime)}</div>
+                    <div className="gap-2 flex justify-start items-end">
+                      <div className="font-semibold">{formatDate(usage.endTime)}</div>
+                      <div className={"text-sm font-semibold " + (usage.review == false && usage.status == 4 ? "text-red-500" : "text-main")}>{usage.review == false && usage.status == 4 ? "취소" : "산책완료"}</div>
+                    </div>
                     <div onClick={() => navigate(`/profile/usage/walk/detail/${usage.walkRecodeId}`)} className="p-1 px-2 text-xs font-semibold border border-zinc-500 rounded-full">
                       상세내역
                     </div>
@@ -129,16 +124,12 @@ function UsagePartnerList() {
                     <div className="w-full flex flex-col items-start justify-center gap-1">
                       <div className="text-lg font-bold">{usage.userNickname}</div>
                       <div className="w-full flex flex-col justify-center items-start mb-2">
-                        <div className="font-semibold">펫 이름: {usage.petName}</div>
-                        <div className="w-full flex justify-between items-center">
-                          <div className="text-gray-400 font-semibold">산책 시간 : {usage.walkTime} 분</div>
-                          <div className="text-lg font-bold">{usage.amount > 0 ? `${usage.amount.toLocaleString()}원` : "취소"}</div>
-                        </div>
+                        <div className="font-semibold">펫 이름 : {usage.petName}</div>
+                        <div className="font-semibold">산책 시간 : {usage.walkTime} 분</div>
+                        <div className="font-semibold">{usage.review == false && usage.status == 4 ? "" : "결제 포인트 : " + usage.amount.toLocaleString() + " P"}</div>
                       </div>
                     </div>
                   </div>
-
-                  {/* {isWithin24Hours(usage.endTime) && <button className="mt-2 px-4 py-2 bg-main font-bold text-white rounded-lg w-full">리뷰 작성</button>} */}
                 </div>
               ))
             ) : (
@@ -149,13 +140,16 @@ function UsagePartnerList() {
             )}
           </div>
 
-          {/*돌봄 이용내역 */}
+          {/* 돌봄 이용내역 */}
           <div className={`absolute top-0 text-center w-full h-full transition-transform duration-300 ${selectedTab === "돌봄" ? "transform translate-x-0" : "transform translate-x-full"}`}>
             {careUsageList.length > 0 ? (
               careUsageList.map((usage) => (
                 <div key={usage.careRecodeId} className="flex flex-col items-start justify-center gap-2 bg-gray-800 p-4 my-2 rounded-lg shadow-md">
                   <div className="w-full flex justify-between items-center">
-                    <div className="text-gray-400">{formatDate(usage.startDate)}</div>
+                    <div className="gap-2 flex justify-start items-end">
+                      <div className="font-semibold">{formatDate(usage.startDate)}</div>
+                      <div className={"text-sm font-semibold " + (usage.review == false && usage.status == 4 ? "text-red-500" : "text-main")}>{usage.review == false && usage.status == 4 ? "취소" : "돌봄완료"}</div>
+                    </div>
                     <div onClick={() => navigate(`/profile/usage/care/detail/${usage.careRecodeId}`)} className="p-1 px-2 text-xs font-semibold border border-zinc-500 rounded-full">
                       상세내역
                     </div>
@@ -165,15 +159,11 @@ function UsagePartnerList() {
                     <div className="w-full flex flex-col items-start justify-center gap-1">
                       <div className="text-lg font-bold">{usage.userNickname}</div>
                       <div className="w-full flex flex-col justify-center items-start mb-2">
-                        <div className="font-semibold">펫 이름: {usage.petName}</div>
-                        <div className="w-full flex justify-between items-center">
-                          <div className="text-lg font-bold">{usage.amount > 0 ? `${usage.amount.toLocaleString()}원` : "취소"}</div>
-                        </div>
+                        <div className="font-semibold">펫 이름 : {usage.petName}</div>
+                        <div className="font-semibold">{usage.review == false && usage.status == 4 ? "" : "결제 포인트 : " + usage.amount.toLocaleString() + " P"}</div>
                       </div>
                     </div>
                   </div>
-
-                  {/* {isWithin24Hours(usage.startDate) && <button className="mt-2 px-4 py-2 bg-main font-bold text-white rounded-lg w-full">리뷰 작성</button>} */}
                 </div>
               ))
             ) : (

@@ -95,7 +95,6 @@ const useReverseGeoCoding = ({ latitude, longitude }: ReverseGeoCodingProps) => 
             setDistrict(res[0].address.region_2depth_name);
             // setRoad(res[0].address.main_building_no + (res[0].address.sub_building_no === "" ? "" : "-" + res[0].address.sub_building_no));
           } else {
-            alertBox("주소를 가져오는데 실패했습니다.");
           }
         });
       });

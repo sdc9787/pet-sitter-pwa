@@ -72,16 +72,34 @@ function UsageWalkDetail() {
   return (
     <>
       <Topbar backUrl="/profile/usage/user" title="산책 상세내역" />
-      <div className="w-full h-screen p-6">
-        <div className="bg-white rounded-lg  mt-16">
+      <div className="w-full h-screen">
+        <div className=" mt-16 flex flex-col gap-4">
           {/*산책 시작 | 종료*/}
-          <div className="mb-4">
+          <div className="w-full bg-zinc-100 h-4"></div>
+          <div className="mb-4 px-6">
             <h2 className="text-2xl font-bold">{walkDetail?.title}</h2>
-            <p className="text-black font-semibold">{walkDetail && `산책시작 :  ${formatDate(walkDetail.startTime)}`}</p>
-            <p className="text-black font-semibold">{walkDetail && `산책종료 : ${formatDate(walkDetail.endTime)}`}</p>
+            <p className="font-semibold">{walkDetail?.content}</p>
           </div>
+          <div className="mb-4 px-6">
+            <h3 className="text-lg font-bold">산책 정보</h3>
+            <p className="font-semibold">산책 시간 : {walkDetail?.walkTime} 분</p>
+            <p className="text-black font-semibold">{walkDetail && `산책 시작 :  ${formatDate(walkDetail.startTime)}`}</p>
+            <p className="text-black font-semibold">{walkDetail && `산책 종료 : ${formatDate(walkDetail.endTime)}`}</p>
+          </div>
+          {walkDetail?.reason && (
+            <div className="mb-4 px-6">
+              <h3 className="text-lg font-semibold text-red-600">취소 사유</h3>
+              <p className="text-red-600">{walkDetail?.reason}</p>
+            </div>
+          )}
+          <div className="w-full bg-zinc-100 h-4"></div>
+          <div className="mb-4 px-6">
+            <h3 className="text-lg font-semibold">결제 정보</h3>
+            <p className="font-semibold">금액 : {walkDetail?.amount.toLocaleString()} P</p>
+          </div>
+          <div className="w-full bg-zinc-100 h-4"></div>
           {/*이용자 정보*/}
-          <div className="mb-4">
+          <div className="mb-4 px-6">
             <h3 className="text-lg font-bold">이용자 정보</h3>
             <div className="flex items-center mt-2">
               <img src={walkDetail?.userImage} alt="User" className="w-12 h-12 rounded-full mr-4" />
@@ -94,48 +112,32 @@ function UsageWalkDetail() {
               </div>
             </div>
           </div>
-          {/*산책러 정보*/}
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold">산책러 정보</h3>
-            <div className="flex items-center mt-2">
-              <img src={walkDetail?.walkerImage} alt="Walker" className="w-12 h-12 rounded-full mr-4" />
-              <div>
-                <p className="font-bold">{walkDetail?.walkerNickname}</p>
+          <div className="flex justify-between items-center">
+            {/*산책러 정보*/}
+            <div className="mb-4 px-6">
+              <h3 className="text-lg font-bold">산책러 정보</h3>
+              <div className="flex items-center mt-2">
+                <img src={walkDetail?.walkerImage} alt="Walker" className="w-12 h-12 rounded-full mr-4" />
+                <div>
+                  <p className="font-bold">{walkDetail?.walkerNickname}</p>
+                </div>
+              </div>
+            </div>
+            {/*펫 정보 */}
+            <div className="mb-4 px-6">
+              <h3 className="text-lg font-bold">펫 정보</h3>
+              <div className="flex items-center mt-2">
+                <img src={walkDetail?.petImage} alt="Pet" className="w-12 h-12 rounded-full mr-4" />
+                <div>
+                  <p className="font-bold">{walkDetail?.petName}</p>
+                  <p className="font-semibold text-sm">
+                    {walkDetail?.petSpecies} ({walkDetail?.petGender == "male" ? "남" : "여"}), {new Date().getFullYear() - Number(walkDetail?.petBirthYear)}세
+                  </p>
+                </div>
               </div>
             </div>
           </div>
-          {/*펫 정보 */}
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold">펫 정보</h3>
-            <div className="flex items-center mt-2">
-              <img src={walkDetail?.petImage} alt="Pet" className="w-12 h-12 rounded-full mr-4" />
-              <div>
-                <p className="font-bold">{walkDetail?.petName}</p>
-                <p className="text-gray-600">
-                  {walkDetail?.petSpecies} ({walkDetail?.petGender}), {new Date().getFullYear() - Number(walkDetail?.petBirthYear)}세
-                </p>
-              </div>
-            </div>
-          </div>
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold">산책 정보</h3>
-            <p className="text-gray-600">산책 시간: {walkDetail?.walkTime} 분</p>
-          </div>
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold">상세 내용</h3>
-            <p>제목 : {walkDetail?.title}</p>
-            <p className="text-gray-600">내용 : {walkDetail?.content}</p>
-          </div>
-          <div className="mb-4">
-            <h3 className="text-lg font-semibold">결제 정보</h3>
-            <p className="text-gray-600">금액: {walkDetail?.amount.toLocaleString()}원</p>
-          </div>
-          {walkDetail?.reason && (
-            <div className="mb-4">
-              <h3 className="text-lg font-semibold text-red-600">취소 사유</h3>
-              <p className="text-red-600">{walkDetail?.reason}</p>
-            </div>
-          )}
+          <div className="w-full bg-zinc-100 h-4"></div>
         </div>
       </div>
     </>

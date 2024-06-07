@@ -22,6 +22,7 @@ interface Walk {
   longitude: number;
   createDate: string;
   startTime: string;
+  userProfile: string;
 }
 
 function ReservationWalkMain() {
@@ -39,6 +40,7 @@ function ReservationWalkMain() {
     longitude: 0,
     createDate: "",
     startTime: "",
+    userProfile: "",
   });
   const [walkListBool, setWalkListBool] = useState(true);
   const [remainingTime, setRemainingTime] = useState(300);
@@ -209,61 +211,71 @@ function ReservationWalkMain() {
           </div>
         ) : (
           <div className="h-full flex flex-col justify-center items-center">
-            <div id="map" className="w-full shadow-topbar" style={{ flexGrow: 8 }}></div>
-            <div className="w-full p-4 flex flex-col items-start justify-between relative bg-white shadow-lg rounded-lg" style={{ flexGrow: 2 }}>
-              <h3 className="text-2xl font-bold text-main mb-2">{walkData.title}</h3>
-              <p className="font-medium text-gray-700 mb-4">{walkData.content}</p>
-              <div className="w-full flex flex-col justify-center items-start gap-2 mb-4">
-                <p className="font-medium text-gray-600">현재 주소: {walkData.address}</p>
-                <p className="font-medium text-gray-600">상세 주소: {walkData.detailAddress}</p>
+            <div id="map" className="w-full shadow-md" style={{ flexGrow: 8 }}></div>
+            <div className="p-4 w-full mt-2 mb-20">
+              <div className=" w-full p-4 flex flex-col items-center justify-between relative bg-zinc00 shadow-lg rounded-lg border border-zinc-200" style={{ flexGrow: 2 }}>
+                {/* <img className="z-10 w-12 h-12 rounded-full border border-white absolute -top-6 flex right-1/2 translate-x-1/2 " src={walkData.userProfile} alt="" /> */}
+                <h3 className="text-2xl font-bold text-main mb-2">{walkData.title}</h3>
+                <p className="font-medium text-gray-700 mb-4">{walkData.content}</p>
+                <div className="w-full flex flex-col justify-center items-center gap-2 mb-4">
+                  <p className="font-medium text-gray-600">{walkData.address}</p>
+                  <p className="font-medium text-gray-600">{walkData.detailAddress}</p>
+                </div>
+                {userState == 2 ? (
+                  <p className="font-semibold text-blue-500">
+                    <span>매칭 시간: {Math.floor(matchingTimeRemaining / 60)}분/</span>
+                    <span>{walkData.walkTime}분</span>
+                  </p>
+                ) : userState == 0 ? (
+                  <div className="self-center w-full flex flex-col justify-center items-center gap-2">
+                    <p className="font-semibold text-red-500">남은 시간: {remainingTime}초</p>
+                    <div className="text-zinc-400 text-sm">5분이 경과하면 자동으로 매칭이 취소됩니다</div>
+                  </div>
+                ) : (
+                  <p className="gap-2 font-semibold text-blue-500 self-center flex flex-col justify-center items-center">
+                    <div>
+                      파트너 시작 대기중<i className="ml-2 xi-spinner-1 xi-spin"></i>
+                    </div>
+                    <div className="text-zinc-400 text-sm">파트너에게 강아지를 인계해 주세요</div>
+                  </p>
+                )}
+                {userState == 0 ? (
+                  <ActionBtn
+                    buttonCount={2}
+                    button1Props={{
+                      text: "수정",
+                      onClick: () => navigate(`/reservation/walk/edit/time/${walkData.id}`),
+                      color: "bg-zinc-400",
+                    }}
+                    button2Props={{
+                      text: "신청내역확인",
+                      onClick: () => navigate(`/reservation/walk/applier/${walkData.id}`),
+                      color: "bg-main",
+                    }}
+                  />
+                ) : userState == 1 ? (
+                  <ActionBtn
+                    buttonCount={1}
+                    button1Props={{
+                      text: "파트너 산책 시작 대기중",
+                      onClick: () => reportWalk(),
+                      color: "bg-zinc-400",
+                    }}></ActionBtn>
+                ) : (
+                  <ActionBtn
+                    buttonCount={2}
+                    button1Props={{
+                      text: "문제신고",
+                      onClick: () => reportWalk(),
+                      color: "bg-red-500",
+                    }}
+                    button2Props={{
+                      text: "인계완료",
+                      onClick: () => completeWalk(),
+                      color: "bg-main",
+                    }}></ActionBtn>
+                )}
               </div>
-
-              {userState == 2 ? (
-                <p className="font-semibold text-blue-500 mb-20">
-                  <span>매칭 시간: {Math.floor(matchingTimeRemaining / 60)}분/</span>
-                  <span>{walkData.walkTime}분</span>
-                </p>
-              ) : userState == 0 ? (
-                <p className="font-semibold text-red-500 mb-20">남은 시간: {remainingTime}초</p>
-              ) : (
-                <p className="font-semibold text-blue-500 mb-20">파트너 시작 대기중...</p>
-              )}
-              {userState == 0 ? (
-                <ActionBtn
-                  buttonCount={2}
-                  button1Props={{
-                    text: "수정",
-                    onClick: () => navigate(`/reservation/walk/edit/time/${walkData.id}`),
-                    color: "bg-zinc-400",
-                  }}
-                  button2Props={{
-                    text: "신청내역확인",
-                    onClick: () => navigate(`/reservation/walk/applier/${walkData.id}`),
-                    color: "bg-main",
-                  }}
-                />
-              ) : userState == 1 ? (
-                <ActionBtn
-                  buttonCount={1}
-                  button1Props={{
-                    text: "파트너 산책 시작 대기중",
-                    onClick: () => reportWalk(),
-                    color: "bg-zinc-400",
-                  }}></ActionBtn>
-              ) : (
-                <ActionBtn
-                  buttonCount={2}
-                  button1Props={{
-                    text: "문제신고",
-                    onClick: () => reportWalk(),
-                    color: "bg-red-500",
-                  }}
-                  button2Props={{
-                    text: "인계완료",
-                    onClick: () => completeWalk(),
-                    color: "bg-main",
-                  }}></ActionBtn>
-              )}
             </div>
           </div>
         )}

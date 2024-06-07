@@ -15,7 +15,7 @@ interface ImageItemProps {
 function ImageItem({ image, index, handleRemoveClick }: ImageItemProps) {
   return (
     <div className="relative w-1/4 p-1">
-      <img src={image} alt={`preview-${index}`} className="w-full h-full rounded-md" />
+      <img src={image} alt={`preview-${index}`} className="w-full h-full rounded-md object-cover" />
       <button className="absolute top-0 right-0 border-none text-black text-xl" onClick={() => handleRemoveClick(index)}>
         <i className="xi-close-min xi-2x"></i>
       </button>
@@ -34,9 +34,14 @@ function ReservationCareCreateImages() {
   const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
 
   useEffect(() => {
-    console.log(images);
     setPreviewImages(images);
   }, [images]);
+
+  // 이미지 업로드 함수
+  const handleImageUpload = () => {
+    const fileInput = document.getElementById("fileInput") as HTMLInputElement;
+    fileInput.click();
+  };
 
   const handleImageChange = (event: ChangeEvent<HTMLInputElement>) => {
     if (event.target.files) {
@@ -71,20 +76,31 @@ function ReservationCareCreateImages() {
     <>
       <Topbar backUrl="/reservation/care/partner/create/locate" title="이미지 선택"></Topbar>
       <div className="flex flex-col justify-start items-center w-full h-screen p-4">
-        <div className="w-full flex flex-col items-center justify-center mt-14">
-          {previewImages.length > 0 && (
-            <div className="relative w-full mt-3 flex items-center justify-center h-60 overflow-hidden ">
-              <button onClick={handlePreviousImage} className="absolute left-0  rounded-full p-2">
-                <i className="xi-angle-left-min xi-2x font-bold"></i>
-              </button>
-              <img className="w-full h-full object-cover rounded-md" src={previewImages[currentImageIndex]} alt="preview" />
-              <button onClick={handleNextImage} className="absolute right-0  rounded-full p-2">
-                <i className="xi-angle-right-min xi-2x font-bold"></i>
-              </button>
+        <div className="bg-white w-full h-screen flex flex-col justify-start items-center">
+          {previewImages.length > 0 ? (
+            <>
+              <div className="relative w-full mt-18 flex items-center justify-center h-60 overflow-hidden border rounded-md bg-gray-100">
+                <button onClick={handlePreviousImage} className="absolute left-0 rounded-full p-2">
+                  <i className="xi-angle-left-min xi-2x font-bold"></i>
+                </button>
+                <img className="w-full h-full object-cover rounded-md" src={previewImages[currentImageIndex]} alt="preview" />
+                <button onClick={handleNextImage} className="absolute right-0 rounded-full p-2">
+                  <i className="xi-angle-right-min xi-2x font-bold"></i>
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="w-full mt-24 px-6">
+              {/* 이미지가 없을 때 */}
+              <div onClick={handleImageUpload} className="rounded-xl border-bdgray border-4 border-dashed w-full h-44 bg-white flex justify-center items-center">
+                <i className="xi-plus-circle-o xi-3x text-bdgray"></i>
+              </div>
+              <input type="file" id="fileInput" style={{ display: "none" }} onChange={handleImageChange} />
             </div>
           )}
+
           <div className="flex items-center justify-center w-full mt-3">
-            <label className="flex justify-center items-center py-3 px-5 text-white font-bold bg-main whitespace-nowrap h-10 ml-3" htmlFor="file">
+            <label className="flex justify-center items-center py-3 px-5 text-white font-bold bg-main whitespace-nowrap h-10" htmlFor="file">
               파일찾기
             </label>
             <input className="absolute w-0 h-0 p-0 overflow-hidden border-0" type="file" id="file" onChange={handleImageChange} multiple />
@@ -94,9 +110,10 @@ function ReservationCareCreateImages() {
               <ImageItem key={index} image={image} index={index} handleRemoveClick={handleRemoveClick} />
             ))}
           </div>
-          <div className="flex flex-col">
-            <h1>*주의사항*</h1>
-            <h1 className="">이미지는 총 1 ~ 4개까지 업로드 가능합니다</h1>
+          <div className="m-8 text-nowrap relative  flex flex-col justify-center items-center p-4 border border-black rounded-xl">
+            <div className="absolute -top-4 bg-white px-2 font-bold">주의 사항</div>
+            <div className="text-sm font-semibold text-zinc-500">최소 1개 이상의 파일을 업로드 하셔야 됩니다</div>
+            <div className="text-sm font-semibold text-zinc-500">파일은 1 ~ 3개 까지 동시에 업로드 가능합니다</div>
           </div>
         </div>
       </div>

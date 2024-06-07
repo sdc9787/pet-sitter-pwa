@@ -90,8 +90,8 @@ function ReservationCareDetail() {
     <>
       <Topbar backUrl="/reservation/care/list" title="파트너" />
       <div className="w-full h-screen">
-        <div className="flex flex-col items-center p-4">
-          <div className="relative w-full mt-16 flex items-center justify-center h-60 overflow-hidden rounded-xl">
+        <div className="flex flex-col items-center">
+          <div className="relative w-full mt-16 flex items-center justify-center h-60 overflow-hidden">
             <button onClick={handlePreviousImage} className="absolute left-0 rounded-full p-2">
               <i className="xi-angle-left-min xi-2x font-bold"></i>
             </button>
@@ -100,7 +100,7 @@ function ReservationCareDetail() {
               <i className="xi-angle-right-min xi-2x font-bold"></i>
             </button>
           </div>
-          <div className="w-full mt-4 flex flex-col gap-2">
+          <div className="w-full mt-4 flex flex-col gap-2  p-4">
             <div className="text-lg font-bold">{careData.title}</div>
             <div className="flex items-center justify-start gap-2">
               <div className="text-lg font-bold">{careData.caregiverNickname}</div>
@@ -118,6 +118,26 @@ function ReservationCareDetail() {
             </div>
             <div className="text-base font-bold text-zinc-500">
               {careData.streetNameAddress} {careData.detailAddress}
+            </div>
+            {/* 돌봄 인증 내역 */}
+            <div className="flex flex-col justify-center items-center my-8 gap-8">
+              <div className="self-start font-bold">
+                인증 / 보장 내역 <i className="xi-check-circle text-main xi-x"></i>
+              </div>
+              <div className="w-full flex items-center justify-evenly">
+                <div className="flex flex-col justify-center items-center gap-2">
+                  <i className="xi-profile-o xi-2x text-main"></i>
+                  <div className="font-semibold ">신원 인증</div>
+                </div>
+                <div className="flex flex-col justify-center items-center gap-2">
+                  <i className="xi-book xi-2x text-main"></i>
+                  <div className="font-semibold">교육 수료</div>
+                </div>
+                <div className="flex flex-col justify-center items-center gap-2">
+                  <i className="xi-shield-checked xi-2x text-main"></i>
+                  <div className="font-semibold">안정성 검증</div>
+                </div>
+              </div>
             </div>
             <div className="mt-5 text-base font-bold">{careData.content}</div>
             <div className="mb-4">

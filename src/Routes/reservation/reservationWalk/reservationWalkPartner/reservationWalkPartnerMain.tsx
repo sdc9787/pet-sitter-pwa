@@ -21,6 +21,7 @@ interface WalkList {
   longitude: number;
   createDate: string;
   walkerNickname: string;
+  userProfile: string;
 }
 
 function ReservationWalkPartnerMain() {
@@ -121,6 +122,7 @@ function ReservationWalkPartnerMain() {
       instanceJson
         .get("/walk/myApply/progress")
         .then((res) => {
+          console.log(res.data);
           setMatchingList(res.data);
           const now = new Date();
           const matchingTime = new Date(res.data.startTime);
@@ -245,7 +247,7 @@ function ReservationWalkPartnerMain() {
   };
 
   useEffect(() => {
-    if (matchingState === 2 && matchingTime == 0) {
+    if (matchingState === 2 && matchingTime > 0) {
       matchingIntervalRef.current = setInterval(() => {
         setMatchingTimeRemaining((prevTime) => prevTime + 1);
       }, 1000);
@@ -269,9 +271,9 @@ function ReservationWalkPartnerMain() {
 
   return (
     <>
-      <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭" sendText="재검색" sendFunction={() => setRefreshKey((oldKey) => oldKey + 1)}></Topbar>
+      <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭" sendText={matchingState === 0 ? "재검색" : ""} sendFunction={() => setRefreshKey((oldKey) => oldKey + 1)}></Topbar>
       <div className="w-full h-screen bg-gray-100">
-        <div className="z-10 absolute top-20 left-4 bg-main text-white font-semibold px-3 py-1 rounded-md text-sm">
+        <div className="z-10 absolute top-20 left-4 bg-main text-white font-semibold px-3 py-1 rounded-md text-sm shadow-md">
           검색범위
           <select value={distance} onChange={handleDistanceChange} className="ml-2 p-1 bg-main text-white font-semibold text-sm rounded">
             {[1, 2, 3, 4, 5].map((d) => (
@@ -287,32 +289,35 @@ function ReservationWalkPartnerMain() {
           </div>
         ) : matchingState == 1 ? ( //매칭된 산책글이 있을때
           <div className="h-full flex flex-col justify-center items-center">
-            <div id="map" className="w-full shadow-topbar" style={{ flexGrow: 8 }}></div>
-            <div className="w-full p-4 flex flex-col items-start justify-between relative bg-white shadow-lg rounded-lg" style={{ flexGrow: 2 }}>
-              <h3 className="text-2xl font-bold text-main mb-2">{matchingList?.title}</h3>
-              <p className="font-medium text-gray-700 mb-4">{matchingList?.content}</p>
-              <div className="w-full flex flex-col justify-center items-start gap-2 mb-4">
-                <p className="font-medium text-gray-600">현재 주소: {matchingList?.address}</p>
-                <p className="font-medium text-gray-600">상세 주소: {matchingList?.detailAddress}</p>
-                <p className="font-medium text-gray-600">이용자 닉네임: {matchingList?.walkerNickname}</p>
+            <div id="map" className="w-full  rounded-3xl" style={{ flexGrow: 8 }}></div>
+            <div className="w-full p-4 flex flex-col items-center justify-between relative bg-white rounded-lg" style={{ flexGrow: 2 }}>
+              <img src={matchingList?.userProfile} className="w-12 h-12 rounded-full absolute -top-6 z-10 border border-white right-1/2 translate-x-1/2" alt="" />
+              <h3 className="text-2xl font-bold text-main mt-10">{matchingList?.title}</h3>
+              <p className="font-medium text-gray-700 ">{matchingList?.content}</p>
+              <div className="w-full flex flex-col justify-center items-center gap-2 mb-4">
+                <p className="font-medium text-gray-600">{matchingList?.address}</p>
+                <p className="font-medium text-gray-600">{matchingList?.detailAddress}</p>
+                <p className="font-medium text-gray-600">이용자 닉네임 : {matchingList?.walkerNickname}</p>
               </div>
               <p className="flex flex-col justify-center items-center gap-2 self-center font-semibold  mb-20">
                 <span className="text-blue-500">
                   이용자 수락 완료 시작 대기중 <i className="xi-spinner-1 xi-spin"></i>
                 </span>
-                <span className="font-extrabold text-red-500">강이지를 인계 받은 후 시작 버튼을 눌러주세요</span>
+                <span className="text-sm text-zinc-400">강이지를 인계 받은 후 시작 버튼을 눌러주세요</span>
               </p>
             </div>
           </div>
         ) : matchingState == 2 ? ( //산책중일때
           <div className="h-full flex flex-col justify-center items-center">
-            <div id="map" className="w-full shadow-topbar" style={{ flexGrow: 8 }}></div>
-            <div className="w-full p-4 flex flex-col items-start justify-between relative bg-white shadow-lg rounded-lg" style={{ flexGrow: 2 }}>
-              <h3 className="self-center text-2xl font-bold text-main mb-2">산책을 시작하였습니다</h3>
-              <div className="w-full flex flex-col justify-center items-start gap-2 mb-4">
-                <p className="font-medium text-gray-600">현재 주소: {matchingList?.address}</p>
-                <p className="font-medium text-gray-600">상세 주소: {matchingList?.detailAddress}</p>
-                <p className="font-medium text-gray-600">이용자 닉네임: {matchingList?.walkerNickname}</p>
+            <div id="map" className="w-full  rounded-3xl" style={{ flexGrow: 8 }}></div>
+            <div className="w-full p-4 flex flex-col items-center justify-between relative bg-white rounded-lg" style={{ flexGrow: 2 }}>
+              <img src={matchingList?.userProfile} className="w-12 h-12 rounded-full absolute -top-6 z-10 border border-white right-1/2 translate-x-1/2" alt="" />
+              <h3 className="text-2xl font-bold text-main mt-10">{matchingList?.title}</h3>
+              <p className="font-medium text-gray-700 ">{matchingList?.content}</p>
+              <div className="w-full flex flex-col justify-center items-center gap-2 mb-4">
+                <p className="font-medium text-gray-600">{matchingList?.address}</p>
+                <p className="font-medium text-gray-600">{matchingList?.detailAddress}</p>
+                <p className="font-medium text-gray-600">이용자 닉네임 : {matchingList?.walkerNickname}</p>
               </div>
               <p className="flex flex-col justify-center items-center gap-2 self-center font-semibold  mb-20">
                 <p className="font-semibold text-blue-500">
@@ -331,7 +336,7 @@ function ReservationWalkPartnerMain() {
                 item.id !== applyList[index]?.id ? (
                   <div
                     key={item.id}
-                    className={`mb-4 p-4 border ${selectedWalkId === item.id ? "border-blue-500 shadow-lg" : "border-gray-300 shadow-md"} rounded-lg cursor-pointer`}
+                    className={`mb-4 p-4 border ${selectedWalkId === item.id ? "border-blue-500 shadow-lg" : "border-zinc-400 shadow-md"} rounded-lg cursor-pointer`}
                     onClick={() => {
                       if (selectedWalkId === item.id) {
                         setSelectedWalkId(null); // 선택을 취소합니다.

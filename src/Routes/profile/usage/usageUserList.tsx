@@ -93,8 +93,8 @@ function UsageUserList() {
     <>
       <Topbar backUrl="/profile" title="이용자 이용내역" />
       <div className="flex flex-col justify-start items-center w-full h-screen gap-4 overflow-x-hidden">
-        <div className="relative w-full mt-18 h-12 bg-white  text-center flex justify-evenly items-center">
-          <div className={`absolute top-0  h-full w-1/3 transition-transform duration-300 ${selectedTab === "산책" ? "transform -translate-x-2/3" : "transform translate-x-2/3"} bg-white border-b-4 border-black`} />
+        <div className="relative w-full mt-18 h-12 bg-white text-center flex justify-evenly items-center">
+          <div className={`absolute top-0 h-full w-1/3 transition-transform duration-300 ${selectedTab === "산책" ? "transform -translate-x-2/3" : "transform translate-x-2/3"} bg-white border-b-4 border-black`} />
           <div className={`text-xl transition-all ease-in-out duration-300 font-bold w-1/3 py-3 z-10 ${selectedTab === "산책" ? "text-black" : "text-zinc-400"}`} onClick={() => handleTabClick("산책")}>
             산책
           </div>
@@ -102,14 +102,17 @@ function UsageUserList() {
             돌봄
           </div>
         </div>
-        <div className="relative mb-18 w-full h-full flex items-center justify-center overflow-x-hidden ">
-          {/*산책 이용내역 */}
+        <div className="relative w-full h-full flex items-center justify-center overflow-x-hidden">
+          {/* 산책 이용내역 */}
           <div className={`absolute top-0 text-center w-full h-full transition-transform duration-300 ${selectedTab === "산책" ? "transform translate-x-0" : "transform -translate-x-full"}`}>
             {walkUsageList.length > 0 ? (
               walkUsageList.map((usage) => (
                 <div key={usage.walkRecodeId} className="flex flex-col items-start justify-center gap-2 bg-gray-800 p-4 my-2 rounded-lg shadow-md">
                   <div className="w-full flex justify-between items-center">
-                    <div className="text-zinc-400 ">{formatDate(usage.endTime)}</div>
+                    <div className="gap-2 flex justify-start items-end">
+                      <div className="font-semibold">{formatDate(usage.endTime)}</div>
+                      <div className={"text-sm font-semibold " + (usage.review == false && usage.status == 4 ? "text-red-500" : "text-main")}>{usage.review == false && usage.status == 4 ? "취소" : "산책완료"}</div>
+                    </div>
                     <div onClick={() => navigate(`/profile/usage/walk/detail/${usage.walkRecodeId}`)} className="p-1 px-2 text-xs font-semibold border border-zinc-500 rounded-full">
                       상세내역
                     </div>
@@ -119,15 +122,12 @@ function UsageUserList() {
                     <div className="w-full flex flex-col items-start justify-center gap-1">
                       <div className="text-lg font-bold">{usage.userNickname}</div>
                       <div className="w-full flex flex-col justify-center items-start mb-2">
-                        <div className="font-semibold">펫 이름: {usage.petName}</div>
-                        <div className="w-full flex justify-between items-center">
-                          <div className="text-gray-400 font-semibold">산책 시간 : {usage.walkTime} 분</div>
-                          <div className="text-lg font-bold">{usage.review == false && usage.status == 4 ? "취소" : usage.amount}</div>
-                        </div>
+                        <div className="font-semibold">펫 이름 : {usage.petName}</div>
+                        <div className="font-semibold">산책 시간 : {usage.walkTime} 분</div>
+                        <div className="font-semibold">{usage.review == false && usage.status == 4 ? "" : "결제 포인트 : " + usage.amount.toLocaleString() + " P"}</div>
                       </div>
                     </div>
                   </div>
-                  {/*24시간 && status == 3 <-리뷰 작성 안한상태 일때만 버튼생성*/}
                   {isWithin24Hours(usage.endTime) && usage.status == 3 && (
                     <button
                       onClick={() => {
@@ -151,13 +151,16 @@ function UsageUserList() {
             )}
           </div>
 
-          {/*돌봄 이용내역 */}
+          {/* 돌봄 이용내역 */}
           <div className={`absolute top-0 text-center w-full h-full transition-transform duration-300 ${selectedTab === "돌봄" ? "transform translate-x-0" : "transform translate-x-full"}`}>
             {careUsageList.length > 0 ? (
               careUsageList.map((usage) => (
                 <div key={usage.careRecodeId} className="flex flex-col items-start justify-center gap-2 bg-gray-800 p-4 my-2 rounded-lg shadow-md">
                   <div className="w-full flex justify-between items-center">
-                    <div className="text-gray-400">{formatDate(usage.startDate)}</div>
+                    <div className="gap-2 flex justify-start items-end">
+                      <div className="font-semibold">{formatDate(usage.startDate)}</div>
+                      <div className={"text-sm font-semibold " + (usage.review == false && usage.status == 4 ? "text-red-500" : "text-main")}>{usage.review == false && usage.status == 4 ? "취소" : "돌봄완료"}</div>
+                    </div>
                     <div onClick={() => navigate(`/profile/usage/care/detail/${usage.careRecodeId}`)} className="p-1 px-2 text-xs font-semibold border border-zinc-500 rounded-full">
                       상세내역
                     </div>
@@ -167,14 +170,11 @@ function UsageUserList() {
                     <div className="w-full flex flex-col items-start justify-center gap-1">
                       <div className="text-lg font-bold">{usage.userNickname}</div>
                       <div className="w-full flex flex-col justify-center items-start mb-2">
-                        <div className="font-semibold">펫 이름: {usage.petName}</div>
-                        <div className="w-full flex justify-between items-center">
-                          <div className="text-lg font-bold">{usage.amount > 0 ? `${usage.amount.toLocaleString()}원` : "취소"}</div>
-                        </div>
+                        <div className="font-semibold">펫 이름 : {usage.petName}</div>
+                        <div className="font-semibold">{usage.review == false && usage.status == 4 ? "" : "결제 포인트 : " + usage.amount.toLocaleString() + " P"}</div>
                       </div>
                     </div>
                   </div>
-
                   {isWithin24Hours(usage.startDate) && usage.status == 3 && (
                     <button
                       onClick={() => {
@@ -200,14 +200,7 @@ function UsageUserList() {
         </div>
       </div>
       {partnerShip === "0" ? (
-        <ActionBtn
-          buttonCount={1}
-          button1Props={{
-            text: "이용자",
-            onClick: () => {},
-            color: "bg-main",
-          }}
-        />
+        <div></div>
       ) : (
         <ActionBtn
           buttonCount={2}
