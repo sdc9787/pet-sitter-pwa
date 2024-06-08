@@ -8,6 +8,7 @@ import ActionBtn from "../../../../Component/actionBtn/actionBtn";
 import Loading from "../../../../Component/loading/loading";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../Store/store";
+import { match } from "assert";
 
 interface WalkList {
   id: number;
@@ -188,8 +189,9 @@ function ReservationWalkPartnerMain() {
   }, [remainingTimes]);
 
   // 카카오맵
+
   useEffect(() => {
-    if (latitude && longitude) {
+    if (latitude && longitude && walkList && matchingList) {
       const mapContainer = document.getElementById("map");
       if (mapContainer && matchingState === 0 && walkList) {
         const mapOption = {
@@ -221,7 +223,7 @@ function ReservationWalkPartnerMain() {
           level: 3,
         };
         const map = new kakao.maps.Map(mapContainer, mapOption);
-
+        mapInstance.current = map;
         const markerImage = new kakao.maps.MarkerImage("/img/marker1.webp", new kakao.maps.Size(64, 64), { alt: "Partner Location" });
 
         const markerPosition = new kakao.maps.LatLng(matchingList.latitude, matchingList.longitude);
@@ -229,6 +231,15 @@ function ReservationWalkPartnerMain() {
           position: markerPosition,
           image: markerImage,
         });
+
+        const userMarkerImage = new kakao.maps.MarkerImage("/img/marker2.webp", new kakao.maps.Size(64, 64), { alt: "Destination" });
+        const userMarker = new kakao.maps.Marker({
+          position: new kakao.maps.LatLng(latitude, longitude),
+          image: userMarkerImage,
+        });
+
+        userMarker.setMap(map);
+
         marker.setMap(map);
       } else {
         console.error("Map container not found");
@@ -239,24 +250,27 @@ function ReservationWalkPartnerMain() {
   //마커 지우기
   useEffect(() => {
     if (mapInstance.current) {
-      const userMarkerImage = new kakao.maps.MarkerImage("/img/marker2.webp", new kakao.maps.Size(64, 64), { alt: "Destination" });
-      const partnerMarker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
-        map: mapInstance.current,
-        image: userMarkerImage,
+      navigator.geolocation.getCurrentPosition((position1) => {
+        const { latitude, longitude } = position1.coords;
+        const userMarkerImage = new kakao.maps.MarkerImage("/img/marker2.webp", new kakao.maps.Size(64, 64), { alt: "Destination" });
+        const partnerMarker = new kakao.maps.Marker({
+          position: new kakao.maps.LatLng(latitude, longitude),
+          map: mapInstance.current,
+          image: userMarkerImage,
+        });
+        console.log(1);
+        const updatePartnerMarker = () => {
+          partnerMarker.setPosition(new kakao.maps.LatLng(latitude, longitude));
+        };
+
+        const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
+
+        return () => {
+          clearInterval(partnerLocationInterval);
+        };
       });
-
-      const updatePartnerMarker = () => {
-        partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude));
-      };
-
-      const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
-
-      return () => {
-        clearInterval(partnerLocationInterval);
-      };
     }
-  }, [partnerLocation]);
+  }, [latitude, longitude, mapInstance.current]);
 
   // 예약 신청
   const requestReservation = () => {
