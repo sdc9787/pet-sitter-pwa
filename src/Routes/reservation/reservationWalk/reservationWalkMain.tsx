@@ -137,8 +137,11 @@ function ReservationWalkMain() {
 
   useEffect(() => {
     if (mapInstance.current) {
+      const partnerMarkerImageUrl = "/img/marker2.webp";
+      const partnerMarkerImage = new kakao.maps.MarkerImage(partnerMarkerImageUrl, new kakao.maps.Size(64, 64), { alt: "Partner Location" });
       const partnerMarker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
+        image: partnerMarkerImage,
         map: mapInstance.current,
       });
 
