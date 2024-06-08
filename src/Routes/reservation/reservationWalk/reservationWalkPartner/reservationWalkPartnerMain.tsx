@@ -8,7 +8,6 @@ import ActionBtn from "../../../../Component/actionBtn/actionBtn";
 import Loading from "../../../../Component/loading/loading";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../../Store/store";
-import { match } from "assert";
 
 interface WalkList {
   id: number;
@@ -50,6 +49,7 @@ function ReservationWalkPartnerMain() {
   const partnerLocationRef = useRef(partnerLocation);
   const [refreshKey, setRefreshKey] = useState<number>(0); // State for key refresh
   const mapInstance = useRef<kakao.maps.Map | null>(null);
+  const [partnerMarker, setPartnerMarker] = useState<kakao.maps.Marker | null>(null);
 
   useEffect(() => {
     partnerLocationRef.current = partnerLocation;
@@ -189,7 +189,6 @@ function ReservationWalkPartnerMain() {
   }, [remainingTimes]);
 
   // 카카오맵
-
   useEffect(() => {
     if (latitude && longitude && walkList && matchingList) {
       const mapContainer = document.getElementById("map");
@@ -245,20 +244,23 @@ function ReservationWalkPartnerMain() {
       const partnerMarkerImageUrl = "/img/marker2.webp";
       const partnerMarkerImage = new kakao.maps.MarkerImage(partnerMarkerImageUrl, new kakao.maps.Size(64, 64), { alt: "Partner Location" });
 
-      const partnerMarker = new kakao.maps.Marker({
+      const newPartnerMarker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
         map: mapInstance.current,
         image: partnerMarkerImage,
       });
 
+      setPartnerMarker(newPartnerMarker);
+
       const updatePartnerMarker = () => {
-        partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude));
+        newPartnerMarker.setPosition(new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude));
       };
 
       const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
 
       return () => {
         clearInterval(partnerLocationInterval);
+        newPartnerMarker.setMap(null);
       };
     }
   }, [partnerLocation]);

@@ -56,6 +56,7 @@ function ReservationWalkMain() {
   const partnerLocationRef = useRef(partnerLocation);
   const mapInstance = useRef<kakao.maps.Map | null>(null);
   const mapLevel = useRef<number>(3);
+  const [partnerMarker, setPartnerMarker] = useState<kakao.maps.Marker | null>(null);
 
   useEffect(() => {
     partnerLocationRef.current = partnerLocation;
@@ -135,26 +136,28 @@ function ReservationWalkMain() {
     }
   }, [walkData]);
 
-  //마커 지우기
   useEffect(() => {
     if (mapInstance.current) {
       const partnerMarkerImageUrl = "/img/marker2.webp";
       const partnerMarkerImage = new kakao.maps.MarkerImage(partnerMarkerImageUrl, new kakao.maps.Size(64, 64), { alt: "Partner Location" });
 
-      const partnerMarker = new kakao.maps.Marker({
+      const newPartnerMarker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
         map: mapInstance.current,
         image: partnerMarkerImage,
       });
 
+      setPartnerMarker(newPartnerMarker);
+
       const updatePartnerMarker = () => {
-        partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude));
+        newPartnerMarker.setPosition(new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude));
       };
 
       const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
 
       return () => {
         clearInterval(partnerLocationInterval);
+        newPartnerMarker.setMap(null);
       };
     }
   }, [partnerLocation]);
