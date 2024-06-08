@@ -247,7 +247,7 @@ function ReservationWalkPartnerMain() {
       });
 
       const updatePartnerMarker = () => {
-        partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude));
+        partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude));
       };
 
       const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
