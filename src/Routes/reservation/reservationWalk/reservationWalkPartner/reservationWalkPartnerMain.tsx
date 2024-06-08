@@ -191,10 +191,15 @@ function ReservationWalkPartnerMain() {
         };
         const map = new kakao.maps.Map(mapContainer, mapOption);
         const userPosition = new kakao.maps.LatLng(latitude, longitude);
-        const userMarker = new kakao.maps.Marker({ position: userPosition });
+
+        const userMarkerImage = new kakao.maps.MarkerImage("/img/marker2.webp", new kakao.maps.Size(64, 64), { alt: "Destination" });
+        const userMarker = new kakao.maps.Marker({
+          position: userPosition,
+          image: userMarkerImage,
+        });
         userMarker.setMap(map);
 
-        const markerImage = new kakao.maps.MarkerImage("/img/marker2.webp", new kakao.maps.Size(64, 64), { alt: "Partner Location" });
+        const markerImage = new kakao.maps.MarkerImage("/img/marker1.webp", new kakao.maps.Size(64, 64), { alt: "Partner Location" });
 
         const markerPosition = new kakao.maps.LatLng(matchingList.latitude, matchingList.longitude);
         const marker = new kakao.maps.Marker({
@@ -273,16 +278,20 @@ function ReservationWalkPartnerMain() {
     <>
       <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭" sendText={matchingState === 0 ? "재검색" : ""} sendFunction={() => setRefreshKey((oldKey) => oldKey + 1)}></Topbar>
       <div className="w-full h-screen bg-gray-100">
-        <div className="z-10 absolute top-20 left-4 bg-main text-white font-semibold px-3 py-1 rounded-md text-sm shadow-md">
-          검색범위
-          <select value={distance} onChange={handleDistanceChange} className="ml-2 p-1 bg-main text-white font-semibold text-sm rounded">
-            {[1, 2, 3, 4, 5].map((d) => (
-              <option className="font-semibold text-sm" key={d} value={d}>
-                {d} km
-              </option>
-            ))}
-          </select>
-        </div>
+        {matchingState == 1 ? (
+          <div className="z-10 absolute top-20 left-4 bg-main text-white font-semibold px-3 py-1 rounded-md text-sm shadow-md">
+            검색범위
+            <select value={distance} onChange={handleDistanceChange} className="ml-2 p-1 bg-main text-white font-semibold text-sm rounded">
+              {[1, 2, 3, 4, 5].map((d) => (
+                <option className="font-semibold text-sm" key={d} value={d}>
+                  {d} km
+                </option>
+              ))}
+            </select>
+          </div>
+        ) : (
+          <div></div>
+        )}
         {isAllTimersExpired == true && matchingState == 0 ? (
           <div className="flex flex-col justify-center items-center h-full">
             <p className="text-xl font-bold">주변에 산책 글이 없습니다</p>
@@ -297,7 +306,7 @@ function ReservationWalkPartnerMain() {
               <div className="w-full flex flex-col justify-center items-center gap-2 mb-4">
                 <p className="font-medium text-gray-600">{matchingList?.address}</p>
                 <p className="font-medium text-gray-600">{matchingList?.detailAddress}</p>
-                <p className="font-medium text-gray-600">이용자 닉네임 : {matchingList?.walkerNickname}</p>
+                <p className="font-medium text-gray-600">이용자 닉네임 : {matchingList?.userNickname}</p>
               </div>
               <p className="flex flex-col justify-center items-center gap-2 self-center font-semibold  mb-20">
                 <span className="text-blue-500">
