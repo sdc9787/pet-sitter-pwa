@@ -245,7 +245,7 @@ function ReservationWalkPartnerMain() {
 
         // Set interval to update partner's location
         updatePartnerMarker();
-        const partnerLocationInterval = setInterval(updatePartnerMarker, 10000);
+        const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
 
         return () => {
           clearInterval(partnerLocationInterval);
@@ -268,7 +268,7 @@ function ReservationWalkPartnerMain() {
         partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude));
       };
 
-      const partnerLocationInterval = setInterval(updatePartnerMarker, 10000);
+      const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
 
       return () => {
         clearInterval(partnerLocationInterval);
