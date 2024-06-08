@@ -190,7 +190,8 @@ function ReservationWalkPartnerMain() {
 
   // 카카오맵
   useEffect(() => {
-    if (latitude && longitude && walkList && matchingList) {
+    console.log(latitude, longitude, walkList, matchingList);
+    if (latitude && longitude && walkList) {
       const mapContainer = document.getElementById("map");
       if (mapContainer && matchingState === 0 && walkList) {
         const mapOption = {
@@ -205,7 +206,6 @@ function ReservationWalkPartnerMain() {
 
         walkList.forEach((walk) => {
           const markerImage = new kakao.maps.MarkerImage("/img/marker1.webp", new kakao.maps.Size(64, 64), { alt: "Destination" });
-
           const markerPosition = new kakao.maps.LatLng(walk.latitude, walk.longitude);
           const marker = new kakao.maps.Marker({
             position: markerPosition,
