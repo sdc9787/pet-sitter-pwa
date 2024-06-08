@@ -221,35 +221,15 @@ function ReservationWalkPartnerMain() {
           level: 3,
         };
         const map = new kakao.maps.Map(mapContainer, mapOption);
-        const userPosition = new kakao.maps.LatLng(latitude, longitude);
-
-        const userMarkerImage = new kakao.maps.MarkerImage("/img/marker2.webp", new kakao.maps.Size(64, 64), { alt: "Destination" });
-        const userMarker = new kakao.maps.Marker({
-          position: userPosition,
-          image: userMarkerImage,
-        });
-        userMarker.setMap(map);
 
         const markerImage = new kakao.maps.MarkerImage("/img/marker1.webp", new kakao.maps.Size(64, 64), { alt: "Partner Location" });
 
-        const markerPosition = new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude);
+        const markerPosition = new kakao.maps.LatLng(matchingList.latitude, matchingList.longitude);
         const marker = new kakao.maps.Marker({
           position: markerPosition,
           image: markerImage,
         });
         marker.setMap(map);
-
-        const updatePartnerMarker = () => {
-          marker.setPosition(new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude));
-        };
-
-        // Set interval to update partner's location
-        updatePartnerMarker();
-        const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
-
-        return () => {
-          clearInterval(partnerLocationInterval);
-        };
       } else {
         console.error("Map container not found");
       }
@@ -259,9 +239,11 @@ function ReservationWalkPartnerMain() {
   //마커 지우기
   useEffect(() => {
     if (mapInstance.current) {
+      const userMarkerImage = new kakao.maps.MarkerImage("/img/marker2.webp", new kakao.maps.Size(64, 64), { alt: "Destination" });
       const partnerMarker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
         map: mapInstance.current,
+        image: userMarkerImage,
       });
 
       const updatePartnerMarker = () => {

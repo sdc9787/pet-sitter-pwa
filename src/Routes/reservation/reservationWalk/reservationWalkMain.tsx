@@ -98,11 +98,11 @@ function ReservationWalkMain() {
 
         // 마커 이미지 설정
         const markerImageUrl = "/img/marker1.webp";
-        const partnerMarkerImageUrl = "/img/marker2.webp";
+        // const partnerMarkerImageUrl = "/img/marker2.webp";
 
         const markerImage = new kakao.maps.MarkerImage(markerImageUrl, new kakao.maps.Size(64, 64), { alt: "Destination" });
 
-        const partnerMarkerImage = new kakao.maps.MarkerImage(partnerMarkerImageUrl, new kakao.maps.Size(64, 64), { alt: "Partner Location" });
+        // const partnerMarkerImage = new kakao.maps.MarkerImage(partnerMarkerImageUrl, new kakao.maps.Size(64, 64), { alt: "Partner Location" });
 
         // 도착 지점 마커
         const markerPosition = new kakao.maps.LatLng(walkData.latitude, walkData.longitude);
@@ -112,23 +112,23 @@ function ReservationWalkMain() {
         });
         marker.setMap(map);
 
-        // 파트너 위치 마커
-        const partnerMarker = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
-          image: partnerMarkerImage,
-        });
-        partnerMarker.setMap(map);
+        // // 파트너 위치 마커
+        // const partnerMarker = new kakao.maps.Marker({
+        //   position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
+        //   image: partnerMarkerImage,
+        // });
+        // partnerMarker.setMap(map);
 
-        const updatePartnerMarker = () => {
-          partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude));
-        };
+        // const updatePartnerMarker = () => {
+        //   partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude));
+        // };
 
-        updatePartnerMarker();
-        const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
+        // updatePartnerMarker();
+        // const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
 
-        return () => {
-          clearInterval(partnerLocationInterval);
-        };
+        // return () => {
+        //   clearInterval(partnerLocationInterval);
+        // };
       } else {
         console.error("Map container not found");
       }
@@ -138,9 +138,13 @@ function ReservationWalkMain() {
   //마커 지우기
   useEffect(() => {
     if (mapInstance.current) {
+      const partnerMarkerImageUrl = "/img/marker2.webp";
+      const partnerMarkerImage = new kakao.maps.MarkerImage(partnerMarkerImageUrl, new kakao.maps.Size(64, 64), { alt: "Partner Location" });
+
       const partnerMarker = new kakao.maps.Marker({
         position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
         map: mapInstance.current,
+        image: partnerMarkerImage,
       });
 
       const updatePartnerMarker = () => {
