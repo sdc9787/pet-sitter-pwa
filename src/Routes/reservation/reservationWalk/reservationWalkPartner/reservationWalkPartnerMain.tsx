@@ -250,27 +250,26 @@ function ReservationWalkPartnerMain() {
   //마커 지우기
   useEffect(() => {
     if (mapInstance.current) {
-      navigator.geolocation.getCurrentPosition((position1) => {
-        const { latitude, longitude } = position1.coords;
-        const userMarkerImage = new kakao.maps.MarkerImage("/img/marker2.webp", new kakao.maps.Size(64, 64), { alt: "Destination" });
-        const partnerMarker = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(latitude, longitude),
-          map: mapInstance.current,
-          image: userMarkerImage,
-        });
-        console.log(1);
-        const updatePartnerMarker = () => {
-          partnerMarker.setPosition(new kakao.maps.LatLng(latitude, longitude));
-        };
+      const partnerMarkerImageUrl = "/img/marker2.webp";
+      const partnerMarkerImage = new kakao.maps.MarkerImage(partnerMarkerImageUrl, new kakao.maps.Size(64, 64), { alt: "Partner Location" });
 
-        const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
-
-        return () => {
-          clearInterval(partnerLocationInterval);
-        };
+      const partnerMarker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
+        map: mapInstance.current,
+        image: partnerMarkerImage,
       });
+
+      const updatePartnerMarker = () => {
+        partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude));
+      };
+
+      const partnerLocationInterval = setInterval(updatePartnerMarker, 5000);
+
+      return () => {
+        clearInterval(partnerLocationInterval);
+      };
     }
-  }, [latitude, longitude, mapInstance.current]);
+  }, [partnerLocation]);
 
   // 예약 신청
   const requestReservation = () => {
