@@ -6,6 +6,8 @@ import { useAlert } from "../../../../hook/useAlert/useAlert";
 import { useNavigate } from "react-router-dom";
 import ActionBtn from "../../../../Component/actionBtn/actionBtn";
 import Loading from "../../../../Component/loading/loading";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../../Store/store";
 
 interface WalkList {
   id: number;
@@ -43,7 +45,35 @@ function ReservationWalkPartnerMain() {
   const [matchingTime, setMatchingTime] = useState<number>(0);
   const [matchingTimeRemaining, setMatchingTimeRemaining] = useState<number>(0); // New state for matchingTime remaining
   const matchingIntervalRef = useRef<NodeJS.Timeout | null>(null); // New ref for matchingTime interval
+  const partnerLocation = useSelector((state: RootState) => state.walkLocation);
+  const partnerLocationRef = useRef(partnerLocation);
   const [refreshKey, setRefreshKey] = useState<number>(0); // State for key refresh
+  const mapInstance = useRef<kakao.maps.Map | null>(null);
+
+  useEffect(() => {
+    partnerLocationRef.current = partnerLocation;
+  }, [partnerLocation]);
+
+  // Fetch partner's location
+  const fetchPartnerLocation = async () => {
+    try {
+      const response = await instanceJson.get("/partner/location");
+      return response.data;
+    } catch (error) {
+      console.error("Failed to fetch partner's location:", error);
+    }
+  };
+
+  // Update partner's location on the map
+  const updatePartnerLocation = (map: kakao.maps.Map, partnerMarker: kakao.maps.Marker) => {
+    fetchPartnerLocation().then((location) => {
+      if (location) {
+        const newLatLng = new kakao.maps.LatLng(location.latitude, location.longitude);
+        partnerMarker.setPosition(newLatLng);
+        map.setCenter(newLatLng); // Optionally center the map to the new location
+      }
+    });
+  };
 
   // 파트너가 산책글 작성했는지 확인
   useEffect(() => {
@@ -167,6 +197,7 @@ function ReservationWalkPartnerMain() {
           level: 3,
         };
         const map = new kakao.maps.Map(mapContainer, mapOption);
+        mapInstance.current = map;
         const userPosition = new kakao.maps.LatLng(latitude, longitude);
         const userMarker = new kakao.maps.Marker({ position: userPosition });
         userMarker.setMap(map);
@@ -201,17 +232,49 @@ function ReservationWalkPartnerMain() {
 
         const markerImage = new kakao.maps.MarkerImage("/img/marker1.webp", new kakao.maps.Size(64, 64), { alt: "Partner Location" });
 
-        const markerPosition = new kakao.maps.LatLng(matchingList.latitude, matchingList.longitude);
+        const markerPosition = new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude);
         const marker = new kakao.maps.Marker({
           position: markerPosition,
           image: markerImage,
         });
         marker.setMap(map);
+
+        const updatePartnerMarker = () => {
+          marker.setPosition(new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude));
+        };
+
+        // Set interval to update partner's location
+        updatePartnerMarker();
+        const partnerLocationInterval = setInterval(updatePartnerMarker, 10000);
+
+        return () => {
+          clearInterval(partnerLocationInterval);
+        };
       } else {
         console.error("Map container not found");
       }
     }
   }, [latitude, longitude, walkList, matchingList]);
+
+  //마커 지우기
+  useEffect(() => {
+    if (mapInstance.current) {
+      const partnerMarker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(partnerLocationRef.current.latitude, partnerLocationRef.current.longitude),
+        map: mapInstance.current,
+      });
+
+      const updatePartnerMarker = () => {
+        partnerMarker.setPosition(new kakao.maps.LatLng(partnerLocation.latitude, partnerLocation.longitude));
+      };
+
+      const partnerLocationInterval = setInterval(updatePartnerMarker, 10000);
+
+      return () => {
+        clearInterval(partnerLocationInterval);
+      };
+    }
+  }, [partnerLocation]);
 
   // 예약 신청
   const requestReservation = () => {

@@ -146,6 +146,7 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
         navigator.geolocation.getCurrentPosition(
           (position) => {
             const { latitude, longitude } = position.coords;
+            dispatch(setWalkLocation({ latitude, longitude }));
             ws.send(
               JSON.stringify({
                 type: "location",
