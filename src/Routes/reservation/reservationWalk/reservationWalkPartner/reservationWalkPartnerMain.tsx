@@ -232,14 +232,6 @@ function ReservationWalkPartnerMain() {
           image: markerImage,
         });
 
-        const userMarkerImage = new kakao.maps.MarkerImage("/img/marker2.webp", new kakao.maps.Size(64, 64), { alt: "Destination" });
-        const userMarker = new kakao.maps.Marker({
-          position: new kakao.maps.LatLng(latitude, longitude),
-          image: userMarkerImage,
-        });
-
-        userMarker.setMap(map);
-
         marker.setMap(map);
       } else {
         console.error("Map container not found");
