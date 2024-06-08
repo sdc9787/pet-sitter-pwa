@@ -278,7 +278,7 @@ function ReservationWalkPartnerMain() {
     <>
       <Topbar backUrl={applyList[0]?.id ? "/reservation/walk/partner/list" : "/reservation"} title="산책 매칭" sendText={matchingState === 0 ? "재검색" : ""} sendFunction={() => setRefreshKey((oldKey) => oldKey + 1)}></Topbar>
       <div className="w-full h-screen bg-gray-100">
-        {matchingState == 1 ? (
+        {matchingState == 0 ? (
           <div className="z-10 absolute top-20 left-4 bg-main text-white font-semibold px-3 py-1 rounded-md text-sm shadow-md">
             검색범위
             <select value={distance} onChange={handleDistanceChange} className="ml-2 p-1 bg-main text-white font-semibold text-sm rounded">
