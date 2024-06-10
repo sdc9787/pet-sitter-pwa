@@ -135,7 +135,9 @@ function WalkReviewListMain() {
             {walkReviewList.length > 0 ? (
               walkReviewList.map((review) => (
                 <div key={review.id} className="flex flex-col gap-1 items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
-                  <img src={review.imgUrl} alt="Walk" className="w-full h-40 object-cover rounded-lg mb-2" />
+                  {review.imgUrl ? <img src={review.imgUrl} alt="Walk" className="w-full h-40 object-cover rounded-lg mb-2" /> : null}
+
+                  {/* <img src={review.imgUrl} alt="Walk" className="w-full h-40 object-cover rounded-lg mb-2" /> */}
                   <div className="w-full flex justify-between items-center">
                     <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
                     <i className="xi-close-min xi-x p-1 font-extrabold text-red-500" onClick={() => walkReviewDelete(review.id)}></i>
