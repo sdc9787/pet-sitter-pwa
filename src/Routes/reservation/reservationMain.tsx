@@ -10,7 +10,7 @@ function ReservationMain() {
       {/* Navbar */}
       <div className="flex items-center justify-between p-6 bg-white">
         <div className="text-3xl font-black text-main">SWR</div>
-        <button className="text-gray-600">이용 안내</button>
+        <button className="font-bold">이용 안내</button>
       </div>
       {/* 메인 카드 */}
       <div className="flex-grow p-4 bg-gray-100">

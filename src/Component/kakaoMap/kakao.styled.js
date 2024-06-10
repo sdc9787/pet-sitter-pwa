@@ -20,9 +20,10 @@ export const MapContainer = styled.div`
 `;
 
 export const Overlay = styled.div`
+  padding: 1px 2px;
   border: 1px solid #bbb;
+  color: white;
   border-radius: 30px;
-  background-color: ${theme.colors.white};
   position: relative;
   display: flex;
   justify-content: space-between;
@@ -258,7 +259,7 @@ export const ModalBtn = styled.button`
   background-color: ${theme.colors.gray};
   border-radius: 5px;
   margin-top: 8px;
-  margin-bottom: 15px;
+  margin-bottom: 23px;
 `;
 
 export const ModalBtnDiv = styled.div`
@@ -298,6 +299,8 @@ export const GoBackButton = styled.button`
 
 // 현 지도에서 검색 버튼
 export const ReSearch = styled.button`
+  font-family: "Noto Sans KR", sans-serif;
+  font-weight: 900;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -324,7 +327,7 @@ export const ReSearch = styled.button`
     ismodalopen &&
     css`
       @media (max-width: 768px) {
-        bottom: 405px;
+        bottom: 400px;
       }
     `}
 `;
