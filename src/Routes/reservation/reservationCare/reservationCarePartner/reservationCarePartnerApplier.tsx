@@ -153,14 +153,14 @@ function ReservationCarePartnerApplier() {
                 <div key={applier.careMatchingId} className="flex flex-col gap-1 items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
                   <img src={applier.petImage} alt="Care" className="border border-zinc-400  w-full h-40 object-cover rounded-lg mb-2" />
                   <div className="text-white font-bold">{applier.petName}</div>
-                  <div className="">성별: {applier.petGender === "male" ? "남자" : "여자"}</div>
-                  <div className="">나이: {applier.petBirthYear}</div>
-                  <div className="">견종: {applier.species}</div>
-                  <div className="">몸무게: {applier.weight}kg</div>
-                  <div className="">중성화 여부: {applier.neutering ? "했어요" : "안했어요"}</div>
-                  <div className="">예방접종: {applier.vaccination ? applier.vaccination : "안했어요"}</div>
-                  <div className="">가격: {applier.amount.toLocaleString()} 원</div>
-                  <div className="">
+                  <div className="font-bold">성별: {applier.petGender === "male" ? "남자" : "여자"}</div>
+                  <div className="font-bold">나이: {applier.petBirthYear}</div>
+                  <div className="font-bold">견종: {applier.species}</div>
+                  <div className="font-bold">몸무게: {applier.weight}kg</div>
+                  <div className="font-bold">중성화 여부: {applier.neutering ? "했어요" : "안했어요"}</div>
+                  <div className="font-bold">예방접종: {applier.vaccination ? applier.vaccination : "안했어요"}</div>
+                  <div className="font-bold">가격: {applier.amount.toLocaleString()} 원</div>
+                  <div className="font-bold">
                     <h1>예약기간</h1>
                     <div>시작날짜 : {new Date(applier.reservationStartDate).toLocaleString()} </div>
                     <div>종료날짜 : {new Date(applier.reservationEndDate).toLocaleString()} </div>
@@ -187,33 +187,35 @@ function ReservationCarePartnerApplier() {
                 <div key={applier.careMatchingId} className="flex flex-col items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
                   <img src={applier.petImage} alt="Care" className="border border-zinc-400  w-full h-40 object-cover rounded-lg mb-2" />
                   <div className="text-white font-bold">{applier.petName}</div>
-                  <div className="">성별: {applier.petGender === "male" ? "남자" : "여자"}</div>
-                  <div className="">나이: {applier.petBirthYear}</div>
-                  <div className="">견종: {applier.species}</div>
-                  <div className="">몸무게: {applier.weight}kg</div>
-                  <div className="">중성화 여부: {applier.neutering ? "했어요" : "안했어요"}</div>
-                  <div className="">예방접종: {applier.vaccination ? applier.vaccination : "안했어요"}</div>
-                  <div className="">가격: {applier.amount.toLocaleString()} 원</div>
-                  <div className="">
+                  <div className="font-bold">성별: {applier.petGender === "male" ? "남자" : "여자"}</div>
+                  <div className="font-bold">나이: {applier.petBirthYear}</div>
+                  <div className="font-bold">견종: {applier.species}</div>
+                  <div className="font-bold">몸무게: {applier.weight}kg</div>
+                  <div className="font-bold">중성화 여부: {applier.neutering ? "했어요" : "안했어요"}</div>
+                  <div className="font-bold">예방접종: {applier.vaccination ? applier.vaccination : "안했어요"}</div>
+                  <div className="font-bold">가격: {applier.amount.toLocaleString()} 원</div>
+                  <div className="font-bold">
                     <h1>예약기간</h1>
                     <div>시작날짜 : {new Date(applier.reservationStartDate).toLocaleString()} </div>
                     <div>종료날짜 : {new Date(applier.reservationEndDate).toLocaleString()} </div>
                   </div>
                   <div className="text-white mt-2">Request Message: {applier.requestMessage}</div>
-                  <button
-                    onClick={() => {
-                      handleAccept(applier.careMatchingId);
-                    }}
-                    className={"px-4 py-2 font-bold text-white rounded-lg w-full bg-main"}>
-                    수락
-                  </button>
-                  <button
-                    onClick={() => {
-                      handleCancel(applier.careMatchingId);
-                    }}
-                    className={"px-4 py-2 font-bold text-white rounded-lg w-full bg-red-500"}>
-                    거절
-                  </button>
+                  <div className="flex gap-6">
+                    <button
+                      onClick={() => {
+                        handleAccept(applier.careMatchingId);
+                      }}
+                      className={"px-4 py-2 font-bold text-white rounded-lg w-full bg-main"}>
+                      수락
+                    </button>
+                    <button
+                      onClick={() => {
+                        handleCancel(applier.careMatchingId);
+                      }}
+                      className={"px-4 py-2 font-bold text-white rounded-lg w-full bg-red-500"}>
+                      거절
+                    </button>
+                  </div>
                 </div>
               ))
             ) : (
