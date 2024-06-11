@@ -36,6 +36,8 @@ function CommunityDetail() {
   const [detail, setDetail] = useState<Detail>({ id: 0, title: "", content: "", createDate: "", imgUrl: "", likeCount: 0, commentCount: 0, viewCount: 0, nickname: "" });
   const [comment, setComment] = useState<Comment[]>([{ id: 0, nickname: "", content: "", createDate: "", likeCount: 0 }]);
   const [commentText, setCommentText] = useState("");
+  const [commentEdit, setCommentEdit] = useState([false, false]); //댓글 수정모드 [true, false]
+  const [commentEditText, setCommentEditText] = useState(""); //댓글 수정내용 ["", ""
   // 댓글 내용을 업데이트하는 함수
   const handleCommentChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
     setCommentText(event.target.value);
@@ -58,6 +60,7 @@ function CommunityDetail() {
         r.data.post[0].createDate = formattedDate.slice(0, 10) + " " + formattedDate.slice(11); // 11번째 문자를 제거합니다.
         setDetail(r.data.post[0]);
         setComment(r.data.comments);
+        setCommentEdit(new Array(r.data.comments.length).fill(false));
       })
       .catch((error: any) => {
         alertBox(error.response.data);
@@ -144,6 +147,20 @@ function CommunityDetail() {
       });
   };
 
+  //댓글수정 api
+  const handleCommentEdit = (id: number) => {
+    instanceJson
+      .post(`/community/edit/comment`, { comment_id: id, content: commentEditText })
+      .then((r: any) => {
+        alertBox("댓글이 수정되었습니다.");
+        getDetail();
+      })
+      .catch((error: any) => {
+        alertBox(error.response.data);
+        console.error(error);
+      });
+  };
+
   return (
     <>
       <Topbar backUrl="/community" title="커뮤니티"></Topbar>
@@ -213,13 +230,13 @@ function CommunityDetail() {
                   {localStorage.getItem("nickname") === a.nickname ? (
                     <div className="flex justify-center items-center">
                       {/* todo 댓글 수정기능 */}
-                      {/* <button
-                        className="px-1 py-1 font-bold text-gray"
+                      <button
+                        className="px-1 py-1 font-bold text-gray text-sm"
                         onClick={() => {
-                          navgate("/community/edit", { state: detail }); //본문 수정
+                          setCommentEdit(commentEdit.map((item, index) => (index === i ? !item : item))); //댓글 수정모드
                         }}>
                         수정
-                      </button> */}
+                      </button>
                       <button
                         className="text-sm"
                         onClick={() => {
@@ -242,6 +259,14 @@ function CommunityDetail() {
                   <span className="ml-1">{a.likeCount}</span>
                 </button>
                 <br></br>
+                {commentEdit[i] ? (
+                  <div className="flex justify-center items-center w-full h-20 mb-3 mt-4">
+                    <textarea className="align-top w-full h-full p-3 mr-3 border border-zinc-300 rounded-lg" placeholder="댓글을 입력하세요" value={commentEditText} onChange={(e) => setCommentEditText(e.target.value)} />
+                    <button className=" w-1/5 h-full text-base py-3 bg-main text-white rounded-lg font-bold" onClick={() => handleCommentEdit(a.id)}>
+                      수정
+                    </button>
+                  </div>
+                ) : null}
               </div>
             );
           })}
