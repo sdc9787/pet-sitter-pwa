@@ -35,11 +35,11 @@ function ReservationWalkEditPost() {
       alertBox("상세 주소를 입력해주세요");
       return false;
     }
-    if (!reservation.title) {
+    if (!title) {
       alertBox("제목을 입력해주세요");
       return false;
     }
-    if (!reservation.content) {
+    if (!content) {
       alertBox("게시글을 입력해주세요");
       return false;
     }
