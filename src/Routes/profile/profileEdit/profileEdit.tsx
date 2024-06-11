@@ -72,7 +72,7 @@ const EditProfile = () => {
       .then((r: any) => {
         console.log(r.data);
         alertBox("프로필 수정이 완료되었습니다.");
-        window.localStorage.setItem("nickname", nickname); //닉네임 갱신
+        nickname == "" ? null : window.localStorage.setItem("nickname", nicknamePlaceholder);
         navigator("/profile");
       })
       .catch((error: any) => {
