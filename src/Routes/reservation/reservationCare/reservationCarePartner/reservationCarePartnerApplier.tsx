@@ -200,7 +200,7 @@ function ReservationCarePartnerApplier() {
                     <div>종료날짜 : {new Date(applier.reservationEndDate).toLocaleString()} </div>
                   </div>
                   <div className="text-white mt-2">Request Message: {applier.requestMessage}</div>
-                  <div className="flex gap-6">
+                  <div className="w-full flex gap-6">
                     <button
                       onClick={() => {
                         handleAccept(applier.careMatchingId);
