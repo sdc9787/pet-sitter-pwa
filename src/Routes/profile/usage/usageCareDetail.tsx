@@ -114,7 +114,7 @@ function UsageCareDetail() {
               </div>
             </div>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="">
             {/* 돌봄러 정보 */}
             <div className="mb-4 px-6">
               <h3 className="text-lg font-bold">돌봄러 정보</h3>

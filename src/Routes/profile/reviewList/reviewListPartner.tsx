@@ -107,7 +107,8 @@ function WalkReviewListPartner() {
             {walkReviewList.length > 0 ? (
               walkReviewList.map((review) => (
                 <div key={review.id} className="flex flex-col gap-1 items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
-                  <img src={review.imgUrl} alt="Walk" className="w-full h-40 object-cover rounded-lg mb-2" />
+                  {review.imgUrl ? <img src={review.imgUrl} alt="Walk" className="w-full h-40 object-cover rounded-lg mb-2" /> : null}
+                  {/* <img src={review.imgUrl} alt="Walk" className="w-full h-40 object-cover rounded-lg mb-2" /> */}
                   <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
                   <div className="font-bold">이용자 : {review.userNickname}</div>
                   <div className="font-bold">산책시간: {review.walkTime}분</div>
@@ -126,7 +127,8 @@ function WalkReviewListPartner() {
             {careReviewList.length > 0 ? (
               careReviewList.map((review) => (
                 <div key={review.id} className="flex flex-col gap-1 items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
-                  <img src={review.imgUrl} alt="Care" className="w-full h-40 object-cover rounded-lg mb-2" />
+                  {review.imgUrl ? <img src={review.imgUrl} alt="Care" className="w-full h-40 object-cover rounded-lg mb-2" /> : null}
+                  {/* <img src={review.imgUrl} alt="Care" className="w-full h-40 object-cover rounded-lg mb-2" /> */}
                   <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
                   <div className="font-bold">돌봄러 : {review.caregiverNickname}</div>
                   <div className="font-bold">펫 종류: {review.petSpecies}</div>
@@ -143,15 +145,6 @@ function WalkReviewListPartner() {
           </div>
         </div>
       </div>
-      <ActionBtn
-        buttonCount={1}
-        button1Props={{
-          text: "리뷰 작성하러 가기",
-          onClick: () => {
-            navigate("/profile/usage/user");
-          },
-          color: "bg-main",
-        }}></ActionBtn>
     </>
   );
 }

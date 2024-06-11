@@ -59,7 +59,7 @@ function CareReviewListView() {
 
   return (
     <>
-      <Topbar backUrl="/reservation/care/list" title={careReviewList[0]?.caregiverNickname + "님의 리뷰 목록"} />
+      <Topbar backUrl="/reservation/care/list" title={"리뷰 목록"} />
       <div className="flex flex-col justify-start items-center w-full h-screen gap-4 overflow-x-hidden">
         <div className="relative w-full mt-18 h-12 bg-white text-center flex justify-evenly items-center">
           <div className={`absolute top-0 h-full w-1/2 transition-transform duration-300 bg-white border-b-4 border-black`} />
@@ -70,7 +70,8 @@ function CareReviewListView() {
             {careReviewList.length > 0 ? (
               careReviewList.map((review) => (
                 <div key={review.id} className="flex flex-col gap-1 items-start bg-gray-800 p-4 m-2 rounded-lg shadow-md">
-                  <img src={review.imgUrl} alt="care" className="w-full h-40 object-cover rounded-lg mb-2" />
+                  {review.imgUrl === "" ? <img src={review.imgUrl} alt="Walk" className="w-full h-40 object-cover rounded-lg mb-2" /> : null}
+                  {/* <img src={review.imgUrl} alt="care" className="w-full h-40 object-cover rounded-lg mb-2" /> */}
                   <div className="text-zinc-500 font-semibold">{new Date(review.reviewDate).toLocaleString()}</div>
                   <div className="font-bold">이용자 : {review.userNickname}</div>
                   <div className="mt-2">{renderRating(review.rating)}</div>

@@ -6,6 +6,7 @@ import instanceJson from "../../../Component/axios/axiosJson";
 import { useDispatch } from "react-redux";
 import { RootState, setPetId } from "../../../Store/store";
 import { useSelector } from "react-redux";
+import ActionBtn from "../../../Component/actionBtn/actionBtn";
 
 function ReservationWalkPet() {
   const dispatch = useDispatch();
@@ -33,7 +34,7 @@ function ReservationWalkPet() {
   return (
     <>
       <div className="w-full h-screen p-5">
-        <Topbar title="반려동물 선택" backUrl="/reservation/walk/locate" sendText="다음" sendFunction={() => navigator("/reservation/walk/post")}></Topbar>
+        <Topbar title="반려동물 선택" backUrl="/reservation/walk/locate"></Topbar>
         {/* 반려동물 정보 */}
         <div className="mt-16"></div>
         {petProfile.map((pet: any, index: number) => {
@@ -54,6 +55,13 @@ function ReservationWalkPet() {
           );
         })}
       </div>
+      <ActionBtn
+        buttonCount={1}
+        button1Props={{
+          text: "다음",
+          onClick: () => navigator("/reservation/walk/post"),
+          color: "bg-main",
+        }}></ActionBtn>
     </>
   );
 }

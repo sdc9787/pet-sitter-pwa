@@ -3,6 +3,7 @@ import Topbar from "../../../Component/topbar/topbar";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { RootState, setWalkTime } from "../../../Store/store";
+import ActionBtn from "../../../Component/actionBtn/actionBtn";
 
 function ReservationWalkTime() {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ function ReservationWalkTime() {
 
   return (
     <>
-      <Topbar title="시간 선택" backUrl="/reservation/walk" sendText="다음" sendFunction={() => navigate("/reservation/walk/locate")}></Topbar>
+      <Topbar title="시간 선택" backUrl="/reservation/walk"></Topbar>
       <div className="w-full h-screen flex flex-col justify-start p-6 ">
         <span className="mt-20 text-lg mb-5 font-bold">산책 시간</span>
         <div className="flex justify-around items-center">
@@ -49,6 +50,13 @@ function ReservationWalkTime() {
           })}
         </div>
       </div>
+      <ActionBtn
+        buttonCount={1}
+        button1Props={{
+          text: "다음",
+          onClick: () => navigate("/reservation/walk/locate"),
+          color: "bg-main",
+        }}></ActionBtn>
     </>
   );
 }

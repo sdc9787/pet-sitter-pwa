@@ -125,6 +125,8 @@ export const WebSocketProvider: React.FC<WebSocketProviderProps> = ({ children }
             navigate("/reservation/walk");
           } else if (messageData[1] === "산책이 종료되었습니다") {
             navigate("/reservation");
+          } else if (messageData[1] === "산책이 시작되었습니다") {
+            window.location.reload();
           } else if (messageData[1] === "문제가 발생하여 산책을 종료합니다") {
             navigate("/reservation");
           }

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Topbar from "../../../Component/topbar/topbar";
 import { useAlert } from "../../../hook/useAlert/useAlert";
 import { useGeolocationWithAddress } from "../../../hook/useGeolocation/useGeolocation";
+import ActionBtn from "../../../Component/actionBtn/actionBtn";
 
 function ReservationWalkLocate() {
   const dispatch = useDispatch();
@@ -114,7 +115,7 @@ function ReservationWalkLocate() {
 
   return (
     <>
-      <Topbar title="위치 선택" backUrl="/reservation/walk/time" sendText="다음" sendFunction={() => (locate.detailAddress === "" ? alertBox("상세 주소를 입력해주세요") : navigate("/reservation/walk/pet"))}></Topbar>
+      <Topbar title="위치 선택" backUrl="/reservation/walk/time"></Topbar>
 
       <div className="w-full h-screen flex flex-col justify-start mt-16 ">
         <div id="map" style={{ width: "100%", height: "350px", position: "relative" }}>
@@ -138,6 +139,13 @@ function ReservationWalkLocate() {
 
         <span className="p-6 text-zinc-400 text-sm">주소가 다르다면 여기를 터치해주세요(미구현)</span>
       </div>
+      <ActionBtn
+        buttonCount={1}
+        button1Props={{
+          text: "다음",
+          onClick: () => (locate.detailAddress === "" ? alertBox("상세 주소를 입력해주세요") : navigate("/reservation/walk/pet")),
+          color: "bg-main",
+        }}></ActionBtn>
     </>
   );
 }

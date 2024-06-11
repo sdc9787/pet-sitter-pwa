@@ -112,7 +112,7 @@ function UsageWalkDetail() {
               </div>
             </div>
           </div>
-          <div className="flex justify-between items-center">
+          <div className="">
             {/*산책러 정보*/}
             <div className="mb-4 px-6">
               <h3 className="text-lg font-bold">산책러 정보</h3>
@@ -128,7 +128,7 @@ function UsageWalkDetail() {
               <h3 className="text-lg font-bold">펫 정보</h3>
               <div className="flex items-center mt-2">
                 <img src={walkDetail?.petImage} alt="Pet" className="w-12 h-12 rounded-full mr-4" />
-                <div>
+                <div className="flex flex-col">
                   <p className="font-bold">{walkDetail?.petName}</p>
                   <p className="font-semibold text-sm">
                     {walkDetail?.petSpecies} ({walkDetail?.petGender == "male" ? "남" : "여"}), {new Date().getFullYear() - Number(walkDetail?.petBirthYear)}세

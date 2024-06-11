@@ -5,6 +5,7 @@ import { RootState, setTitleAndContent } from "../../../Store/store";
 import { useAlert } from "../../../hook/useAlert/useAlert";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import ActionBtn from "../../../Component/actionBtn/actionBtn";
 
 function ReservationWalkPost() {
   const dispatch = useDispatch();
@@ -74,7 +75,7 @@ function ReservationWalkPost() {
 
   return (
     <>
-      <Topbar title="산책 글 작성" backUrl="/reservation/walk/pet" sendFunction={sendFunction} sendText="작성"></Topbar>
+      <Topbar title="산책 글 작성" backUrl="/reservation/walk/pet"></Topbar>
       <div className="px-5 w-full flex flex-col items-center justify-center my-24">
         <div className="w-full flex flex-col items-center justify-center">
           {/* 제목 박스 */}
@@ -83,6 +84,13 @@ function ReservationWalkPost() {
           <textarea value={content} className="w-full h-96 p-2 mt-2 border border-gray rounded-md" placeholder="산책시 특별한 주의 사항을 적어주세요" onChange={(e) => setContent(e.target.value)}></textarea>
         </div>
       </div>
+      <ActionBtn
+        buttonCount={1}
+        button1Props={{
+          text: "다음",
+          onClick: () => sendFunction(),
+          color: "bg-main",
+        }}></ActionBtn>
     </>
   );
 }
