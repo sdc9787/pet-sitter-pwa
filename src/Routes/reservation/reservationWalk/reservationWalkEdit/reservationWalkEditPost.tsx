@@ -13,35 +13,37 @@ function ReservationWalkEditPost() {
   const { id } = useParams();
 
   const reservationState = useSelector((state: RootState) => state.reservationWalk);
+  const [reservation, setReservation] = useState(reservationState);
   const [title, setTitle] = useState(reservationState.title);
   const [content, setContent] = useState(reservationState.content);
 
   // Function to validate reservation
   const validateReservation = () => {
-    if (reservationState.petId === 0) {
+    if (reservation.petId === 0) {
       alertBox("반려동물을 선택해주세요");
       return false;
     }
-    if (reservationState.latitude === 0 || reservationState.longitude === 0) {
+    if (reservation.latitude === 0 || reservation.longitude === 0) {
       alertBox("위치 정보가 잘못되었습니다");
       return false;
     }
-    if (!reservationState.address) {
+    if (!reservation.address) {
       alertBox("위치 정보가 잘못되었습니다");
       return false;
     }
-    if (!reservationState.detailAddress) {
+    if (!reservation.detailAddress) {
       alertBox("상세 주소를 입력해주세요");
       return false;
     }
-    if (!reservationState.title) {
+    if (!title) {
       alertBox("제목을 입력해주세요");
       return false;
     }
-    if (!reservationState.content) {
-      alertBox("게시글을 입력해주세요");
+    if (!content) {
+      alertBox("내용을 입력해주세요");
       return false;
     }
+
     return true;
   };
 
@@ -50,8 +52,17 @@ function ReservationWalkEditPost() {
     if (!validateReservation()) {
       return;
     }
+    const updatedReservation = {
+      ...reservation,
+      title: title,
+      content: content,
+      id: Number(id),
+    };
+
+    setReservation(updatedReservation);
+
     instanceJson
-      .post("/walk/edit/post", reservationState)
+      .post("/walk/edit/post", updatedReservation)
       .then((response: any) => {
         navigate("/reservation/walk");
         alertBox("산책글이 수정되었습니다");
@@ -68,8 +79,12 @@ function ReservationWalkEditPost() {
   };
 
   useEffect(() => {
+    setReservation(reservationState);
+  }, [reservationState]);
+
+  useEffect(() => {
     dispatch(setTitleAndContent({ title, content }));
-  }, [title, content]);
+  }, [dispatch, title, content]);
 
   return (
     <>
@@ -77,9 +92,9 @@ function ReservationWalkEditPost() {
       <div className="px-5 w-full flex flex-col items-center justify-center my-24">
         <div className="w-full flex flex-col items-center justify-center">
           {/* 제목 박스 */}
-          <input value={reservationState.title} className="w-full p-2 rounded-md border border-gray" placeholder="제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)} />
+          <input value={title} className="w-full p-2 rounded-md border border-gray" placeholder="제목을 입력해주세요" onChange={(e) => setTitle(e.target.value)} />
           {/* 게시글 작성 박스 */}
-          <textarea value={reservationState.content} className="w-full h-96 p-2 mt-2 border border-gray rounded-md" placeholder="산책시 특별한 주의 사항을 적어주세요" onChange={(e) => setContent(e.target.value)} />
+          <textarea value={content} className="w-full h-96 p-2 mt-2 border border-gray rounded-md" placeholder="산책시 특별한 주의 사항을 적어주세요" onChange={(e) => setContent(e.target.value)} />
         </div>
       </div>
     </>
