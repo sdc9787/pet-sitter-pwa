@@ -64,6 +64,11 @@ function ProfileMain() {
       navigate: "/profile/editpassword",
     },
     {
+      title: "파트너쉽 권한",
+      icon: "xi-list-square",
+      navigate: "/profile/partnerShip/step1",
+    },
+    {
       title: "알림 설정",
       icon: "xi-bell-o",
       navigate: "/profile/notification",
@@ -73,16 +78,7 @@ function ProfileMain() {
       icon: "xi-gift-o",
       navigate: "/profile/event",
     },
-    {
-      title: "결제 정보",
-      icon: "xi-credit-card",
-      navigate: "/tossPay",
-    },
-    {
-      title: "파트너쉽 권한",
-      icon: "xi-list-square",
-      navigate: "/profile/partnerShip/step1",
-    },
+
     {
       title: "고객센터",
       icon: "xi-headset",
