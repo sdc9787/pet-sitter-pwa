@@ -118,9 +118,9 @@ function UsageUserList() {
                     </div>
                   </div>
                   <div className="w-full flex items-center mb-2">
-                    <img src={usage.userImage} alt="User" className="w-16 h-16 rounded-full mr-4" />
+                    <img src={usage.walkerImage} alt="User" className="w-16 h-16 rounded-full mr-4" />
                     <div className="w-full flex flex-col items-start justify-center gap-1">
-                      <div className="text-lg font-bold">{usage.userNickname}</div>
+                      <div className="text-lg font-bold">{usage.walkerNickname}</div>
                       <div className="w-full flex flex-col justify-center items-start mb-2">
                         <div className="font-semibold">펫 이름 : {usage.petName}</div>
                         <div className="font-semibold">산책 시간 : {usage.walkTime} 분</div>
@@ -166,9 +166,9 @@ function UsageUserList() {
                     </div>
                   </div>
                   <div className="w-full flex items-center mb-2">
-                    <img src={usage.userImage} alt="User" className="w-16 h-16 rounded-full mr-4" />
+                    <img src={usage.caregiverImage} alt="User" className="w-16 h-16 rounded-full mr-4" />
                     <div className="w-full flex flex-col items-start justify-center gap-1">
-                      <div className="text-lg font-bold">{usage.userNickname}</div>
+                      <div className="text-lg font-bold">{usage.caregiverNickname}</div>
                       <div className="w-full flex flex-col justify-center items-start mb-2">
                         <div className="font-semibold">펫 이름 : {usage.petName}</div>
                         <div className="font-semibold">{usage.review == false && usage.status == 4 ? "" : "결제 포인트 : " + usage.amount.toLocaleString() + " P"}</div>
