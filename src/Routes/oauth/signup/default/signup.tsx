@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Topbar from "../../../../Component/topbar/topbar";
 import { useAlert } from "../../../../hook/useAlert/useAlert";
 import axios from "axios";
+import { set } from "date-fns";
+import instanceJson from "../../../../Component/axios/axiosJson";
 
 function SignUp() {
   const navigate = useNavigate(); //페이지 이동
@@ -15,6 +17,9 @@ function SignUp() {
   const [passwordCheck, setPasswordCheck] = useState<string>(""); //비밀번호 확인
   const [name, setName] = useState<string>(""); //이름
   const [gender, setGender] = useState<string>(""); //성별
+  const [emailAuth, setEmailAuth] = useState<string>(""); //이메일 인증번호
+  const [emailTime, setEmailTime] = useState<number>(0); //이메일 인증번호 시간
+  const [emailAuthState, setEmailAuthState] = useState<boolean>(false); //이메일 인증번호 확인 상태 [true: 일치, false: 불일치]
 
   //회원가입 버튼 클릭시
   const handleSignUp = () => {
@@ -25,6 +30,10 @@ function SignUp() {
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if (!emailRegex.test(email)) {
       alertBox("올바른 이메일 형식을 입력해주세요");
+      return;
+    }
+    if (!emailAuthState) {
+      alertBox("이메일 인증을 완료해주세요");
       return;
     }
     if (!password) {
@@ -122,6 +131,52 @@ function SignUp() {
       });
   };
 
+  //이메일 인증번호 발송 post보고 구현하기
+  const handleEmailAuth = () => {
+    instanceJson
+      .post(`${import.meta.env.VITE_APP_API_URL}/mail/send`, {
+        email: email,
+      })
+      .then((r: any) => {
+        setEmailTime(300);
+        //이메일 인증번호 발송 성공
+        alertBox("인증번호가 발송되었습니다");
+      })
+      .catch((error: any) => {
+        //이메일 인증번호 발송 실패
+        alertBox("인증번호 발송에 실패했습니다");
+      });
+  };
+
+  //이메일 인증번호 확인
+  const handleEmailAuthCheck = () => {
+    instanceJson
+      .post(`${import.meta.env.VITE_APP_API_URL}/mail/check`, {
+        email: email,
+        authNum: emailAuth,
+      })
+      .then((r: any) => {
+        //이메일 인증번호 확인 성공
+        alertBox("이메일 인증에 성공했습니다");
+        setEmailAuthState(true);
+        setEmailTime(0);
+      })
+      .catch((error: any) => {
+        //이메일 인증번호 확인 실패
+        alertBox("이메일 인증에 실패했습니다");
+      });
+  };
+
+  //이메일 인증번호 시간 감소
+  useEffect(() => {
+    if (emailTime > 0) {
+      const interval = setInterval(() => {
+        setEmailTime((prevTime) => prevTime - 1);
+      }, 1000);
+      return () => clearInterval(interval);
+    }
+  }, [emailTime]);
+
   return (
     <>
       <div className="z-30 bg-white w-full h-screen  px-6">
@@ -138,6 +193,7 @@ function SignUp() {
                 type="text"
                 className="border p-3 rounded-lg w-full"
                 placeholder="이메일 입력"
+                disabled={emailTime !== 0}
                 onChange={(e) => {
                   setEmailState(false);
                   setEmail(e.target.value);
@@ -151,6 +207,51 @@ function SignUp() {
                 중복 확인
               </button>
             </div>
+            {emailState ? (
+              <>
+                <div className="flex items-center justify-start">
+                  <span className="font-extrabold text-lg mr-2">이메일 인증</span>
+                  {emailTime === 0 ? null : emailTime}
+                </div>
+                <div className="flex">
+                  <input
+                    type="text"
+                    className="border p-3 rounded-lg w-full"
+                    placeholder="인증번호"
+                    disabled={emailTime == 0}
+                    onChange={(e) => {
+                      setEmailAuth(e.target.value);
+                    }}
+                  />
+                  {emailTime === 0 ? (
+                    <button
+                      className="ml-2 font-extrabold p-2 w-28 bg-main text-base text-white rounded-md"
+                      onClick={() => {
+                        handleEmailAuth();
+                      }}>
+                      발송
+                    </button>
+                  ) : (
+                    <button
+                      className="ml-2 font-extrabold p-2 w-28 bg-main text-base text-white rounded-md"
+                      onClick={() => {
+                        handleEmailAuth();
+                      }}>
+                      재요청
+                    </button>
+                  )}
+                </div>
+                {emailTime > 0 ? (
+                  <button
+                    className="w-full mt-2 font-extrabold py-2  bg-main text-base text-white rounded-lg"
+                    onClick={() => {
+                      handleEmailAuthCheck();
+                    }}>
+                    인증 확인
+                  </button>
+                ) : null}
+              </>
+            ) : null}
           </div>
           {/* 비밀번호 입력*/}
           <div className="flex flex-col gap-2">
