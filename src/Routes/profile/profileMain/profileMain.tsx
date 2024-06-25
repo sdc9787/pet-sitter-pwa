@@ -45,10 +45,17 @@ function ProfileMain() {
   }, []);
 
   const handleLogout = () => {
-    window.localStorage.removeItem("Authorization");
-    window.localStorage.removeItem("refresh_token");
-    window.localStorage.removeItem("nickname");
-    window.localStorage.removeItem("partnership");
+    instanceJson
+      .get("/logout")
+      .then(() => {
+        window.localStorage.removeItem("Authorization");
+        window.localStorage.removeItem("refresh_token");
+        window.localStorage.removeItem("nickname");
+        window.localStorage.removeItem("partnership");
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   //설정 목록
