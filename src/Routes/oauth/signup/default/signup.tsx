@@ -193,16 +193,16 @@ function SignUp() {
                 type="text"
                 className="border p-3 rounded-lg w-full"
                 placeholder="이메일 입력"
-                disabled={emailTime !== 0}
+                disabled={emailTime !== 0 || emailAuthState}
                 onChange={(e) => {
                   setEmailState(false);
                   setEmail(e.target.value);
                 }}
               />
               <button
-                className="ml-2 font-extrabold p-2 w-28 bg-main text-base text-white rounded-md"
+                className={"ml-2 font-extrabold p-2 w-28 bg-main text-base text-white rounded-md" + (emailTime === 0 && !emailAuthState ? "" : " bg-zinc-500")}
                 onClick={() => {
-                  handleEmail();
+                  if (emailTime === 0 && !emailAuthState) handleEmail();
                 }}>
                 중복 확인
               </button>
@@ -211,6 +211,7 @@ function SignUp() {
               <>
                 <div className="flex items-center justify-start">
                   <span className="font-extrabold text-lg mr-2">이메일 인증</span>
+                  {emailAuthState ? <i className="xi-check-circle-o xi-x text-green-600"></i> : null}
                   {emailTime === 0 ? null : emailTime}
                 </div>
                 <div className="flex">
@@ -225,11 +226,12 @@ function SignUp() {
                   />
                   {emailTime === 0 ? (
                     <button
-                      className="ml-2 font-extrabold p-2 w-28 bg-main text-base text-white rounded-md"
+                      className={"ml-2 font-extrabold p-2 w-28 bg-main text-base text-white rounded-md" + (emailAuthState ? " bg-zinc-500" : "")}
                       onClick={() => {
-                        handleEmailAuth();
+                        if (!emailAuthState) handleEmailAuth();
+                        else alertBox("이미 인증되었습니다");
                       }}>
-                      발송
+                      {emailAuthState ? "인증완료" : "인증요청"}
                     </button>
                   ) : (
                     <button
