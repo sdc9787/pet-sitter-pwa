@@ -4,10 +4,12 @@ import Topbar from "../../../Component/topbar/topbar";
 import TabBar from "../../../Component/tabbar/tabbar";
 import instanceJson from "../../../Component/axios/axiosJson";
 import Loading from "../../../Component/loading/loading";
+import { useDispatch } from "react-redux";
+import { setPartnerState } from "../../../Store/store";
 
 function ProfileMain() {
   const navigate = useNavigate(); //페이지 이동
-
+  const dispatch = useDispatch(); //디스패치
   const [loading, setLoading] = useState<boolean>(true); //로딩
   const [profileName, setProfileName] = useState<string>(""); //프로필 이름
   const [point, setPoint] = useState<number>(0); //포인트
@@ -47,11 +49,13 @@ function ProfileMain() {
   const handleLogout = () => {
     instanceJson
       .get("/logout")
-      .then(() => {
+      .then((res) => {
+        console.log(res.data);
         window.localStorage.removeItem("Authorization");
         window.localStorage.removeItem("refresh_token");
         window.localStorage.removeItem("nickname");
         window.localStorage.removeItem("partnership");
+        dispatch(setPartnerState(0));
       })
       .catch((error) => {
         console.error(error);
