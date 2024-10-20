@@ -23,6 +23,7 @@ function PartnerShip() {
         } else if (res.data.partnerStep === 2) {
           navigate("/profile/partnerShip/step3");
         } else if (res.data.partnerStep === 3) {
+          navigate("/profile/partnerShip/step3");
           if (res.data.testCount < 3) {
             alertBox(`${res.data.testCount}회 시험을 응시 하셨습니다`);
           }
